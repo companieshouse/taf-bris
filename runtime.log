@@ -1,0 +1,2 @@
+2017-03-08 12:11:20 DEBUG GuiceModuleAggregator$Builder:69 - Modules [[[io.magentys.cinnamon.guice.WebDriverModule]]]
+2017-03-08 12:11:20 DEBUG GuiceModuleAggregator$Builder:70 - Overrides modules []

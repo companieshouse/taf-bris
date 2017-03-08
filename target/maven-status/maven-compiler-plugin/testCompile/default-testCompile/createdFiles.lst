@@ -1,0 +1,4 @@
+uk\gov\companieshouse\taf\steps\ExampleSteps.class
+uk\gov\companieshouse\taf\acceptancetests\AllTests.class
+ExampleIT.class
+uk\gov\companieshouse\taf\hooks\Hooks.class
