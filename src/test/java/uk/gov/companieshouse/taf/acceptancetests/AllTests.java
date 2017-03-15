@@ -7,7 +7,7 @@ import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        glue = { "io.magentys.cinnamon", "uk.gov.companieshouse.taf" },
+        glue = { "uk.gov.companieshouse.taf" },
         features = "src/test/resources/features",
         format = { "pretty", "json:target/cucumber-reports/cucumber.json" },
         tags = { "@regression" }

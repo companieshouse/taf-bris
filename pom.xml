@@ -22,8 +22,6 @@
         <maven.build.timestamp.format>yyyy-MM-dd-HHmm</maven.build.timestamp.format>
         <repo.basedir>${project.basedir}/repo</repo.basedir>
         <skipITs>false</skipITs>
-        <webDriverConfig>${project.basedir}/conf/webdriver.conf</webDriverConfig>
-        <browserProfile>ie</browserProfile>
     </properties>
 
     <build>
@@ -69,8 +67,6 @@
                         <env>${env}</env>
                         <project.dir>${basedir}</project.dir>
                         <cucumber.options>${cucumber.options}</cucumber.options>
-                        <browserProfile>${browserProfile}</browserProfile>
-                        <webDriverConfig>${webDriverConfig}</webDriverConfig>
                         <http.proxyHost>${http.proxyHost}</http.proxyHost>
                         <https.proxyHost>${https.proxyHost}</https.proxyHost>
                         <http.proxyPort>${http.proxyPort}</http.proxyPort>
@@ -107,7 +103,7 @@
                             <outputDirectory>${project.build.directory}/donut/</outputDirectory>
                             <timestamp>${maven.build.timestamp}</timestamp>
                             <template>default</template>
-                            <prefix>chips</prefix>
+                            <prefix>taf-bris</prefix>
                             <!--<prefix>${project.name}</prefix>-->
                             <projectName>${project.name}</projectName>
                             <projectVersion>${project.version}</projectVersion>
@@ -132,7 +128,7 @@
                         </goals>
                         <configuration>
                             <!-- Mandatory -->
-                            <glue>io.magentys.cinnamon, uk.gov.companieshouse.taf</glue>
+                            <glue>uk.gov.companieshouse.taf</glue>
                             <!-- These are the default values -->
                             <outputDirectory>${project.build.directory}/generated-test-sources/cucumber</outputDirectory>
                             <featuresDirectory>src/test/resources/features/</featuresDirectory>
@@ -161,24 +157,6 @@
             <groupId>io.magentys.memory</groupId>
             <artifactId>memory-lib</artifactId>
             <version>1.0.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.magentys</groupId>
-            <artifactId>cinnamon-webdriver</artifactId>
-            <version>${cinnamon.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-firefox-driver</artifactId>
-            <version>2.53.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-htmlunit-driver</artifactId>
-            <version>2.52.0</version>
         </dependency>
 
         <!-- test dependencies -->
