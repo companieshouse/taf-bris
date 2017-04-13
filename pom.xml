@@ -172,6 +172,18 @@
             <artifactId>cinnamon-cucumber</artifactId>
             <version>${cinnamon.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>eu.europa.ec.digit.bris.domibus-plugin</groupId>
+            <artifactId>domibus-bris-jaxb</artifactId>
+            <version>1.0.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.europa.ec.digit.bris.messages-app</groupId>
+            <artifactId>bris-br-jaxb</artifactId>
+            <version>1.4.0-rc4</version>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -183,6 +195,16 @@
             </releases>
             <snapshots>
                 <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>joinup-releases</id>
+            <url>https://joinup.ec.europa.eu/nexus/content/repositories/releases/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
             </snapshots>
         </repository>
         <repository>
