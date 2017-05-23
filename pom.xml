@@ -2,7 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>uk.gov.companieshouse.taf</groupId>
     <artifactId>taf-bris</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
@@ -135,7 +134,8 @@
                             <!-- Mandatory -->
                             <glue>uk.gov.companieshouse.taf</glue>
                             <!-- These are the default values -->
-                            <outputDirectory>${project.build.directory}/generated-test-sources/cucumber</outputDirectory>
+                            <outputDirectory>${project.build.directory}/generated-test-sources/cucumber
+                            </outputDirectory>
                             <featuresDirectory>src/test/resources/features/</featuresDirectory>
                             <cucumberOutputDir>target/cucumber-reports</cucumberOutputDir>
                             <format>json</format>

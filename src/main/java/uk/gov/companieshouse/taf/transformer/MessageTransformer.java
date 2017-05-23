@@ -9,19 +9,20 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 /**
- * Class to extract outgoing message id from byte array message
+ * Class to extract outgoing message id from byte array message.
  */
-public class MessageTransformer  {
-    
+public class MessageTransformer {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageTransformer.class);
 
     /**
-     * Transform message to extract message id
-     * @param message
+     * Transform message to extract message id.
+     *
+     * @param message the outgoing message
      * @return String - message id
      */
-    public String transform (byte[] message) {
-        String outgoingMessageId=null;
+    public String transform(byte[] message) {
+        String outgoingMessageId = null;
         final String messageString = new String(message);
         LOGGER.info("message ... " + messageString);
         ObjectMapper mapper = new ObjectMapper();
@@ -35,7 +36,7 @@ public class MessageTransformer  {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    
+
         return outgoingMessageId;
     }
 }

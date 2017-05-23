@@ -7,13 +7,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
- * Domain object for outgoing message in MongoDB 
- * Collection specified using @Document annotation
+ * Domain object for outgoing message in MongoDB
+ * Collection specified using @Document annotation.
  */
-@Document(collection="outgoing_messages")
+@Document(collection = "outgoing_messages")
 public class OutgoingBRISMessage {
-    
-    
+
+
     @Id
     private String id;
 
@@ -21,26 +21,28 @@ public class OutgoingBRISMessage {
     private String correlationId;
 
     private String status;
-    
+
     @Field("created_on")
     private DateTime createdOn;
-    
+
     @Field("message_type")
     private String messageType;
-    
+
     private String message;
-    
+
     private Attachment attachment;
-    
-    /** No-args constructor */
+
+    /**
+     * No-args constructor.
+     */
     public OutgoingBRISMessage() {
     }
-    
+
     public OutgoingBRISMessage(String correlationId, String status, DateTime createdOn, String messageType, String message) {
         this.correlationId = correlationId;
         this.status = status;
         this.createdOn = createdOn;
-        this.messageType= messageType;
+        this.messageType = messageType;
         this.message = message;
 
     }
@@ -52,7 +54,7 @@ public class OutgoingBRISMessage {
     public void setMessage(String message) {
         this.message = message;
     }
-   
+
     public String getId() {
         return id;
     }
@@ -60,7 +62,7 @@ public class OutgoingBRISMessage {
     public void setId(String id) {
         this.id = id;
     }
-    
+
     public String getCorrelationId() {
         return correlationId;
     }
@@ -92,7 +94,7 @@ public class OutgoingBRISMessage {
     public void setMessageType(String messageType) {
         this.messageType = messageType;
     }
-    
+
     public Attachment getAttachment() {
         return attachment;
     }
@@ -105,28 +107,28 @@ public class OutgoingBRISMessage {
     public String toString() {
         return String.format(
                 "OutgoingBRISMessage[id=%s, status='%s', "
-                                + "createdOn=%s, messageType='%s', message='%s']",
+                        + "createdOn=%s, messageType='%s', message='%s']",
                 id, status, createdOn, messageType, message);
     }
-    
+
     public static class Attachment {
-        
+
         @Field("attachment_ref")
         private String attachmentRef;
-        
+
         @Field("document_id")
         private String documentId;
-        
+
         private Binary data;
-        
+
         public String getAttachmentRef() {
             return attachmentRef;
         }
-        
+
         public void setAttachmentRef(String attachmentRef) {
             this.attachmentRef = attachmentRef;
         }
-        
+
         public String getDocumentId() {
             return documentId;
         }
@@ -134,21 +136,21 @@ public class OutgoingBRISMessage {
         public void setDocumentId(String documentId) {
             this.documentId = documentId;
         }
-        
+
         public Binary getData() {
             return data;
         }
-        
+
         public void setData(Binary data) {
             this.data = data;
         }
-        
+
         public String toString() {
             return String.format(
                     "Attachment [ref=%s, data='%s',",
                     attachmentRef, data);
         }
-        
+
     }
 
 }

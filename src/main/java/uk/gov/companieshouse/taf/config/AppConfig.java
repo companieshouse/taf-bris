@@ -6,9 +6,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource("classpath:application.properties")
-@ComponentScan(basePackages={"uk.gov.companieshouse.taf"})
+@ComponentScan(basePackages = {"uk.gov.companieshouse.taf"})
+@PropertySource("classpath:/application.properties")
 public class AppConfig {
+
     @Value("${KAFKA_BROKER_ADDR}")
     private String kafkaBroker;
 

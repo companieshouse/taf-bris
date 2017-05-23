@@ -5,15 +5,14 @@ Feature: Company details request feature
   As a customer of BRIS
   I want to request company data from a central location
 
-  NOTE:
-  * Central location will be defined as BRIS
-  Business Registry Integration Service
+  GLOSSARY:
+  * BRIS - Business Registry Integration Service
+  * ECP - European Central Portal
 
-  Scenario: Provide data requested from the BRIS Portal for company details.
+  Scenario: Provide data requested from the ECP for company details.
     Given I am requesting details for a valid company
     When I make a company details request
-    Then I should get an OK response returned
-    And the outgoing message will contain the correct company details
+    Then the the correct company details will be returned to the ECP
 
   Scenario: Inform ECP of non-existent company details request
     Given I am requesting details for a company that does not exist

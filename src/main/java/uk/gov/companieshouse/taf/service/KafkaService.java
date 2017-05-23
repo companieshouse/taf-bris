@@ -4,5 +4,5 @@ import uk.gov.companieshouse.kafka.message.Message;
 
 public interface KafkaService {
 
-    public void send(Message kafkaMessage);
+    void send(Message kafkaMessage);
 }

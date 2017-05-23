@@ -71,10 +71,10 @@ import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 public class EnterCompanySearchDetailsSteps {
 
-	private static final Logger log = LoggerFactory.getLogger(EnterCompanySearchDetailsSteps.class);
+    private static final Logger log = LoggerFactory.getLogger(EnterCompanySearchDetailsSteps.class);
 
-	private static final String PENDING_STATUS="PENDING";
-	private String MESSAGE_ID = UUID.randomUUID().toString();
+    private static final String PENDING_STATUS = "PENDING";
+    private String MESSAGE_ID = UUID.randomUUID().toString();
 
     @Autowired
     protected Marshaller marshaller = null;
@@ -82,29 +82,29 @@ public class EnterCompanySearchDetailsSteps {
     @Autowired
     protected Unmarshaller unmarshaller = null;
 
-	@Autowired
-	private Sender sender;
+    @Autowired
+    private Sender sender;
 
-	@Autowired
-	private IncomingBRISMessageService incomingBRISMessageService;
+    @Autowired
+    private IncomingBRISMessageService incomingBRISMessageService;
 
-	@Autowired
-	private OutgoingBRISMessageService outgoingBRISMessageService;
+    @Autowired
+    private OutgoingBRISMessageService outgoingBRISMessageService;
 
-	@Given("^a request has been made to retrieve company details$")
-	public void enterCompanySearchDetailsSteps() {
-		String CORRELATION_ID = MESSAGE_ID;
+    @Given("^a request has been made to retrieve company details$")
+    public void enterCompanySearchDetailsSteps() {
+        String CORRELATION_ID = MESSAGE_ID;
 
-		//"00006400", "03977902"
-		BRCompanyDetailsRequest request = CompanyDetailsHelper.newInstance(
-				CORRELATION_ID,
-				MESSAGE_ID,
-				"00006400",
-				"EW",
-				"UK");
+        //"00006400", "03977902"
+        BRCompanyDetailsRequest request = CompanyDetailsHelper.newInstance(
+                CORRELATION_ID,
+                MESSAGE_ID,
+                "00006400",
+                "EW",
+                "UK");
 
 
-		OutgoingBRISMessage outgoingBRISMessage = new OutgoingBRISMessage();
+        OutgoingBRISMessage outgoingBRISMessage = new OutgoingBRISMessage();
 
         String xmlMessage = StringUtils.EMPTY;
         Reader requestStream = null;
@@ -115,33 +115,34 @@ public class EnterCompanySearchDetailsSteps {
         }
         try {
             xmlMessage = IOUtils.toString(requestStream);
-        } catch (IOException e) {e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
 
         }
 
 
         outgoingBRISMessage.setMessage(xmlMessage);
 
-		//create new mongodb ObjectId for outgoing BRIS Message
-		log.info("Listing outgoingBRISMessage with id: " + MESSAGE_ID);
-		outgoingBRISMessage.setId(MESSAGE_ID);
-		outgoingBRISMessage.setCorrelationId(CORRELATION_ID);
-		outgoingBRISMessage.setCreatedOn(getDateTime());
-		outgoingBRISMessage.setStatus(PENDING_STATUS);
-		outgoingBRISMessageService.save(outgoingBRISMessage);
-		sender.sendMessage("bris_outgoing_test", MESSAGE_ID);
-	}
+        //create new mongodb ObjectId for outgoing BRIS Message
+        log.info("Listing outgoingBRISMessage with id: " + MESSAGE_ID);
+        outgoingBRISMessage.setId(MESSAGE_ID);
+        outgoingBRISMessage.setCorrelationId(CORRELATION_ID);
+        outgoingBRISMessage.setCreatedOn(getDateTime());
+        outgoingBRISMessage.setStatus(PENDING_STATUS);
+        outgoingBRISMessageService.save(outgoingBRISMessage);
+        sender.sendMessage("bris_outgoing_test", MESSAGE_ID);
+    }
 
-	@Then("^the company details should be retrieved$")
-	public void checkCompanyDetailsRetrieved() {
-   IncomingBRISMessage message = null;
-		int counter = 0;
+    @Then("^the company details should be retrieved$")
+    public void checkCompanyDetailsRetrieved() {
+        IncomingBRISMessage message = null;
+        int counter = 0;
 
-        while (message == null  && counter < 60){
+        while (message == null && counter < 60) {
             System.out.println("Trying to find response message with ID : " + MESSAGE_ID);
             message = incomingBRISMessageService.findByMessageId(MESSAGE_ID);
 
-            if (message != null){
+            if (message != null) {
                 System.out.println("Message found " + message.getMessage());
 
 
@@ -154,7 +155,7 @@ public class EnterCompanySearchDetailsSteps {
                     StringReader reader = new StringReader(message.getMessage());
                     obj = jaxbUnmarshaller.unmarshal(reader);
 
-                    BRCompanyDetailsResponse companyDetailsResponse = (BRCompanyDetailsResponse)obj;
+                    BRCompanyDetailsResponse companyDetailsResponse = (BRCompanyDetailsResponse) obj;
 
                     assertEquals("Expected Country UK", "UK", companyDetailsResponse.getBusinessRegisterReference().getBusinessRegisterCountry().getValue());
 
@@ -214,74 +215,74 @@ public class EnterCompanySearchDetailsSteps {
         return context;
     }
 
-	private static MessageHeaderType getMessageHeader(String correlationId, String messageId) {
-		MessageHeaderType messageHeaderType = new MessageHeaderType();
-		CorrelationIDType correlationIDType = new CorrelationIDType();
-		correlationIDType.setValue(correlationId);
-		messageHeaderType.setCorrelationID(correlationIDType);
-		MessageIDType messageIDType = new MessageIDType();
-		messageIDType.setValue(messageId);
-		messageHeaderType.setMessageID(messageIDType);
+    private static MessageHeaderType getMessageHeader(String correlationId, String messageId) {
+        MessageHeaderType messageHeaderType = new MessageHeaderType();
+        CorrelationIDType correlationIDType = new CorrelationIDType();
+        correlationIDType.setValue(correlationId);
+        messageHeaderType.setCorrelationID(correlationIDType);
+        MessageIDType messageIDType = new MessageIDType();
+        messageIDType.setValue(messageId);
+        messageHeaderType.setMessageID(messageIDType);
 
-		//***** START --BusinessRegisterReference *******************//
-		BusinessRegisterReferenceType businessRegisterReferenceType=new BusinessRegisterReferenceType();
-		BusinessRegisterNameType businessRegisterNameType=new BusinessRegisterNameType();
-		businessRegisterNameType.setValue("Companies House");
+        //***** START --BusinessRegisterReference *******************//
+        BusinessRegisterReferenceType businessRegisterReferenceType = new BusinessRegisterReferenceType();
+        BusinessRegisterNameType businessRegisterNameType = new BusinessRegisterNameType();
+        businessRegisterNameType.setValue("Companies House");
 
-		BusinessRegisterIDType businessRegisterIDType=new BusinessRegisterIDType();
+        BusinessRegisterIDType businessRegisterIDType = new BusinessRegisterIDType();
 
-		//BusinessRegisterID
-		businessRegisterIDType.setValue("EW");
+        //BusinessRegisterID
+        businessRegisterIDType.setValue("EW");
 
-		//BusinessRegisterCountry Country
-		CountryType countryType=new CountryType();
-		countryType.setValue("UK");
+        //BusinessRegisterCountry Country
+        CountryType countryType = new CountryType();
+        countryType.setValue("UK");
 
-		//set BusinessRegisterID
-		businessRegisterReferenceType.setBusinessRegisterID(businessRegisterIDType);
+        //set BusinessRegisterID
+        businessRegisterReferenceType.setBusinessRegisterID(businessRegisterIDType);
 
-		// set BusinessRegisterCountry
-		businessRegisterReferenceType.setBusinessRegisterCountry(countryType);
-		// TODO BusinessRegisterName??
+        // set BusinessRegisterCountry
+        businessRegisterReferenceType.setBusinessRegisterCountry(countryType);
+        // TODO BusinessRegisterName??
 
-		// set BusinessRegisterReference to CompanyDetailsResponse
-		messageHeaderType.setBusinessRegisterReference(businessRegisterReferenceType);
-		return messageHeaderType;
-	}
+        // set BusinessRegisterReference to CompanyDetailsResponse
+        messageHeaderType.setBusinessRegisterReference(businessRegisterReferenceType);
+        return messageHeaderType;
+    }
 
-	public static BusinessRegisterReferenceType BusinessRegisterReferenceType(String countryCode, String businessRegisterId) {
-		BusinessRegisterReferenceType businessRegisterReference = new BusinessRegisterReferenceType();
-		businessRegisterReference.setBusinessRegisterCountry(CountryType(countryCode));
-		businessRegisterReference.setBusinessRegisterID(BusinessRegisterIDType(businessRegisterId));
-		return businessRegisterReference;
-	}
+    public static BusinessRegisterReferenceType BusinessRegisterReferenceType(String countryCode, String businessRegisterId) {
+        BusinessRegisterReferenceType businessRegisterReference = new BusinessRegisterReferenceType();
+        businessRegisterReference.setBusinessRegisterCountry(CountryType(countryCode));
+        businessRegisterReference.setBusinessRegisterID(BusinessRegisterIDType(businessRegisterId));
+        return businessRegisterReference;
+    }
 
-	public static CompanyRegistrationNumberType CompanyRegistrationNumberType(String companyRegNumber) {
-		CompanyRegistrationNumberType companyRegistrationNumber = new CompanyRegistrationNumberType();
-		companyRegistrationNumber.setValue(companyRegNumber);
-		return companyRegistrationNumber;
-	}
+    public static CompanyRegistrationNumberType CompanyRegistrationNumberType(String companyRegNumber) {
+        CompanyRegistrationNumberType companyRegistrationNumber = new CompanyRegistrationNumberType();
+        companyRegistrationNumber.setValue(companyRegNumber);
+        return companyRegistrationNumber;
+    }
 
-	public static CountryType CountryType(String countryCode) {
-		CountryType country = new CountryType();
-		country.setValue(countryCode);
-		return country;
-	}
+    public static CountryType CountryType(String countryCode) {
+        CountryType country = new CountryType();
+        country.setValue(countryCode);
+        return country;
+    }
 
-	public static BusinessRegisterIDType BusinessRegisterIDType(String identifier) {
-		BusinessRegisterIDType businessRegisterId = new BusinessRegisterIDType();
-		businessRegisterId.setValue(identifier);
-		return businessRegisterId;
-	}
+    public static BusinessRegisterIDType BusinessRegisterIDType(String identifier) {
+        BusinessRegisterIDType businessRegisterId = new BusinessRegisterIDType();
+        businessRegisterId.setValue(identifier);
+        return businessRegisterId;
+    }
 
-	public static DateTime getDateTime() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-		Date dt = new Date();
-		String strDt = sdf.format(dt);
+    public static DateTime getDateTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        Date dt = new Date();
+        String strDt = sdf.format(dt);
 
-		DateTimeFormatter parser = ISODateTimeFormat.dateTime();
-		DateTime dateTimeResult = parser.parseDateTime(strDt);
+        DateTimeFormatter parser = ISODateTimeFormat.dateTime();
+        DateTime dateTimeResult = parser.parseDateTime(strDt);
 
-		return dateTimeResult;
-	}
+        return dateTimeResult;
+    }
 }

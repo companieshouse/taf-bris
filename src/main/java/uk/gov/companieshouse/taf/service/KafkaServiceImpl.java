@@ -7,7 +7,6 @@ import uk.gov.companieshouse.kafka.producer.CHKafkaProducer;
 import uk.gov.companieshouse.kafka.producer.ProducerConfig;
 import uk.gov.companieshouse.taf.config.ProducerConfigHelper;
 
-
 @Component
 public class KafkaServiceImpl implements KafkaService {
 

@@ -24,6 +24,12 @@ import eu.europa.ec.bris.v140.jaxb.br.merger.BRCrossBorderMergerSubmissionNotifi
 import eu.europa.ec.bris.v140.jaxb.br.merger.BRCrossBorderMergerSubmissionNotificationAcknowledgement;
 import eu.europa.ec.bris.v140.jaxb.br.subscription.BRManageSubscriptionRequest;
 import eu.europa.ec.bris.v140.jaxb.br.subscription.BRManageSubscriptionStatus;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +38,6 @@ import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.kafka.message.Message;
 import uk.gov.companieshouse.taf.service.KafkaService;
 import uk.gov.companieshouse.taf.transformer.OutgoingMessage;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 
 @Component
 public class SenderImpl implements Sender {
@@ -48,15 +49,14 @@ public class SenderImpl implements Sender {
 
     @Override
     public boolean sendMessage(String topic, String messageId) {
-        
-        boolean successful=false;
-        
+
+        boolean successful = false;
+
         Message kafkaMessage = new Message();
-        
+
         //Create object to represent outgoing message
         OutgoingMessage outgoingMessage = new OutgoingMessage();
         outgoingMessage.setOutgoingMessageId(messageId);
-
 
         //Convert object to byte array to insert into kafka message
         ObjectMapper mapper = new ObjectMapper();
@@ -65,43 +65,44 @@ public class SenderImpl implements Sender {
             kafkaMessage.setValue(value);
             kafkaMessage.setTopic(topic);
             kafkaService.send(kafkaMessage);
-            successful=true;
+            successful = true;
         } catch (JsonProcessingException jpe) {
-            jpe.printStackTrace();
             LOGGER.error("Unable to send message id " + messageId);
-            
+            LOGGER.info(jpe.getMessage());
         }
 
         return successful;
     }
-    
+
     @Bean
-    public JAXBContext getJaxbContext() {
+    private JAXBContext getJaxbContext() {
         JAXBContext context = null;
         try {
             context = JAXBContext.newInstance(BRBranchDisclosureReceptionNotification.class,
                     BRBranchDisclosureReceptionNotificationAcknowledgement.class,
                     BRBranchDisclosureSubmissionNotification.class,
-                    BRBranchDisclosureSubmissionNotificationAcknowledgement.class, 
+                    BRBranchDisclosureSubmissionNotificationAcknowledgement.class,
                     BRBusinessError.class,
-                    BRCompanyDetailsRequest.class, 
+                    BRCompanyDetailsRequest.class,
                     BRCompanyDetailsResponse.class,
                     BRCrossBorderMergerReceptionNotification.class,
                     BRCrossBorderMergerReceptionNotificationAcknowledgement.class,
                     BRCrossBorderMergerSubmissionNotification.class,
-                    BRCrossBorderMergerSubmissionNotificationAcknowledgement.class, 
+                    BRCrossBorderMergerSubmissionNotificationAcknowledgement.class,
                     BRFaultResponse.class,
-                    BRManageSubscriptionRequest.class, 
+                    BRManageSubscriptionRequest.class,
                     BRManageSubscriptionStatus.class,
-                    BRRetrieveDocumentRequest.class, 
-                    BRRetrieveDocumentResponse.class, 
+                    BRRetrieveDocumentRequest.class,
+                    BRRetrieveDocumentResponse.class,
                     BRUpdateLEDRequest.class,
-                    BRUpdateLEDStatus.class, 
-                    Acknowledgement.class, 
-                    DeliveryBody.class, 
+                    BRUpdateLEDStatus.class,
+                    Acknowledgement.class,
+                    DeliveryBody.class,
                     SubmissionBody.class,
                     SubmissionHeader.class);
+            
         } catch (JAXBException exception) {
+            LOGGER.error(exception.getMessage());
             exception.printStackTrace();
         }
 

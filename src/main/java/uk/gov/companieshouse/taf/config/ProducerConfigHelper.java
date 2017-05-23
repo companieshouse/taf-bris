@@ -7,8 +7,6 @@ package uk.gov.companieshouse.taf.config;
 import uk.gov.companieshouse.kafka.exceptions.ProducerConfigException;
 import uk.gov.companieshouse.kafka.producer.ProducerConfig;
 
-import uk.gov.companieshouse.kafka.exceptions.ProducerConfigException;
-
 public class ProducerConfigHelper {
     private static final String KAFKA_BROKER_ADDR = "KAFKA_BROKER_ADDR";
 

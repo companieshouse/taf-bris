@@ -10,7 +10,7 @@ public class OutgoingMessage {
     public String getOutgoingMessageId() {
         return outgoingMessageId;
     }
-    
+
     public void setOutgoingMessageId(String outgoingMessageId) {
         this.outgoingMessageId = outgoingMessageId;
     }
