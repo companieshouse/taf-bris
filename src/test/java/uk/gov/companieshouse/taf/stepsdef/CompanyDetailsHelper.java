@@ -34,8 +34,9 @@ public class CompanyDetailsHelper {
 
         BRCompanyDetailsRequest request = new BRCompanyDetailsRequest();
         request.setMessageHeader(getMessageHeader(correlationId, messageId));
-        request.setBusinessRegisterReference(businessRegisterReference(countryCode, businessRegisterId));
-        request.setCompanyRegistrationNumber(companyRegistrationNumber(companyRegistrationNumber));
+        request.setBusinessRegisterReference(businessRegReference(countryCode,
+                businessRegisterId));
+        request.setCompanyRegistrationNumber(companyRegNumber(companyRegistrationNumber));
         return request;
     }
 
@@ -61,8 +62,6 @@ public class CompanyDetailsHelper {
         messageHeaderType.setMessageID(messageIdType);
 
         //***** START --BusinessRegisterReference *******************//
-        BusinessRegisterReferenceType businessRegisterReferenceType =
-                new BusinessRegisterReferenceType();
         BusinessRegisterNameType businessRegisterNameType = new BusinessRegisterNameType();
         businessRegisterNameType.setValue("Companies House");
 
@@ -74,6 +73,9 @@ public class CompanyDetailsHelper {
         //BusinessRegisterCountry Country
         CountryType countryType = new CountryType();
         countryType.setValue("UK");
+
+        BusinessRegisterReferenceType businessRegisterReferenceType
+                = new BusinessRegisterReferenceType();
 
         //set BusinessRegisterID
         businessRegisterReferenceType.setBusinessRegisterID(businessRegisterIdType);
@@ -87,8 +89,8 @@ public class CompanyDetailsHelper {
         return messageHeaderType;
     }
 
-    private static BusinessRegisterReferenceType businessRegisterReference(String countryCode,
-                                                                           String businessRegisterId) {
+    private static BusinessRegisterReferenceType businessRegReference(String countryCode,
+                                                                      String businessRegisterId) {
         BusinessRegisterReferenceType businessRegisterReference =
                 new BusinessRegisterReferenceType();
         businessRegisterReference.setBusinessRegisterCountry(country(countryCode));
@@ -96,7 +98,7 @@ public class CompanyDetailsHelper {
         return businessRegisterReference;
     }
 
-    private static CompanyRegistrationNumberType companyRegistrationNumber(String companyRegNumber) {
+    private static CompanyRegistrationNumberType companyRegNumber(String companyRegNumber) {
         CompanyRegistrationNumberType companyRegistrationNumber =
                 new CompanyRegistrationNumberType();
         companyRegistrationNumber.setValue(companyRegNumber);

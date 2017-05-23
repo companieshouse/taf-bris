@@ -12,20 +12,20 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 @ComponentScan
 @Document(collection = "incoming_messages")
-public class IncomingBRISMessage implements Serializable {
+public class IncomingBrisMessage implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * No-args constructor.
      */
-    public IncomingBRISMessage() {
+    public IncomingBrisMessage() {
     }
 
     /**
      * Constructor.
      */
-    public IncomingBRISMessage(String messageId, String correlationId, String message) {
+    public IncomingBrisMessage(String messageId, String correlationId, String message) {
         this.messageId = messageId;
         this.correlationId = correlationId;
         this.message = message;
@@ -39,7 +39,7 @@ public class IncomingBRISMessage implements Serializable {
      * @param message       The message content.
      * @param status        Status of the message.
      */
-    public IncomingBRISMessage(String messageId, String correlationId,
+    public IncomingBrisMessage(String messageId, String correlationId,
                                String message, String status) {
         this.messageId = messageId;
         this.correlationId = correlationId;
@@ -57,7 +57,7 @@ public class IncomingBRISMessage implements Serializable {
      * @param status        Status of the message.
      * @param createdOn     The date message created.
      */
-    public IncomingBRISMessage(String messageId, String correlationId, String message,
+    public IncomingBrisMessage(String messageId, String correlationId, String message,
                                String status, DateTime createdOn) {
         this.messageId = messageId;
         this.correlationId = correlationId;
@@ -76,7 +76,7 @@ public class IncomingBRISMessage implements Serializable {
      * @param createdOn     The date message created.
      * @param messageType   The type of message.
      */
-    public IncomingBRISMessage(String messageId, String correlationId, String message,
+    public IncomingBrisMessage(String messageId, String correlationId, String message,
                                String status, DateTime createdOn, String messageType) {
         this.messageId = messageId;
         this.correlationId = correlationId;
@@ -174,9 +174,9 @@ public class IncomingBRISMessage implements Serializable {
             return false;
         }
 
-        IncomingBRISMessage incomingBRISMessage = (IncomingBRISMessage) obj;
+        IncomingBrisMessage incomingBrisMessage = (IncomingBrisMessage) obj;
 
-        return Objects.equals(id, incomingBRISMessage.id);
+        return Objects.equals(id, incomingBrisMessage.id);
     }
 
     @Override
@@ -186,7 +186,7 @@ public class IncomingBRISMessage implements Serializable {
 
     @Override
     public String toString() {
-        return "IncomingBRISMessage{"
+        return "IncomingBrisMessage{"
                 + "_id=" + id
                 + ", messageId='" + messageId + "'"
                 + ", correlationId='" + correlationId + "'"

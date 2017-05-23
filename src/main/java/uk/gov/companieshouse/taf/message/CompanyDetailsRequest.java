@@ -19,9 +19,9 @@ import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import uk.gov.companieshouse.taf.domain.OutgoingBRISMessage;
+import uk.gov.companieshouse.taf.domain.OutgoingBrisMessage;
 import uk.gov.companieshouse.taf.producer.Sender;
-import uk.gov.companieshouse.taf.service.OutgoingBRISMessageService;
+import uk.gov.companieshouse.taf.service.OutgoingBrisMessageService;
 
 public class CompanyDetailsRequest {
 
@@ -30,7 +30,7 @@ public class CompanyDetailsRequest {
 
 
     @Autowired
-    private OutgoingBRISMessageService outgoingBRISMessageService;
+    private OutgoingBrisMessageService outgoingBrisMessageService;
 
     @Autowired
     private Sender sender;
@@ -46,7 +46,7 @@ public class CompanyDetailsRequest {
      */
     public void createOutGoingMessageAndSend(BRCompanyDetailsRequest request, String messageId)
             throws Exception {
-        OutgoingBRISMessage outgoingBRISMessage = new OutgoingBRISMessage();
+        OutgoingBrisMessage outgoingBrisMessage = new OutgoingBrisMessage();
 
         String xmlMessage = StringUtils.EMPTY;
         Reader requestStream;
@@ -55,15 +55,15 @@ public class CompanyDetailsRequest {
             xmlMessage = IOUtils.toString(requestStream);
         }
 
-        outgoingBRISMessage.setMessage(xmlMessage);
+        outgoingBrisMessage.setMessage(xmlMessage);
 
         //create new mongodb ObjectId for outgoing BRIS Message
-        log.info("Listing outgoingBRISMessage with id: %s", messageId);
-        outgoingBRISMessage.setId(messageId);
-        outgoingBRISMessage.setCorrelationId(messageId);
-        outgoingBRISMessage.setCreatedOn(getDateTime());
-        outgoingBRISMessage.setStatus(PENDING_STATUS);
-        outgoingBRISMessageService.save(outgoingBRISMessage);
+        log.info("Listing outgoingBrisMessage with id: %s", messageId);
+        outgoingBrisMessage.setId(messageId);
+        outgoingBrisMessage.setCorrelationId(messageId);
+        outgoingBrisMessage.setCreatedOn(getDateTime());
+        outgoingBrisMessage.setStatus(PENDING_STATUS);
+        outgoingBrisMessageService.save(outgoingBrisMessage);
         sender.sendMessage("bris_outgoing_test", messageId);
     }
 

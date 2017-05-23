@@ -15,13 +15,13 @@ import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import uk.gov.companieshouse.taf.repository.IncomingBRISMessageRepository;
-import uk.gov.companieshouse.taf.repository.OutgoingBRISMessageRepository;
+import uk.gov.companieshouse.taf.repository.IncomingBrisMessageRepository;
+import uk.gov.companieshouse.taf.repository.OutgoingBrisMessageRepository;
 
 
 @Configuration
-@EnableMongoRepositories(basePackageClasses = {IncomingBRISMessageRepository.class,
-        OutgoingBRISMessageRepository.class},
+@EnableMongoRepositories(basePackageClasses = {IncomingBrisMessageRepository.class,
+        OutgoingBrisMessageRepository.class},
         mongoTemplateRef = "template",
         includeFilters = {@ComponentScan.Filter(type = FilterType.REGEX, pattern = ".*Repository")}
 )

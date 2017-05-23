@@ -31,7 +31,6 @@ import eu.europa.ec.bris.v140.jaxb.components.basic.*;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.StringBuilderWriter;
 import org.apache.commons.lang3.StringUtils;
-import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -39,17 +38,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.util.CollectionUtils;
-import sun.swing.StringUIClientPropertyKey;
-import uk.gov.companieshouse.taf.CreateIncomingBRISMessage;
-import uk.gov.companieshouse.taf.CreateIncomingBRISMessageImpl;
-import uk.gov.companieshouse.taf.config.AppConfig;
-import uk.gov.companieshouse.taf.domain.IncomingBRISMessage;
-import uk.gov.companieshouse.taf.domain.OutgoingBRISMessage;
+import uk.gov.companieshouse.taf.domain.IncomingBrisMessage;
+import uk.gov.companieshouse.taf.domain.OutgoingBrisMessage;
 import uk.gov.companieshouse.taf.producer.Sender;
-import uk.gov.companieshouse.taf.service.IncomingBRISMessageService;
-import uk.gov.companieshouse.taf.service.OutgoingBRISMessageService;
+import uk.gov.companieshouse.taf.service.IncomingBrisMessageService;
+import uk.gov.companieshouse.taf.service.OutgoingBrisMessageService;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -62,7 +55,6 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertTrue;
@@ -86,10 +78,10 @@ public class EnterCompanySearchDetailsSteps {
     private Sender sender;
 
     @Autowired
-    private IncomingBRISMessageService incomingBRISMessageService;
+    private IncomingBrisMessageService incomingBrisMessageService;
 
     @Autowired
-    private OutgoingBRISMessageService outgoingBRISMessageService;
+    private OutgoingBrisMessageService outgoingBrisMessageService;
 
     @Given("^a request has been made to retrieve company details$")
     public void enterCompanySearchDetailsSteps() {
@@ -104,7 +96,7 @@ public class EnterCompanySearchDetailsSteps {
                 "UK");
 
 
-        OutgoingBRISMessage outgoingBRISMessage = new OutgoingBRISMessage();
+        OutgoingBrisMessage outgoingBrisMessage = new OutgoingBrisMessage();
 
         String xmlMessage = StringUtils.EMPTY;
         Reader requestStream = null;
@@ -121,26 +113,26 @@ public class EnterCompanySearchDetailsSteps {
         }
 
 
-        outgoingBRISMessage.setMessage(xmlMessage);
+        outgoingBrisMessage.setMessage(xmlMessage);
 
         //create new mongodb ObjectId for outgoing BRIS Message
-        log.info("Listing outgoingBRISMessage with id: " + MESSAGE_ID);
-        outgoingBRISMessage.setId(MESSAGE_ID);
-        outgoingBRISMessage.setCorrelationId(CORRELATION_ID);
-        outgoingBRISMessage.setCreatedOn(getDateTime());
-        outgoingBRISMessage.setStatus(PENDING_STATUS);
-        outgoingBRISMessageService.save(outgoingBRISMessage);
+        log.info("Listing outgoingBrisMessage with id: " + MESSAGE_ID);
+        outgoingBrisMessage.setId(MESSAGE_ID);
+        outgoingBrisMessage.setCorrelationId(CORRELATION_ID);
+        outgoingBrisMessage.setCreatedOn(getDateTime());
+        outgoingBrisMessage.setStatus(PENDING_STATUS);
+        outgoingBrisMessageService.save(outgoingBrisMessage);
         sender.sendMessage("bris_outgoing_test", MESSAGE_ID);
     }
 
     @Then("^the company details should be retrieved$")
     public void checkCompanyDetailsRetrieved() {
-        IncomingBRISMessage message = null;
+        IncomingBrisMessage message = null;
         int counter = 0;
 
         while (message == null && counter < 60) {
             System.out.println("Trying to find response message with ID : " + MESSAGE_ID);
-            message = incomingBRISMessageService.findByMessageId(MESSAGE_ID);
+            message = incomingBrisMessageService.findByMessageId(MESSAGE_ID);
 
             if (message != null) {
                 System.out.println("Message found " + message.getMessage());

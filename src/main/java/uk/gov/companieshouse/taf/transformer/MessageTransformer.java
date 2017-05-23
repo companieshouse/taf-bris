@@ -29,7 +29,8 @@ public class MessageTransformer {
         LOGGER.info("message ... %s", messageString);
         ObjectMapper mapper = new ObjectMapper();
         try {
-            IncomingMessage outgoingMessage = mapper.readValue(messageString, IncomingMessage.class);
+            IncomingMessage outgoingMessage = mapper.readValue(messageString,
+                    IncomingMessage.class);
             outgoingMessageId = outgoingMessage.getIncomingMessageId();
         } catch (JsonParseException e) {
             e.printStackTrace();

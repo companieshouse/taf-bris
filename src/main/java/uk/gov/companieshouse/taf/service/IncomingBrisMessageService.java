@@ -13,55 +13,55 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
-import uk.gov.companieshouse.taf.domain.IncomingBRISMessage;
-import uk.gov.companieshouse.taf.repository.IncomingBRISMessageRepository;
+import uk.gov.companieshouse.taf.domain.IncomingBrisMessage;
+import uk.gov.companieshouse.taf.repository.IncomingBrisMessageRepository;
 
 
 @ComponentScan
 @Service
-public class IncomingBRISMessageService {
+public class IncomingBrisMessageService {
 
-    final Logger logger = LoggerFactory.getLogger(IncomingBRISMessageService.class);
+    final Logger logger = LoggerFactory.getLogger(IncomingBrisMessageService.class);
 
     @Autowired
     private MongoTemplate mongoTemplate;
 
     @Autowired
-    private IncomingBRISMessageRepository incomingBRISMessageRepository;
+    private IncomingBrisMessageRepository incomingBrisMessageRepository;
 
-    public List<IncomingBRISMessage> findAll() {
-        return incomingBRISMessageRepository.findAll();
+    public List<IncomingBrisMessage> findAll() {
+        return incomingBrisMessageRepository.findAll();
     }
 
-    public IncomingBRISMessage findById(String id) {
-        return incomingBRISMessageRepository.findOneById(id);
+    public IncomingBrisMessage findById(String id) {
+        return incomingBrisMessageRepository.findOneById(id);
     }
 
-    public IncomingBRISMessage save(IncomingBRISMessage incomingBRISMessage) {
-        return incomingBRISMessageRepository.save(incomingBRISMessage);
+    public IncomingBrisMessage save(IncomingBrisMessage incomingBrisMessage) {
+        return incomingBrisMessageRepository.save(incomingBrisMessage);
     }
 
-    public void delete(IncomingBRISMessage incomingBRISMessage) {
-        incomingBRISMessageRepository.delete(incomingBRISMessage);
+    public void delete(IncomingBrisMessage incomingBrisMessage) {
+        incomingBrisMessageRepository.delete(incomingBrisMessage);
     }
 
     /**
-     * Removes all IncomingBRISMessage entities from database.
+     * Removes all IncomingBrisMessage entities from database.
      */
     public void deleteAll() {
-        incomingBRISMessageRepository.deleteAll();
+        incomingBrisMessageRepository.deleteAll();
     }
 
-    public IncomingBRISMessage findByMessageId(String messageId) {
-        return incomingBRISMessageRepository.findOneByMessageId(messageId);
+    public IncomingBrisMessage findByMessageId(String messageId) {
+        return incomingBrisMessageRepository.findOneByMessageId(messageId);
     }
 
-    public List<IncomingBRISMessage> findMultipleByMessageId(String messageId) {
-        return incomingBRISMessageRepository.findMultipleByMessageId(messageId);
+    public List<IncomingBrisMessage> findMultipleByMessageId(String messageId) {
+        return incomingBrisMessageRepository.findMultipleByMessageId(messageId);
     }
 
-    public IncomingBRISMessage findOneByIdAndMessageId(String id, String messageId) {
-        return incomingBRISMessageRepository.findOneByIdAndMessageId(id, messageId);
+    public IncomingBrisMessage findOneByIdAndMessageId(String id, String messageId) {
+        return incomingBrisMessageRepository.findOneByIdAndMessageId(id, messageId);
     }
 
     /**

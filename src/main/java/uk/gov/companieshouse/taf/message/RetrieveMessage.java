@@ -35,8 +35,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-import uk.gov.companieshouse.taf.domain.IncomingBRISMessage;
-import uk.gov.companieshouse.taf.service.IncomingBRISMessageService;
+import uk.gov.companieshouse.taf.domain.IncomingBrisMessage;
+import uk.gov.companieshouse.taf.service.IncomingBrisMessageService;
 
 @Component
 public class RetrieveMessage {
@@ -44,7 +44,7 @@ public class RetrieveMessage {
     private static final Logger log = LoggerFactory.getLogger(RetrieveMessage.class);
 
     @Autowired
-    private IncomingBRISMessageService incomingBRISMessageService;
+    private IncomingBrisMessageService incomingBrisMessageService;
 
     /**
      * Check the mongo collection for the message by id.
@@ -53,12 +53,12 @@ public class RetrieveMessage {
      */
 
     public void checkForMessageByMessageId(String messageId) throws Exception {
-        IncomingBRISMessage message = null;
+        IncomingBrisMessage message = null;
         int counter = 0;
 
         while (message == null && counter < 60) {
             log.info("Trying to find response message with ID : %s", messageId);
-            message = incomingBRISMessageService.findByMessageId(messageId);
+            message = incomingBrisMessageService.findByMessageId(messageId);
 
             if (message != null) {
                 log.info("Message found " + message.getMessage());

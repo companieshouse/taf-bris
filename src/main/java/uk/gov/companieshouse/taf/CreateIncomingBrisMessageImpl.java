@@ -9,14 +9,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import uk.gov.companieshouse.taf.domain.IncomingBRISMessage;
+import uk.gov.companieshouse.taf.domain.IncomingBrisMessage;
 import uk.gov.companieshouse.taf.producer.Sender;
-import uk.gov.companieshouse.taf.service.IncomingBRISMessageService;
+import uk.gov.companieshouse.taf.service.IncomingBrisMessageService;
 
-public abstract class CreateIncomingBRISMessageImpl implements CreateIncomingBRISMessage {
+public abstract class CreateIncomingBrisMessageImpl implements CreateIncomingBrisMessage {
 
     @Autowired
-    private IncomingBRISMessageService incomingBRISMessageService;
+    private IncomingBrisMessageService incomingBrisMessageService;
 
     @Autowired
     private Sender kafkaProducer;
@@ -24,12 +24,9 @@ public abstract class CreateIncomingBRISMessageImpl implements CreateIncomingBRI
     @Value("${kafka.producer.topic}")
     private String brisOutgoingTopic;
 
-    private static final Logger log = LoggerFactory.getLogger(CreateIncomingBRISMessageImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(CreateIncomingBrisMessageImpl.class);
 
-    private BRCompanyDetailsRequest constructBRCompanyDetailsRequest(String companyRef) {
-
-        BRCompanyDetailsRequest companyDetailsRequest = new BRCompanyDetailsRequest();
-
+    private BRCompanyDetailsRequest constructBrCompanyDetailsRequest(String companyRef) {
         BusinessRegisterReferenceType businessRegisterReference =
                 new BusinessRegisterReferenceType();
         BusinessRegisterIDType businessRegisterId = new BusinessRegisterIDType();
@@ -38,6 +35,8 @@ public abstract class CreateIncomingBRISMessageImpl implements CreateIncomingBRI
 
         CountryType country = new CountryType();
         businessRegisterReference.setBusinessRegisterCountry(country);
+
+        BRCompanyDetailsRequest companyDetailsRequest = new BRCompanyDetailsRequest();
 
         companyDetailsRequest.setBusinessRegisterReference(businessRegisterReference);
         log.info("Requesting company details for %s", companyRef);
@@ -49,17 +48,17 @@ public abstract class CreateIncomingBRISMessageImpl implements CreateIncomingBRI
      *
      * @param companyNumber the company number of company being searched
      */
-    public void sendMessageToBRIS(String companyNumber) {
+    public void sendMessageToBris(String companyNumber) {
         // Construct a request to simulate a BRIS Incoming Message
         BRCompanyDetailsRequest companyDetailsRequest =
-                constructBRCompanyDetailsRequest(companyNumber);
+                constructBrCompanyDetailsRequest(companyNumber);
 
-        IncomingBRISMessage incomingBRISMessage = new IncomingBRISMessage();
-        incomingBRISMessage.setMessageId("JB1");
-        incomingBRISMessage.setMessage(companyDetailsRequest.toString());
+        IncomingBrisMessage incomingBrisMessage = new IncomingBrisMessage();
+        incomingBrisMessage.setMessageId("JB1");
+        incomingBrisMessage.setMessage(companyDetailsRequest.toString());
 
         // Store the request on MongoDB
-        incomingBRISMessageService.save(incomingBRISMessage);
+        incomingBrisMessageService.save(incomingBrisMessage);
 
         //create new mongodb ObjectId for outgoing BRIS Message
         ObjectId objectId = new ObjectId().get();

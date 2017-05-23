@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * Collection specified using @Document annotation.
  */
 @Document(collection = "outgoing_messages")
-public class OutgoingBRISMessage {
+public class OutgoingBrisMessage {
 
 
     @Id
@@ -35,7 +35,7 @@ public class OutgoingBRISMessage {
     /**
      * No-args constructor.
      */
-    public OutgoingBRISMessage() {
+    public OutgoingBrisMessage() {
     }
 
     /**
@@ -47,7 +47,7 @@ public class OutgoingBRISMessage {
      * @param messageType   The type of message.
      * @param message       Message content.
      */
-    public OutgoingBRISMessage(String correlationId, String status, DateTime createdOn,
+    public OutgoingBrisMessage(String correlationId, String status, DateTime createdOn,
                                String messageType, String message) {
         this.correlationId = correlationId;
         this.status = status;
@@ -116,7 +116,7 @@ public class OutgoingBRISMessage {
     @Override
     public String toString() {
         return String.format(
-                "OutgoingBRISMessage[id=%s, status='%s', "
+                "OutgoingBrisMessage[id=%s, status='%s', "
                         + "createdOn=%s, messageType='%s', message='%s']",
                 id, status, createdOn, messageType, message);
     }
