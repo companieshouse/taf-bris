@@ -22,6 +22,9 @@ public class CompanyDetailsHelper {
 
     /* ---- Business Methods ---- */
 
+    /**
+     * Create new instance of BRCompany Detail Request.
+     */
     public static BRCompanyDetailsRequest newInstance(
             String correlationId,
             String messageId,
@@ -36,6 +39,9 @@ public class CompanyDetailsHelper {
         return request;
     }
 
+    /**
+     * Create new instance of Business Error.
+     */
     public static BRBusinessError newInstance(
             String correlationId,
             String messageId) {
@@ -47,29 +53,30 @@ public class CompanyDetailsHelper {
 
     private static MessageHeaderType getMessageHeader(String correlationId, String messageId) {
         MessageHeaderType messageHeaderType = new MessageHeaderType();
-        CorrelationIDType correlationIDType = new CorrelationIDType();
-        correlationIDType.setValue(correlationId);
-        messageHeaderType.setCorrelationID(correlationIDType);
-        MessageIDType messageIDType = new MessageIDType();
-        messageIDType.setValue(messageId);
-        messageHeaderType.setMessageID(messageIDType);
+        CorrelationIDType correlationIdType = new CorrelationIDType();
+        correlationIdType.setValue(correlationId);
+        messageHeaderType.setCorrelationID(correlationIdType);
+        MessageIDType messageIdType = new MessageIDType();
+        messageIdType.setValue(messageId);
+        messageHeaderType.setMessageID(messageIdType);
 
         //***** START --BusinessRegisterReference *******************//
-        BusinessRegisterReferenceType businessRegisterReferenceType = new BusinessRegisterReferenceType();
+        BusinessRegisterReferenceType businessRegisterReferenceType =
+                new BusinessRegisterReferenceType();
         BusinessRegisterNameType businessRegisterNameType = new BusinessRegisterNameType();
         businessRegisterNameType.setValue("Companies House");
 
-        BusinessRegisterIDType businessRegisterIDType = new BusinessRegisterIDType();
+        BusinessRegisterIDType businessRegisterIdType = new BusinessRegisterIDType();
 
         //BusinessRegisterID
-        businessRegisterIDType.setValue("EW");
+        businessRegisterIdType.setValue("EW");
 
         //BusinessRegisterCountry Country
         CountryType countryType = new CountryType();
         countryType.setValue("UK");
 
         //set BusinessRegisterID
-        businessRegisterReferenceType.setBusinessRegisterID(businessRegisterIDType);
+        businessRegisterReferenceType.setBusinessRegisterID(businessRegisterIdType);
 
         // set BusinessRegisterCountry
         businessRegisterReferenceType.setBusinessRegisterCountry(countryType);
@@ -80,15 +87,18 @@ public class CompanyDetailsHelper {
         return messageHeaderType;
     }
 
-    private static BusinessRegisterReferenceType businessRegisterReference(String countryCode, String businessRegisterId) {
-        BusinessRegisterReferenceType businessRegisterReference = new BusinessRegisterReferenceType();
+    private static BusinessRegisterReferenceType businessRegisterReference(String countryCode,
+                                                                           String businessRegisterId) {
+        BusinessRegisterReferenceType businessRegisterReference =
+                new BusinessRegisterReferenceType();
         businessRegisterReference.setBusinessRegisterCountry(country(countryCode));
         businessRegisterReference.setBusinessRegisterID(businessRegisterId(businessRegisterId));
         return businessRegisterReference;
     }
 
     private static CompanyRegistrationNumberType companyRegistrationNumber(String companyRegNumber) {
-        CompanyRegistrationNumberType companyRegistrationNumber = new CompanyRegistrationNumberType();
+        CompanyRegistrationNumberType companyRegistrationNumber =
+                new CompanyRegistrationNumberType();
         companyRegistrationNumber.setValue(companyRegNumber);
         return companyRegistrationNumber;
     }

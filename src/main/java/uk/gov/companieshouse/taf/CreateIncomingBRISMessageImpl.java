@@ -1,7 +1,5 @@
 package uk.gov.companieshouse.taf;
 
-import static java.lang.String.format;
-
 import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsRequest;
 import eu.europa.ec.bris.v140.jaxb.components.aggregate.BusinessRegisterReferenceType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.BusinessRegisterIDType;
@@ -32,16 +30,17 @@ public abstract class CreateIncomingBRISMessageImpl implements CreateIncomingBRI
 
         BRCompanyDetailsRequest companyDetailsRequest = new BRCompanyDetailsRequest();
 
-        BusinessRegisterReferenceType businessRegisterReference = new BusinessRegisterReferenceType();
-        BusinessRegisterIDType businessRegisterID = new BusinessRegisterIDType();
-        businessRegisterID.setValue("1");
-        businessRegisterReference.setBusinessRegisterID(businessRegisterID);
+        BusinessRegisterReferenceType businessRegisterReference =
+                new BusinessRegisterReferenceType();
+        BusinessRegisterIDType businessRegisterId = new BusinessRegisterIDType();
+        businessRegisterId.setValue("1");
+        businessRegisterReference.setBusinessRegisterID(businessRegisterId);
 
         CountryType country = new CountryType();
         businessRegisterReference.setBusinessRegisterCountry(country);
 
         companyDetailsRequest.setBusinessRegisterReference(businessRegisterReference);
-        log.info(format("Requesting company details for %s", companyRef));
+        log.info("Requesting company details for %s", companyRef);
         return companyDetailsRequest;
     }
 

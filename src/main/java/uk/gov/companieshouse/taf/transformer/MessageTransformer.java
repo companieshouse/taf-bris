@@ -3,10 +3,12 @@ package uk.gov.companieshouse.taf.transformer;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 
 /**
  * Class to extract outgoing message id from byte array message.
@@ -24,7 +26,7 @@ public class MessageTransformer {
     public String transform(byte[] message) {
         String outgoingMessageId = null;
         final String messageString = new String(message);
-        LOGGER.info("message ... " + messageString);
+        LOGGER.info("message ... %s", messageString);
         ObjectMapper mapper = new ObjectMapper();
         try {
             IncomingMessage outgoingMessage = mapper.readValue(messageString, IncomingMessage.class);

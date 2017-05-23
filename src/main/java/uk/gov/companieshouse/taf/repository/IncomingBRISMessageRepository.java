@@ -11,7 +11,8 @@ import uk.gov.companieshouse.taf.domain.IncomingBRISMessage;
  * Spring Data MongoDB repository for the IncomingBRISMessage entity.
  */
 @Repository
-public interface IncomingBRISMessageRepository extends MongoRepository<IncomingBRISMessage, String> {
+public interface IncomingBRISMessageRepository extends
+        MongoRepository<IncomingBRISMessage, String> {
 
     IncomingBRISMessage findOneById(String id);
 
@@ -21,7 +22,7 @@ public interface IncomingBRISMessageRepository extends MongoRepository<IncomingB
     IncomingBRISMessage save(IncomingBRISMessage saved);
 
     @SuppressWarnings("unchecked")
-    void delete(IncomingBRISMessage b);
+    void delete(IncomingBRISMessage incomingBRISMessage);
 
     @SuppressWarnings("unchecked")
     void deleteAll();

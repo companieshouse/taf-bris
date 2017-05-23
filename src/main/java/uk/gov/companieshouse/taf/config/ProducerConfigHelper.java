@@ -13,13 +13,17 @@ public class ProducerConfigHelper {
     public ProducerConfigHelper() {
     }
 
+    /**
+     * Assign the broker address for kafka.
+     */
     public static void assignBrokerAddresses(ProducerConfig producerConfig) {
         String brokerAddresses = System.getenv("KAFKA_BROKER_ADDR");
         brokerAddresses = "chs-kafka:9092";
-        if(brokerAddresses != null && !brokerAddresses.isEmpty()) {
+        if (brokerAddresses != null && !brokerAddresses.isEmpty()) {
             producerConfig.setBrokerAddresses(brokerAddresses.split(","));
         } else {
-            throw new ProducerConfigException("Broker addresses for kafka broker not supplied, use the environment variable KAFKA_BROKER_ADDR");
+            throw new ProducerConfigException("Broker addresses for kafka broker not supplied,"
+                    + " use the environment variable KAFKA_BROKER_ADDR");
         }
     }
 }

@@ -1,14 +1,14 @@
 package uk.gov.companieshouse.taf.domain;
 
+import java.io.Serializable;
+import java.util.Objects;
+import javax.validation.constraints.Size;
+
 import org.joda.time.DateTime;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-
-import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.util.Objects;
 
 @ComponentScan
 @Document(collection = "incoming_messages")
@@ -31,14 +31,34 @@ public class IncomingBRISMessage implements Serializable {
         this.message = message;
     }
 
-    public IncomingBRISMessage(String messageId, String correlationId, String message, String status) {
+    /**
+     * Constructor for Incoming BRIS message.
+     *
+     * @param messageId     The message id.
+     * @param correlationId The correlation id.
+     * @param message       The message content.
+     * @param status        Status of the message.
+     */
+    public IncomingBRISMessage(String messageId, String correlationId,
+                               String message, String status) {
         this.messageId = messageId;
         this.correlationId = correlationId;
         this.message = message;
         this.status = status;
     }
 
-    public IncomingBRISMessage(String messageId, String correlationId, String message, String status, DateTime createdOn) {
+
+    /**
+     * Constructor for Incoming BRIS message.
+     *
+     * @param messageId     The message id.
+     * @param correlationId The correlation id.
+     * @param message       The message content.
+     * @param status        Status of the message.
+     * @param createdOn     The date message created.
+     */
+    public IncomingBRISMessage(String messageId, String correlationId, String message,
+                               String status, DateTime createdOn) {
         this.messageId = messageId;
         this.correlationId = correlationId;
         this.message = message;
@@ -46,7 +66,18 @@ public class IncomingBRISMessage implements Serializable {
         this.createdOn = createdOn;
     }
 
-    public IncomingBRISMessage(String messageId, String correlationId, String message, String status, DateTime createdOn, String messageType) {
+    /**
+     * Constructor for Incoming BRIS message.
+     *
+     * @param messageId     The message id.
+     * @param correlationId The correlation id.
+     * @param message       The message content.
+     * @param status        Status of the message.
+     * @param createdOn     The date message created.
+     * @param messageType   The type of message.
+     */
+    public IncomingBRISMessage(String messageId, String correlationId, String message,
+                               String status, DateTime createdOn, String messageType) {
         this.messageId = messageId;
         this.correlationId = correlationId;
         this.message = message;

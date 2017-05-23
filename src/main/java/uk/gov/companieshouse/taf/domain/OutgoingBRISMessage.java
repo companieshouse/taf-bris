@@ -38,7 +38,17 @@ public class OutgoingBRISMessage {
     public OutgoingBRISMessage() {
     }
 
-    public OutgoingBRISMessage(String correlationId, String status, DateTime createdOn, String messageType, String message) {
+    /**
+     * Constructor for outgoing BRIS message.
+     *
+     * @param correlationId The correlation id.
+     * @param status        The status of message.
+     * @param createdOn     The date created.
+     * @param messageType   The type of message.
+     * @param message       Message content.
+     */
+    public OutgoingBRISMessage(String correlationId, String status, DateTime createdOn,
+                               String messageType, String message) {
         this.correlationId = correlationId;
         this.status = status;
         this.createdOn = createdOn;
@@ -146,8 +156,7 @@ public class OutgoingBRISMessage {
         }
 
         public String toString() {
-            return String.format(
-                    "Attachment [ref=%s, data='%s',",
+            return String.format("Attachment [ref=%s, data='%s',",
                     attachmentRef, data);
         }
 

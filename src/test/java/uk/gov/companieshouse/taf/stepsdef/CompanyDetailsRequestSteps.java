@@ -61,7 +61,7 @@ public class CompanyDetailsRequestSteps {
      * Check the outgoing message has been placed in the right collection.
      */
     @Then("^the the correct company details will be returned to the ECP$")
-    public void theTheCorrectCompanyDetailsWillBeReturnedToTheECP() throws Throwable {
+    public void theTheCorrectCompanyDetailsWillBeReturnedToTheEcp() throws Throwable {
         retrieveMessage.checkForMessageByMessageId(MESSAGE_ID);
     }
 
