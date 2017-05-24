@@ -31,12 +31,6 @@ import uk.gov.companieshouse.taf.repository.OutgoingBrisMessageRepository;
 @PropertySource("classpath:application.properties")
 public class MongoConfig {
 
-    @Value("${mongo.host}")
-    private String mongoHost;
-
-    @Value("${mongo.port}")
-    private int mongoPort;
-
     @Value("${spring.data.mongodb.uri}")
     private String mongoURI;
 
@@ -44,11 +38,6 @@ public class MongoConfig {
     @Bean
     public MongoTemplate template() throws UnknownHostException {
         return new MongoTemplate(mongoDbFactory());
-    }
-
-    @Bean
-    public Mongo mongo() throws UnknownHostException {
-        return new MongoClient(mongoHost, mongoPort);
     }
 
     @Primary
