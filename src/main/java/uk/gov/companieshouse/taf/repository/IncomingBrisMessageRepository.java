@@ -14,25 +14,6 @@ import uk.gov.companieshouse.taf.domain.IncomingBrisMessage;
 public interface IncomingBrisMessageRepository extends
         MongoRepository<IncomingBrisMessage, String> {
 
-    IncomingBrisMessage findOneById(String id);
-
-    List<IncomingBrisMessage> findAll();
-
-    @SuppressWarnings("unchecked")
-    IncomingBrisMessage save(IncomingBrisMessage saved);
-
-    @SuppressWarnings("unchecked")
-    void delete(IncomingBrisMessage incomingBrisMessage);
-
-    @SuppressWarnings("unchecked")
-    void deleteAll();
-
-    @Query("{ 'messageId' : ?0 }")
-    IncomingBrisMessage findOneByMessageId(String messageId);
-
-    @Query("{ 'messageId' : ?0 }")
-    List<IncomingBrisMessage> findMultipleByMessageId(String messageId);
-
-    @Query("{ 'id' : ?0, 'messageId' : ?1 }")
-    IncomingBrisMessage findOneByIdAndMessageId(String id, String messageId);
+    @Query("{ 'correlationId' : ?0 }")
+    IncomingBrisMessage findOneByCorrelationId(String correlationId);
 }

@@ -12,13 +12,4 @@ public interface OutgoingBrisMessageRepository extends
     @SuppressWarnings("unchecked")
     OutgoingBrisMessage save(OutgoingBrisMessage saved);
 
-    /**
-     * Find OutgoingBrisMessage by id.
-     *
-     * @param id the message id
-     * @return OutgoingBrisMessage
-     */
-    OutgoingBrisMessage findById(String id);
-
-
 }

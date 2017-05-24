@@ -13,15 +13,6 @@ import eu.europa.ec.bris.v140.jaxb.components.basic.MessageIDType;
 
 
 public class CompanyDetailsHelper {
-
-    /* ---- Constants ---- */
-
-    /* ---- Instance Variables ---- */
-
-    /* ---- Constructors ---- */
-
-    /* ---- Business Methods ---- */
-
     /**
      * Create new instance of BRCompany Detail Request.
      */

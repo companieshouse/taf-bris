@@ -32,12 +32,9 @@ public class MessageTransformer {
             IncomingMessage outgoingMessage = mapper.readValue(messageString,
                     IncomingMessage.class);
             outgoingMessageId = outgoingMessage.getIncomingMessageId();
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            LOGGER.error("Transformation error " + ex.getMessage());
+            throw new RuntimeException("Transformation error");
         }
 
         return outgoingMessageId;

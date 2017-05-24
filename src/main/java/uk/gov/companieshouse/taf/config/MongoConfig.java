@@ -4,6 +4,8 @@ import com.mongodb.Mongo;
 
 import java.net.UnknownHostException;
 
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -23,8 +25,7 @@ import uk.gov.companieshouse.taf.repository.OutgoingBrisMessageRepository;
 @EnableMongoRepositories(basePackageClasses = {IncomingBrisMessageRepository.class,
         OutgoingBrisMessageRepository.class},
         mongoTemplateRef = "template",
-        includeFilters = {@ComponentScan.Filter(type = FilterType.REGEX, pattern = ".*Repository")}
-)
+        includeFilters = {@ComponentScan.Filter(type = FilterType.REGEX, pattern = ".*Repository")})
 
 @ComponentScan(basePackages = {"uk.gov.companieshouse.taf"})
 @PropertySource("classpath:application.properties")
@@ -36,8 +37,8 @@ public class MongoConfig {
     @Value("${mongo.port}")
     private int mongoPort;
 
-    @Value("${mongo.database}")
-    private String mongoDatabase;
+    @Value("${spring.data.mongodb.uri}")
+    private String mongoURI;
 
     @Primary
     @Bean
@@ -47,12 +48,12 @@ public class MongoConfig {
 
     @Bean
     public Mongo mongo() throws UnknownHostException {
-        return new Mongo(mongoHost, mongoPort);
+        return new MongoClient(mongoHost, mongoPort);
     }
 
     @Primary
     @Bean
     public MongoDbFactory mongoDbFactory() throws UnknownHostException {
-        return new SimpleMongoDbFactory(mongo(), mongoDatabase);
+        return new SimpleMongoDbFactory(new MongoClientURI(mongoURI));
     }
 }

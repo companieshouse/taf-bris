@@ -17,10 +17,6 @@ public class OutgoingBrisMessageService {
     @Autowired
     private OutgoingBrisMessageRepository outgoingBrisMessageRepository;
 
-    public OutgoingBrisMessage findById(String id) {
-        return outgoingBrisMessageRepository.findById(id);
-    }
-
     public OutgoingBrisMessage save(OutgoingBrisMessage outgoingBrisMessage) {
         return outgoingBrisMessageRepository.save(outgoingBrisMessage);
     }

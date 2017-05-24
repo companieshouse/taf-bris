@@ -1,6 +1,4 @@
-package uk.gov.companieshouse.taf.message;
-
-import static org.springframework.test.util.AssertionErrors.assertEquals;
+package uk.gov.companieshouse.taf.service;
 
 import eu.domibus.plugin.bris.jaxb.delivery.Acknowledgement;
 import eu.domibus.plugin.bris.jaxb.delivery.DeliveryBody;
@@ -36,53 +34,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.taf.domain.IncomingBrisMessage;
-import uk.gov.companieshouse.taf.service.IncomingBrisMessageService;
 
 @Component
-public class RetrieveMessage {
+public class RetrieveBrisTestMessageService {
 
-    private static final Logger log = LoggerFactory.getLogger(RetrieveMessage.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(
+            RetrieveBrisTestMessageService.class);
 
     @Autowired
     private IncomingBrisMessageService incomingBrisMessageService;
 
     /**
-     * Check the mongo collection for the message by id.
-     *
-     * @param messageId the message id to be found
+     * Check the mongo collection for the error message by correlation id.
+     * @param correlationId the message id to be found
+     * @return T the object retrieved from MongoDB
      */
-
-    public void checkForMessageByMessageId(String messageId) throws Exception {
-        IncomingBrisMessage message = null;
+    public <T> T checkForResponseByCorrelationId(String correlationId) throws Exception {
+        IncomingBrisMessage incomingBrisMessage = null;
         int counter = 0;
+        Object obj = null;
 
-        while (message == null && counter < 60) {
-            log.info("Trying to find response message with ID : %s", messageId);
-            message = incomingBrisMessageService.findByMessageId(messageId);
+        while (incomingBrisMessage == null && counter < 30) {
+            LOGGER.info("Attempt {} , Trying to find response message with ID {}",
+                    counter, correlationId);
+            incomingBrisMessage  = incomingBrisMessageService.findOneByCorrelationId(correlationId);
 
-            if (message != null) {
-                log.info("Message found " + message.getMessage());
-
-                JAXBContext jaxbContext;
-                Object obj;
-                jaxbContext = getJaxbContext();
+            if (incomingBrisMessage != null) {
+                LOGGER.info("Found message with correlation ID {} !!", correlationId);
+                JAXBContext jaxbContext = getJaxbContext();
                 Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-                StringReader reader = new StringReader(message.getMessage());
+                StringReader reader = new StringReader(incomingBrisMessage.getMessage());
                 obj = jaxbUnmarshaller.unmarshal(reader);
-
-                BRCompanyDetailsResponse companyDetailsResponse =
-                        (BRCompanyDetailsResponse) obj;
-
-                assertEquals("Expected Message ID:", messageId,
-                        companyDetailsResponse.getMessageHeader().getMessageID().getValue());
-
             }
-
-            log.info("Looking for message, attempt: %s", counter);
             counter++;
             Thread.sleep(1000);
-
         }
+
+        return (T)obj;
     }
 
     @Bean

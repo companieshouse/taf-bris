@@ -1,5 +1,6 @@
-package uk.gov.companieshouse.taf.message;
+package uk.gov.companieshouse.taf.service;
 
+import eu.europa.ec.bris.v140.jaxb.br.aggregate.MessageRequestType;
 import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsRequest;
 
 import java.io.Reader;
@@ -19,15 +20,15 @@ import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.taf.domain.OutgoingBrisMessage;
 import uk.gov.companieshouse.taf.producer.Sender;
-import uk.gov.companieshouse.taf.service.OutgoingBrisMessageService;
 
-public class CompanyDetailsRequest {
+@Component
+public class SendBrisTestMessageService {
 
-    private static final Logger log = LoggerFactory.getLogger(CompanyDetailsRequest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SendBrisTestMessageService.class);
     private static final String PENDING_STATUS = "PENDING";
-
 
     @Autowired
     private OutgoingBrisMessageService outgoingBrisMessageService;
@@ -36,34 +37,49 @@ public class CompanyDetailsRequest {
     private Sender sender;
 
     @Autowired
-    private Marshaller marshaller = null;
+    private Marshaller marshaller;
 
     /**
-     * Create the BRCompanyDetailsRequest to be sent to test domibus.
-     *
-     * @param request   BRCompanyDetailsRequest
-     * @param messageId messageId to be set
+     * Create the Request message to be sent to test Domibus.
+     * @param requestMessage   the request message to be sent to Domibus
+     * @param messageId        messageId to be set
      */
-    public void createOutGoingMessageAndSend(BRCompanyDetailsRequest request, String messageId)
+
+    public <T> OutgoingBrisMessage createOutgoingBrisMessage(T requestMessage,
+                                                         String messageId)
             throws Exception {
         OutgoingBrisMessage outgoingBrisMessage = new OutgoingBrisMessage();
 
         String xmlMessage = StringUtils.EMPTY;
         Reader requestStream;
-        requestStream = marshal(request).getReader();
+        requestStream = marshal(requestMessage).getReader();
         if (requestStream != null) {
             xmlMessage = IOUtils.toString(requestStream);
+        } else {
+            throw new RuntimeException("Unable to marshal request");
         }
 
         outgoingBrisMessage.setMessage(xmlMessage);
 
         //create new mongodb ObjectId for outgoing BRIS Message
-        log.info("Listing outgoingBrisMessage with id: %s", messageId);
+        LOGGER.info("Creating outgoingBrisMessage with id {} ", messageId);
         outgoingBrisMessage.setId(messageId);
         outgoingBrisMessage.setCorrelationId(messageId);
         outgoingBrisMessage.setCreatedOn(getDateTime());
         outgoingBrisMessage.setStatus(PENDING_STATUS);
+        return outgoingBrisMessage;
+    }
+
+    /**
+     * Send the test message through the BRIS platform.
+     * @param outgoingBrisMessage The Message to send to the BRIS platform
+     */
+    public void sendOutgoingBrisMessage(OutgoingBrisMessage outgoingBrisMessage,
+                                        String messageId) {
+        // Save message to MongoDB
         outgoingBrisMessageService.save(outgoingBrisMessage);
+
+        // And also send a message to Kafka
         sender.sendMessage("bris_outgoing_test", messageId);
     }
 
@@ -79,7 +95,6 @@ public class CompanyDetailsRequest {
         String strDt = sdf.format(dt);
 
         DateTimeFormatter parser = ISODateTimeFormat.dateTime();
-
         return parser.parseDateTime(strDt);
     }
 }
