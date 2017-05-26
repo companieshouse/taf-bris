@@ -55,22 +55,26 @@ public class RetrieveBrisTestMessageService {
         Object obj = null;
 
         while (incomingBrisMessage == null && counter < 30) {
-            LOGGER.info("Attempt {} , Trying to find response message with ID {}",
-                    counter, correlationId);
-            incomingBrisMessage  = incomingBrisMessageService.findOneByCorrelationId(correlationId);
+            LOGGER.info("Iteration {}", counter);
+            incomingBrisMessage = incomingBrisMessageService.findOneByCorrelationId(correlationId);
 
-            if (incomingBrisMessage != null) {
-                LOGGER.info("Found message with correlation ID {} !!", correlationId);
-                JAXBContext jaxbContext = getJaxbContext();
-                Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-                StringReader reader = new StringReader(incomingBrisMessage.getMessage());
-                obj = jaxbUnmarshaller.unmarshal(reader);
+            if (incomingBrisMessage == null) {
+                counter++;
+                Thread.sleep(1000);
+                continue;
             }
-            counter++;
-            Thread.sleep(1000);
         }
 
-        return (T)obj;
+        if (incomingBrisMessage != null) {
+            LOGGER.info("Found message with correlation ID {} !!", correlationId);
+            JAXBContext jaxbContext = getJaxbContext();
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            StringReader reader = new StringReader(incomingBrisMessage.getMessage());
+            obj = jaxbUnmarshaller.unmarshal(reader);
+            return (T)obj;
+        }
+
+        return null;
     }
 
     @Bean

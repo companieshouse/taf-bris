@@ -15,7 +15,7 @@ public class KafkaServiceImpl implements KafkaService {
         ProducerConfig config = new ProducerConfig();
         ProducerConfigHelper.assignBrokerAddresses(config);
         config.setAcks(Acks.WAIT_FOR_LOCAL);
-        config.setRetries(10);
+        config.setRetries(2);
         
         CHKafkaProducer producer = new CHKafkaProducer(config);
         producer.send(kafkaMessage);

@@ -8,7 +8,6 @@ import uk.gov.companieshouse.kafka.exceptions.ProducerConfigException;
 import uk.gov.companieshouse.kafka.producer.ProducerConfig;
 
 public class ProducerConfigHelper {
-    private static final String KAFKA_BROKER_ADDR = "KAFKA_BROKER_ADDR";
 
     public ProducerConfigHelper() {
     }
