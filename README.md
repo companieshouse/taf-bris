@@ -43,4 +43,4 @@ You must provide the following arguments to run the tests locally
 
 `mvn clean test -Denv=kermit -Dcucumber.options="--tags @regression"`
 
-<b>NOTE:</b> @regression is the default tag to run *ALL* tests.
+<b>NOTE:</b> @regression is the default tag to run **ALL** tests.
