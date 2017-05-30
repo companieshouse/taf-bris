@@ -1,8 +1,5 @@
 package uk.gov.companieshouse.taf.service;
 
-import eu.europa.ec.bris.v140.jaxb.br.aggregate.MessageRequestType;
-import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsRequest;
-
 import java.io.Reader;
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
@@ -41,12 +38,13 @@ public class SendBrisTestMessageService {
 
     /**
      * Create the Request message to be sent to test Domibus.
-     * @param requestMessage   the request message to be sent to Domibus
-     * @param messageId        messageId to be set
+     *
+     * @param requestMessage the request message to be sent to Domibus
+     * @param messageId      messageId to be set
      */
 
     public <T> OutgoingBrisMessage createOutgoingBrisMessage(T requestMessage,
-                                                         String messageId)
+                                                             String messageId)
             throws Exception {
         OutgoingBrisMessage outgoingBrisMessage = new OutgoingBrisMessage();
 
@@ -72,6 +70,7 @@ public class SendBrisTestMessageService {
 
     /**
      * Send the test message through the BRIS platform.
+     *
      * @param outgoingBrisMessage The Message to send to the BRIS platform
      */
     public void sendOutgoingBrisMessage(OutgoingBrisMessage outgoingBrisMessage,

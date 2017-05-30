@@ -17,6 +17,4 @@ Feature: Company details request feature
   Scenario: Inform ECP of non-existent company details request
     Given I am requesting details for a company that does not exist
     When I make a company details request
-    Then I should get a message with the error code "ERR_BR_3001"
-   # Make the above reusable to check error codes. Complete list found here
-   # https://webgate.ec.europa.eu/CITnet/confluence/display/BRISCOLLAB/3.1+BRIS-TIG-BR-CompanyDetails
+    Then I should get a message with the error code ERR_BR_3001
