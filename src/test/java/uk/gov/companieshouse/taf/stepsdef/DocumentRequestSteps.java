@@ -11,6 +11,7 @@ import eu.europa.ec.bris.v140.jaxb.br.company.document.BRRetrieveDocumentRespons
 
 import java.util.UUID;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,41 @@ public class DocumentRequestSteps {
                 "EW",
                 "UK",
                 documentId);
+
+        outgoingBrisMessage = documentRequest.createOutgoingBrisMessage(retrieveDocumentRequest,
+                messageId);
+    }
+
+    /**
+     * Create document request with random document id.
+     */
+    @Given("^the request contains a document id that does not exist$")
+    public void theRequestContainsADocumentIdThatDoesNotExist() throws Throwable {
+        BRRetrieveDocumentRequest retrieveDocumentRequest = RequestHelper.newInstance(
+                correlationId,
+                messageId,
+                DEFAULT_COMPANY_NUMBER,
+                "EW",
+                "UK",
+                RandomStringUtils.randomAlphanumeric(8));
+
+        outgoingBrisMessage = documentRequest.createOutgoingBrisMessage(retrieveDocumentRequest,
+                messageId);
+    }
+
+    /**
+     * Create document request with an invalid document id.
+     */
+    @Given("^the request contains an invalid document id$")
+    public void theRequestContainsAnInvalidDocumentId() throws Throwable {
+        // Unsure as to what makes document id invalid. Setting to null as placeholder for now
+        BRRetrieveDocumentRequest retrieveDocumentRequest = RequestHelper.newInstance(
+                correlationId,
+                messageId,
+                DEFAULT_COMPANY_NUMBER,
+                "EW",
+                "UK",
+                null);
 
         outgoingBrisMessage = documentRequest.createOutgoingBrisMessage(retrieveDocumentRequest,
                 messageId);
