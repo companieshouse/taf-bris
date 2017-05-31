@@ -17,7 +17,7 @@ public class ProducerConfigHelper {
      */
     public static void assignBrokerAddresses(ProducerConfig producerConfig) {
         String brokerAddresses = System.getenv("KAFKA_BROKER_ADDR");
-        brokerAddresses = "chs-kafka:9092";
+        brokerAddresses = "10.53.6.28:9092";
         if (brokerAddresses != null && !brokerAddresses.isEmpty()) {
             producerConfig.setBrokerAddresses(brokerAddresses.split(","));
         } else {
