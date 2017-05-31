@@ -28,15 +28,12 @@ import uk.gov.companieshouse.taf.repository.OutgoingBrisMessageRepository;
 @PropertySource("classpath:application.properties")
 public class MongoConfig {
 
+    private static final String COMPANY_PROFILE = "company_profile";
+    private static final String MONGO_URI = "mongodb.instance";
+    private static final String COMPANY_FILING_HISTORY = "company_filing_history";
+
     @Autowired
     private Env env;
-
-    private static String TEST_MONGO_URI = "spring.data.mongodb.uri";
-    private static String TEST_COMPANY_PROFILE_MONGO_URI =
-            "spring.data.mongodb.company.profile.uri";
-    private static String TEST_COMPANY_FILING_HISTORY_MONGO_URI =
-            "spring.data.mongodb.company.filing.history.uri";
-
 
     // Mongo config for Test Database for incoming and outgoing records
     @Bean
@@ -47,7 +44,8 @@ public class MongoConfig {
     @Bean
     @Qualifier("TestMongoDbFactory")
     public MongoDbFactory mongoTestDbFactory() throws UnknownHostException {
-        return new SimpleMongoDbFactory(new MongoClientURI(env.config.getString(TEST_MONGO_URI)));
+        return new SimpleMongoDbFactory(new MongoClientURI(env.config.getString(MONGO_URI)
+                + "bris_messages_test_jb1"));
     }
 
     // Mongo config for Company Profile Database
@@ -60,8 +58,8 @@ public class MongoConfig {
     @Bean
     @Qualifier("CompanyProfileMongoDbFactory")
     public MongoDbFactory mongoCompanyProfileDbFactory() throws UnknownHostException {
-        return new SimpleMongoDbFactory(new MongoClientURI(
-                env.config.getString(TEST_COMPANY_PROFILE_MONGO_URI)));
+        return new SimpleMongoDbFactory(new MongoClientURI(env.config.getString(MONGO_URI)
+                + COMPANY_PROFILE));
     }
 
     // Mongo config for Company Filing History Database
@@ -74,7 +72,7 @@ public class MongoConfig {
     @Bean
     @Qualifier("CompanyFilingHistoryMongoDbFactory")
     public MongoDbFactory mongoCompanyFilingHistoryDbFactory() throws UnknownHostException {
-        return new SimpleMongoDbFactory(new MongoClientURI(env.config.getString(
-                TEST_COMPANY_FILING_HISTORY_MONGO_URI)));
+        return new SimpleMongoDbFactory(new MongoClientURI(env.config.getString(MONGO_URI)
+                + COMPANY_FILING_HISTORY));
     }
 }
