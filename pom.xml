@@ -15,6 +15,7 @@
         <json.simple.version>1.1.1</json.simple.version>
         <cucumber.version>1.2.5</cucumber.version>
         <failsafe.fork.count>1</failsafe.fork.count>
+        <typesafe.version>1.3.0</typesafe.version>
         <slf4j.version>1.7.25</slf4j.version>
         <java.version>1.8</java.version>
         <ch.kafka.version>1.0.0-rc2</ch.kafka.version>
@@ -199,6 +200,12 @@
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>${json.simple.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.typesafe</groupId>
+            <artifactId>config</artifactId>
+            <version>${typesafe.version}</version>
         </dependency>
 
         <!-- Spring Data MongoDB -->

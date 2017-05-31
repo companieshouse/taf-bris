@@ -1,40 +1,29 @@
 package uk.gov.companieshouse.taf.stepsdef;
 
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsRequest;
-
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.UUID;
-
 import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsResponse;
 import eu.europa.ec.bris.v140.jaxb.br.error.BRBusinessError;
-import org.bson.Document;
-import org.bson.types.ObjectId;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import uk.gov.companieshouse.taf.config.MongoConfig;
 import uk.gov.companieshouse.taf.domain.OutgoingBrisMessage;
-import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
+import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.UUID;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.springframework.test.util.AssertionErrors.assertEquals;

@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import uk.gov.companieshouse.taf.config.Env;
 import uk.gov.companieshouse.taf.domain.OutgoingBrisMessage;
 import uk.gov.companieshouse.taf.producer.Sender;
 
@@ -29,6 +30,7 @@ public class SendBrisTestMessageService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SendBrisTestMessageService.class);
     private static final String PENDING_STATUS = "PENDING";
+    private static final String OUTGOING_KAFKA_TOPIC = "bris.outgoing.kafka.topic";
 
     @Autowired
     private OutgoingBrisMessageService outgoingBrisMessageService;
@@ -38,6 +40,9 @@ public class SendBrisTestMessageService {
 
     @Autowired
     private Marshaller marshaller;
+
+    @Autowired
+    private Env env;
 
     /**
      * Create the Request message to be sent to test Domibus.
@@ -50,9 +55,9 @@ public class SendBrisTestMessageService {
             throws Exception {
         OutgoingBrisMessage outgoingBrisMessage = new OutgoingBrisMessage();
 
-        String xmlMessage = StringUtils.EMPTY;
         Reader requestStream;
         requestStream = marshal(requestMessage).getReader();
+        String xmlMessage;
         if (requestStream != null) {
             xmlMessage = IOUtils.toString(requestStream);
         } else {
@@ -80,7 +85,7 @@ public class SendBrisTestMessageService {
         outgoingBrisMessageService.save(outgoingBrisMessage);
 
         // And also send a message to Kafka
-        sender.sendMessage("bris_outgoing_test", messageId);
+        sender.sendMessage(env.config.getString(OUTGOING_KAFKA_TOPIC), messageId);
     }
 
     private StreamSource marshal(Object message) throws JAXBException {
