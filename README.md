@@ -41,6 +41,6 @@ based on read only the decision has been made to load the environment with the r
 ### How do I run the tests?
 You must provide the following arguments to run the tests locally
 
-`mvn clean test -Denv=kermit -Dcucumber.options="--tags @tagname"`
+`mvn clean verify -Denv=kermit -Dcucumber.options="--tags @tagname"`
 
 <b>NOTE:</b> @regression is the default tag to run **ALL** tests.
