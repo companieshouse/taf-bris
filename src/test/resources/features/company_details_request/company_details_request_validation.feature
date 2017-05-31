@@ -14,4 +14,3 @@ Feature: Company details request feature
     And a company details request for c3e69c0d-dcca-4619-8632-8fd9d1828a8d is created
     When I make a company details request
     Then I should get a message with the error code ERR_BR_5103
-

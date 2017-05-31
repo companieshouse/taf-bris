@@ -1,6 +1,7 @@
 package uk.gov.companieshouse.taf.stepsdef;
 
 import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertNull;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 
@@ -336,5 +337,15 @@ public class CompanyDetailsRequestSteps {
 
         assertEquals("Expected Error Code:", errorCode,
                 businessError.getFaultError().get(0).getFaultErrorCode().getValue());
+    }
+
+    /**
+     * Checks that no response has been created due to the schema validation.
+     */
+    @Then("^no response will be created$")
+    public void noResponseWillBeCreated() throws Throwable {
+        BRCompanyDetailsResponse response = retrieveMessage
+                .checkForResponseByCorrelationId(messageId);
+        assertNull(response);
     }
 }
