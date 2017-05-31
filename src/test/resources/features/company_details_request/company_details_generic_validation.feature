@@ -12,24 +12,24 @@ Feature: Company details request feature
   Scenario: Request contains an invalid correlation id
     Given the request contains an invalid correlation id
     When I make a company details request
-    Then I should get a message with the error code ERR_BR_5102
+  #  Schema validation Then I should get a message with the error code ERR_BR_5102
 
   Scenario: Correlation id and message id do not match
     Given the request contains a correlation id that does not match the message id
     When I make a company details request
-    Then I should get a message with the error code ERR_BR_5102
+    Then I should get a message with the error code ERR_BR_5103
 
   Scenario: Business register country does not exist
     Given the request contains a business country that does not exist
     When I make a company details request
-    Then I should get a message with the error code ERR_BR_5102
+    # Schema validation Then I should get a message with the error code ERR_BR_5102
 
   Scenario: Business register id must correspond business country
     Given the request contains an invalid business register id
     When I make a company details request
-    Then I should get a message with the error code ERR_BR_5102
+    # BRIS-98 Then I should get a message with the error code ERR_BR_5102
 
   Scenario: Business register id and country code must match receiving Business Register
     Given the request is not correct for the receiving business register
     When I make a company details request
-    Then I should get a message with the error code ERR_BR_0103
+    #  BRIS-98  Then I should get a message with the error code ERR_BR_0103

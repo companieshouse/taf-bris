@@ -15,12 +15,3 @@ Feature: Company details request feature
     When I make a company details request
     Then I should get a message with the error code ERR_BR_5103
 
-  Scenario: User makes a request using an invalid country code
-    Given the request has an invalid country code
-    When I make a company details request
-    Then I should get a message with the error code ERR_BR_0103
-
-  Scenario: User makes a request with a mismatch between business country code and id
-    Given the request business id and country do not match
-    When I make a company details request
-    Then I should get a message with the error code ERR_BR_0103

@@ -109,8 +109,8 @@ public class CompanyDetailsRequestSteps {
     public void requestingDetailsForAValidCompany() throws Throwable {
         BRCompanyDetailsRequest request = RequestHelper.newInstance(
                 correlationId,
-                COMPANY_NUMBER,
                 messageId,
+                COMPANY_NUMBER,
                 "EW",
                 "UK");
 
@@ -210,8 +210,10 @@ public class CompanyDetailsRequestSteps {
      */
     @Given("^the request contains a correlation id that does not match the message id$")
     public void theRequestContainsACorrelationIdThatDoesNotMatchTheMessageId() throws Throwable {
+        messageId = randomAlphanumeric(8);
+
         BRCompanyDetailsRequest request = RequestHelper.newInstance(
-                randomAlphanumeric(8),
+                messageId,
                 correlationId,
                 COMPANY_NUMBER,
                 "EW",
@@ -259,8 +261,8 @@ public class CompanyDetailsRequestSteps {
                 correlationId,
                 messageId,
                 COMPANY_NUMBER,
-                "ES",
-                "01005");
+                "01005",
+                "ES");
 
         outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(request, messageId);
     }
@@ -317,7 +319,7 @@ public class CompanyDetailsRequestSteps {
     @Then("^the correct company details will be returned to the ECP$")
     public void theCorrectCompanyDetailsWillBeReturnedToTheEcp() throws Throwable {
         BRCompanyDetailsResponse response = retrieveMessage
-                .checkForResponseByCorrelationId(correlationId);
+                .checkForResponseByCorrelationId(messageId);
         assertNotNull(response);
         assertEquals("Expected Correlation ID:", correlationId,
                 response.getMessageHeader().getCorrelationID().getValue());
@@ -329,7 +331,7 @@ public class CompanyDetailsRequestSteps {
     @Then("^I should get a message with the error code ([^\"]*)$")
     public void theCorrectErrorWillBeReturnedToTheEcp(String errorCode) throws Throwable {
         BRBusinessError businessError = retrieveMessage
-                .checkForResponseByCorrelationId(correlationId);
+                .checkForResponseByCorrelationId(messageId);
         assertNotNull(businessError);
 
         assertEquals("Expected Error Code:", errorCode,
