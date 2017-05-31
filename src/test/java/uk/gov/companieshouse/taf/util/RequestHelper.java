@@ -1,7 +1,8 @@
-package uk.gov.companieshouse.taf.stepsdef;
+package uk.gov.companieshouse.taf.util;
 
 import eu.europa.ec.bris.v140.jaxb.br.aggregate.MessageHeaderType;
 import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsRequest;
+import eu.europa.ec.bris.v140.jaxb.br.company.document.BRRetrieveDocumentRequest;
 import eu.europa.ec.bris.v140.jaxb.br.error.BRBusinessError;
 import eu.europa.ec.bris.v140.jaxb.components.aggregate.BusinessRegisterReferenceType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.BusinessRegisterIDType;
@@ -9,10 +10,11 @@ import eu.europa.ec.bris.v140.jaxb.components.basic.BusinessRegisterNameType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.CompanyRegistrationNumberType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.CorrelationIDType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.CountryType;
+import eu.europa.ec.bris.v140.jaxb.components.basic.DocumentIDType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.MessageIDType;
 
+public class RequestHelper {
 
-public class CompanyDetailsHelper {
     /**
      * Create new instance of BRCompany Detail Request.
      */
@@ -40,6 +42,32 @@ public class CompanyDetailsHelper {
 
         BRBusinessError request = new BRBusinessError();
         request.setMessageHeader(getMessageHeader(correlationId, messageId));
+        return request;
+    }
+
+    /**
+     * Create new instance of BRRetrieveDocumentRequest.
+     *
+     * @param correlationId             the correlation id of the message header
+     * @param messageId                 the message id of the message header
+     * @param companyRegistrationNumber the company number
+     * @param businessRegisterId        the business registration id e.g EW
+     * @param countryCode               the business country code e.g. UK
+     * @param documentId                the document to be requested id
+     */
+    public static BRRetrieveDocumentRequest newInstance(String correlationId,
+                                                        String messageId,
+                                                        String companyRegistrationNumber,
+                                                        String businessRegisterId,
+                                                        String countryCode,
+                                                        String documentId) {
+
+        BRRetrieveDocumentRequest request = new BRRetrieveDocumentRequest();
+        request.setMessageHeader(getMessageHeader(correlationId, messageId));
+        request.setBusinessRegisterReference(businessRegReference(countryCode,
+                businessRegisterId));
+        request.setCompanyRegistrationNumber(companyRegNumber(companyRegistrationNumber));
+        request.setDocumentID(documentIdType(documentId));
         return request;
     }
 
@@ -106,6 +134,12 @@ public class CompanyDetailsHelper {
         BusinessRegisterIDType businessRegisterId = new BusinessRegisterIDType();
         businessRegisterId.setValue(identifier);
         return businessRegisterId;
+    }
+
+    private static DocumentIDType documentIdType(String documentId) {
+        DocumentIDType documentIDType = new DocumentIDType();
+        documentIDType.setValue(documentId);
+        return documentIDType;
     }
 
     /* ---- Getters and Setters ---- */
