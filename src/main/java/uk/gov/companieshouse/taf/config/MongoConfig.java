@@ -1,10 +1,12 @@
 package uk.gov.companieshouse.taf.config;
 
 import com.mongodb.MongoClientURI;
+
 import java.net.UnknownHostException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

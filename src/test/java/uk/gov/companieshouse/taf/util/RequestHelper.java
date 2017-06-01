@@ -1,4 +1,4 @@
-package uk.gov.companieshouse.taf.stepsdef;
+package uk.gov.companieshouse.taf.util;
 
 import eu.europa.ec.bris.v140.jaxb.br.aggregate.MessageHeaderType;
 import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsRequest;
@@ -12,7 +12,7 @@ import eu.europa.ec.bris.v140.jaxb.components.basic.CountryType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.MessageIDType;
 
 
-public class CompanyDetailsHelper {
+public class RequestHelper {
     /**
      * Create new instance of BRCompany Detail Request.
      */
