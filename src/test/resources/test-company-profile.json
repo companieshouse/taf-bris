@@ -1,110 +1,69 @@
 {
   "_id" : "10000000",
+  "_modification_time" : "08-APR-14 14.19.46.000000",
+  "has_mortgages" : 0,
+  "has_appointments" : 1,
+  "_creation_time" : "08-APR-14 14.19.46.000000",
   "data" : {
-    "company_name" : "THE GIRLS' DAY SCHOOL TRUST",
-    "registered_office_address" : {
-      "address_line_1" : "100 Rochester Row",
-      "postal_code" : "SW1P 1JP",
-      "address_line_2" : "London"
-    },
-    "accounts" : {
-      "overdue" : false,
-      "accounting_reference_date" : {
-        "day" : "31",
-        "month" : "08"
-      },
-      "last_accounts" : {
-        "type" : "group",
-        "made_up_to" : { "$date" : "2015-08-31T00:00:00.000Z"}
-      },
-      "next_due" : { "$date" : "2017-05-31T00:00:00.000Z"},
-      "next_made_up_to" : { "$date" : "2016-08-31T00:00:00.000Z"}
-    },
-    "type" : "private-limited-shares-section-30-exemption",
-    "jurisdiction" : "england-wales",
-    "undeliverable_registered_office_address" : false,
-    "has_been_liquidated" : false,
-    "last_full_members_list_date" : { "$date" : "2016-02-01T00:00:00.000Z"},
-    "company_number" : "10000000",
-    "date_of_creation" : { "$date" : "1872-06-26T00:00:00.000Z"},
+    "last_full_members_list_date" : {"$date" : "2006-01-19T00:00:00.000Z"},
+    "has_been_liquidated" : 0,
+    "date_of_creation" : {"$date" : "2004-01-19T00:00:00.000Z"},
+    "status" : "active",
     "annual_return" : {
-      "last_made_up_to" : { "$date" : "2016-02-01T00:00:00.000Z"}
+      "next_made_up_to" : {"$date" :"2007-01-19T00:00:00.000Z"},
+      "next_due" : {"$date" :"2007-02-16T00:00:00.000Z"},
+      "overdue" : 1
     },
-    "sic_codes" : [
-      "85100",
-      "85200",
-      "85310"
-    ],
-    "etag" : "c1a48d9acfebc6aa846ce9fd7e531038a062816f",
-    "has_insolvency_history" : false,
-    "company_status" : "active",
+    "company_name" : "J & I CARPETS LIMITED",
     "officer_summary" : {
       "officers" : [
         {
-          "name" : "HOARE, Caroline Lucy",
-          "officer_role" : "secretary",
-          "appointed_on" : { "$date" : "2010-01-22T00:00:00.000Z"}
+          "date_of_birth" : {"$date" :"1958-05-30T00:00:00.000Z"},
+          "name" : "Janet Ann WALKER",
+          "appointed_on" : {"$date" :"2004-02-01T00:00:00.000Z"},
+          "type" : "secretary"
         },
         {
-          "appointed_on" : { "$date" : "2013-12-18T00:00:00.000Z"},
-          "date_of_birth" : { "$date" : "1971-10-28T00:00:00.000Z"},
-          "name" : "CHAKRAVERTY, Julie",
-          "officer_role" : "director"
+          "date_of_birth" : {"$date" :"1954-02-01T00:00:00.000Z"},
+          "forename" : "Ian Leslie WALKER",
+          "appointed_on" : {"$date" :"2004-02-01T00:00:00.000Z"},
+          "type" : "director"
         },
         {
-          "name" : "DAVIS, Kathryn Ruth",
-          "officer_role" : "director",
-          "date_of_birth" : { "$date" : "1964-12-15T00:00:00.000Z"},
-          "appointed_on" : { "$date" : "2015-12-16T00:00:00.000Z"}
-        },
-        {
-          "name" : "DHUT, Rita",
-          "officer_role" : "director",
-          "appointed_on" : { "$date" : "2016-01-27T00:00:00.000Z"},
-          "date_of_birth" : { "$date" : "1972-07-11T00:00:00.000Z"}
-        },
-        {
-          "officer_role" : "director",
-          "name" : "GIBBONS, Kevin Stuart",
-          "appointed_on" : { "$date" : "2014-01-22T00:00:00.000Z"}
+          "date_of_birth" : {"$date" :"1958-05-30T00:00:00.000Z"},
+          "name" : "Janet Ann WALKER",
+          "appointed_on" : {"$date" :"2004-02-01T00:00:00.000Z"},
+          "type" : "secretary"
         }
       ],
-      "active_count" : 13,
-      "resigned_count" : 52
+      "resigned_count" : 0,
+      "active_count" : 3
     },
-    "has_charges" : true,
-    "previous_company_names" : [
-      {
-        "name" : "THE GIRLS' DAY SCHOOL TRUST (1872)",
-        "effective_from" : { "$date" : "1998-04-28T00:00:00.000Z"},
-        "ceased_on" : { "$date" : "2003-09-01T00:00:00.000Z"}
-      },
-      {
-        "name" : "THE GIRLS' PUBLIC DAY SCHOOL TRUST (1872)",
-        "effective_from" : { "$date" : "1993-08-25T00:00:00.000Z"},
-        "ceased_on" : { "$date" : "1998-04-28T00:00:00.000Z"}
-      },
-      {
-        "ceased_on" : { "$date" : "1993-08-25T00:00:00.000Z"},
-        "effective_from" : { "$date" : "1872-06-26T00:00:00.000Z"},
-        "name" : "GIRL'S PUBLIC DAY SCHOOL TRUST(THE)"
-      }
+    "jurisdiction" : "england-wales",
+    "sic_codes" : [
+      "7487"
     ],
-    "confirmation_statement" : {
-      "next_made_up_to" : { "$date" : "2017-02-01T00:00:00.000Z"},
-      "next_due" : { "$date" : "2017-02-15T00:00:00.000Z"}
+    "proof_status" : "none",
+    "company_number" : "86864564",
+    "registered_office_address" : {
+      "address_line_1" : "28 SALOP ROAD",
+      "address_line_2" : "OSWESTRY",
+      "locality" : "SHROPSHIRE",
+      "postal_code" : "SY11 2NZ"
+    },
+    "type" : "ltd",
+    "accounts" : {
+      "last_accounts" : {
+        "type" : "null"
+      },
+      "next_made_up_to" : {"$date" :"2005-03-31T00:00:00.000Z"},
+      "next_due" : {"$date" :"2005-11-19T00:00:00.000Z"},
+      "accounting_reference_date" : {
+        "month" : "03",
+        "day" : "31"
+      },
+      "overdue" : 1
     }
   },
-  "has_mortgages" : true,
-  "updated" : {
-    "at" : { "$date" : "2016-07-18T04:28:09.727Z"},
-    "type" : "officer_delta",
-    "by" : "578c591977af44d247cf3100"
-  },
-  "created" : {
-    "by" : "54e89dac85dccb11dd117950",
-    "type" : "refresh_from_mongo",
-    "at" : { "$date" : "2015-02-21T15:01:00.754Z"}
-  },
-  "delta_at" : { "$date" : "2016-02-29T17:54:24.000Z"}
+  "concordion_clone" : "05018589"
 }
