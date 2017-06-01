@@ -4,6 +4,7 @@ import com.mongodb.MongoClientURI;
 
 import java.net.UnknownHostException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -30,14 +31,14 @@ import uk.gov.companieshouse.taf.repository.OutgoingBrisMessageRepository;
 @PropertySource("classpath:application.properties")
 public class MongoConfig {
 
-    @Value("${spring.data.mongodb.uri}")
-    private String mongoUri;
+    private static final String COMPANY_PROFILE_DATABASE = "company_profile";
+    private static final String MONGO_URI = "mongodb.instance";
+    private static final String COMPANY_FILING_HISTORY_DATABASE = "company_filing_history";
+    private static final String BRIS_MESSAGES_DATABASE = "bris_messages_test";
+    private static final String URI_SLASH = "/";
 
-    @Value("${spring.data.mongodb.company.profile.uri}")
-    private String mongoCompanyProfileUri;
-
-    @Value("${spring.data.mongodb.company.filing.history.uri}")
-    private String mongoCompanyFilingHistoryUri;
+    @Autowired
+    private Env env;
 
     // Mongo config for Test Database for incoming and outgoing records
     @Bean
@@ -48,7 +49,8 @@ public class MongoConfig {
     @Bean
     @Qualifier("TestMongoDbFactory")
     public MongoDbFactory mongoTestDbFactory() throws UnknownHostException {
-        return new SimpleMongoDbFactory(new MongoClientURI(mongoUri));
+        return new SimpleMongoDbFactory(new MongoClientURI(env.config.getString(MONGO_URI)
+                + URI_SLASH + BRIS_MESSAGES_DATABASE));
     }
 
     // Mongo config for Company Profile Database
@@ -61,7 +63,8 @@ public class MongoConfig {
     @Bean
     @Qualifier("CompanyProfileMongoDbFactory")
     public MongoDbFactory mongoCompanyProfileDbFactory() throws UnknownHostException {
-        return new SimpleMongoDbFactory(new MongoClientURI(mongoCompanyProfileUri));
+        return new SimpleMongoDbFactory(new MongoClientURI(env.config.getString(MONGO_URI)
+                + URI_SLASH + COMPANY_PROFILE_DATABASE));
     }
 
     // Mongo config for Company Filing History Database
@@ -74,6 +77,7 @@ public class MongoConfig {
     @Bean
     @Qualifier("CompanyFilingHistoryMongoDbFactory")
     public MongoDbFactory mongoCompanyFilingHistoryDbFactory() throws UnknownHostException {
-        return new SimpleMongoDbFactory(new MongoClientURI(mongoCompanyFilingHistoryUri));
+        return new SimpleMongoDbFactory(new MongoClientURI(env.config.getString(MONGO_URI)
+                + URI_SLASH + COMPANY_FILING_HISTORY_DATABASE));
     }
 }

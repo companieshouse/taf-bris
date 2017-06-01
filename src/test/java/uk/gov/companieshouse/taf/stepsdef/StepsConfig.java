@@ -6,4 +6,5 @@ import uk.gov.companieshouse.taf.config.AppConfig;
 
 @ContextConfiguration(classes = {AppConfig.class})
 public class StepsConfig implements En {
+
 }
