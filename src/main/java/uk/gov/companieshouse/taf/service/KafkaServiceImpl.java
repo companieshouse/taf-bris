@@ -23,7 +23,7 @@ public class KafkaServiceImpl implements KafkaService {
         assignBrokerAddresses(config);
         config.setAcks(Acks.WAIT_FOR_LOCAL);
         config.setRetries(2);
-        
+
         CHKafkaProducer producer = new CHKafkaProducer(config);
         producer.send(kafkaMessage);
         producer.close();
@@ -38,9 +38,10 @@ public class KafkaServiceImpl implements KafkaService {
         if (brokerAddresses != null && !brokerAddresses.isEmpty()) {
             producerConfig.setBrokerAddresses(brokerAddresses.split(","));
         } else {
-            throw new ProducerConfigException("Broker addresses for kafka brokers have not been supplied."
-                    + " Please make sure that this is configured in the kafka.broker.address entry "
-                    + " for the relevant environment profile in the env.conf file.");
+            throw new ProducerConfigException("Broker addresses for kafka brokers "
+                    + "have not been supplied. Please make sure that this is configured"
+                    + " in the kafka.broker.address entry  for the relevant environment "
+                    + "profile in the env.conf file.");
         }
     }
 }
