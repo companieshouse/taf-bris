@@ -1,5 +1,8 @@
 package uk.gov.companieshouse.taf.stepsdef;
 
+import static junit.framework.TestCase.assertNotNull;
+import static org.springframework.test.util.AssertionErrors.assertEquals;
+
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
@@ -8,6 +11,12 @@ import cucumber.api.java.en.When;
 import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsRequest;
 import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsResponse;
 import eu.europa.ec.bris.v140.jaxb.br.error.BRBusinessError;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.UUID;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -19,14 +28,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import uk.gov.companieshouse.taf.domain.OutgoingBrisMessage;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
+import uk.gov.companieshouse.taf.util.RequestHelper;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.UUID;
-
-import static junit.framework.TestCase.assertNotNull;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 public class CompanyDetailsRequestSteps {
 
@@ -87,7 +90,7 @@ public class CompanyDetailsRequestSteps {
      */
     @Given("^I am requesting details for a valid company$")
     public void requestingDetailsForAValidCompany() throws Throwable {
-        BRCompanyDetailsRequest request = CompanyDetailsHelper.newInstance(
+        BRCompanyDetailsRequest request = RequestHelper.newInstance(
                 correlationId,
                 messageId,
                 COMPANY_NUMBER,
@@ -102,7 +105,7 @@ public class CompanyDetailsRequestSteps {
      */
     @Given("^I am requesting details for a company that does not exist$")
     public void requestingDetailsForACompanyThatDoesNotExist() throws Throwable {
-        BRCompanyDetailsRequest request = CompanyDetailsHelper.newInstance(
+        BRCompanyDetailsRequest request = RequestHelper.newInstance(
                 correlationId,
                 messageId,
                 "00000000",
