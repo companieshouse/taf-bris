@@ -31,7 +31,10 @@ import javax.xml.bind.Unmarshaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.taf.domain.IncomingBrisMessage;
 
@@ -40,6 +43,10 @@ public class RetrieveBrisTestMessageService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(
             RetrieveBrisTestMessageService.class);
+    private static final String MESSAGE_WAIT_TIME = "message.wait.time";
+
+    @Autowired
+    private Environment env;
 
     @Autowired
     private IncomingBrisMessageService incomingBrisMessageService;
@@ -52,9 +59,12 @@ public class RetrieveBrisTestMessageService {
     public <T> T checkForResponseByCorrelationId(String correlationId) throws Exception {
         IncomingBrisMessage incomingBrisMessage = null;
         int counter = 0;
-        Object obj = null;
 
-        while (incomingBrisMessage == null && counter < 30) {
+        int messageWaitTime = Integer.parseInt(env.getProperty(MESSAGE_WAIT_TIME));
+
+        // Keep checking the test MongoDB instance to ensure that the message
+        // has been processed successfully
+        while (incomingBrisMessage == null && counter <= messageWaitTime) {
             LOGGER.info("Iteration {}", counter);
             incomingBrisMessage = incomingBrisMessageService.findOneByCorrelationId(correlationId);
 
@@ -65,12 +75,12 @@ public class RetrieveBrisTestMessageService {
             }
         }
 
+        // If we have a message after iteration, then set it on the response
         if (incomingBrisMessage != null) {
             LOGGER.info("Found message with correlation ID {} !!", correlationId);
             JAXBContext jaxbContext = getJaxbContext();
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             StringReader reader = new StringReader(incomingBrisMessage.getMessage());
-            obj = jaxbUnmarshaller.unmarshal(reader);
+            Object obj = jaxbContext.createUnmarshaller().unmarshal(reader);
             return (T)obj;
         }
 
