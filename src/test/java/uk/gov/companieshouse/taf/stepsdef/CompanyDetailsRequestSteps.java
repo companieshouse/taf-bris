@@ -33,7 +33,8 @@ public class CompanyDetailsRequestSteps {
     private static final String COMPANY_PROFILE = "company_profile";
     private static final String COMPANY_FILING_HISTORY = "company_filing_history";
     private static final String TEST_COMPANY_PROFILE_FILENAME = "test-company-profile.json";
-    private static final String TEST_COMPANY_FILING_HISTORY_FILENAME = "test-company-filing-history.json";
+    private static final String TEST_COMPANY_FILING_HISTORY_FILENAME =
+            "test-company-filing-history.json";
     private static final String COMPANY_NUMBER = "10000000";
 
     private String messageId = UUID.randomUUID().toString();
@@ -57,19 +58,22 @@ public class CompanyDetailsRequestSteps {
 
     @Before
     public void setUpData() throws IOException, ParseException {
-        companyProfileMongoTemplate.insert(getJSONFromFile(TEST_COMPANY_PROFILE_FILENAME), COMPANY_PROFILE);
-        companyFilingHistoryMongoTemplate.insert(getJSONFromFile(TEST_COMPANY_FILING_HISTORY_FILENAME),
-                COMPANY_FILING_HISTORY);
+        companyProfileMongoTemplate.insert(getJsonFromFile(TEST_COMPANY_PROFILE_FILENAME),
+                COMPANY_PROFILE);
+        companyFilingHistoryMongoTemplate.insert(getJsonFromFile(
+                TEST_COMPANY_FILING_HISTORY_FILENAME), COMPANY_FILING_HISTORY);
     }
 
     @After
     public void tearDownData() throws IOException, ParseException {
-        companyProfileMongoTemplate.remove(new Query(Criteria.where("_id").is(COMPANY_NUMBER)), COMPANY_PROFILE);
-        companyFilingHistoryMongoTemplate.remove(new Query(Criteria.where("company_number").is(COMPANY_NUMBER)),
+        companyProfileMongoTemplate.remove(new Query(Criteria.where("_id").is(COMPANY_NUMBER)),
+                COMPANY_PROFILE);
+        companyFilingHistoryMongoTemplate.remove(new Query(Criteria.where("company_number")
+                        .is(COMPANY_NUMBER)),
                 COMPANY_FILING_HISTORY);
     }
 
-    private String getJSONFromFile(String filename) throws IOException, ParseException {
+    private String getJsonFromFile(String filename) throws IOException, ParseException {
         JSONParser parser = new JSONParser();
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource(filename).getFile());

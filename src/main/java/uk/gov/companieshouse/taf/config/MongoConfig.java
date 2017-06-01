@@ -28,9 +28,11 @@ import uk.gov.companieshouse.taf.repository.OutgoingBrisMessageRepository;
 @PropertySource("classpath:application.properties")
 public class MongoConfig {
 
-    private static final String COMPANY_PROFILE = "company_profile";
+    private static final String COMPANY_PROFILE_DATABASE = "company_profile";
     private static final String MONGO_URI = "mongodb.instance";
-    private static final String COMPANY_FILING_HISTORY = "company_filing_history";
+    private static final String COMPANY_FILING_HISTORY_DATABASE = "company_filing_history";
+    private static final String BRIS_MESSAGES_DATABASE = "bris_messages_test";
+    private static final String URI_SLASH = "/";
 
     @Autowired
     private Env env;
@@ -45,7 +47,7 @@ public class MongoConfig {
     @Qualifier("TestMongoDbFactory")
     public MongoDbFactory mongoTestDbFactory() throws UnknownHostException {
         return new SimpleMongoDbFactory(new MongoClientURI(env.config.getString(MONGO_URI)
-                + "bris_messages_test_jb1"));
+                + URI_SLASH + BRIS_MESSAGES_DATABASE));
     }
 
     // Mongo config for Company Profile Database
@@ -59,7 +61,7 @@ public class MongoConfig {
     @Qualifier("CompanyProfileMongoDbFactory")
     public MongoDbFactory mongoCompanyProfileDbFactory() throws UnknownHostException {
         return new SimpleMongoDbFactory(new MongoClientURI(env.config.getString(MONGO_URI)
-                + COMPANY_PROFILE));
+                + URI_SLASH + COMPANY_PROFILE_DATABASE));
     }
 
     // Mongo config for Company Filing History Database
@@ -73,6 +75,6 @@ public class MongoConfig {
     @Qualifier("CompanyFilingHistoryMongoDbFactory")
     public MongoDbFactory mongoCompanyFilingHistoryDbFactory() throws UnknownHostException {
         return new SimpleMongoDbFactory(new MongoClientURI(env.config.getString(MONGO_URI)
-                + COMPANY_FILING_HISTORY));
+                + URI_SLASH + COMPANY_FILING_HISTORY_DATABASE));
     }
 }

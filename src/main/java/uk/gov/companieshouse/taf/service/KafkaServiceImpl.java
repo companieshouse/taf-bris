@@ -38,9 +38,9 @@ public class KafkaServiceImpl implements KafkaService {
         if (brokerAddresses != null && !brokerAddresses.isEmpty()) {
             producerConfig.setBrokerAddresses(brokerAddresses.split(","));
         } else {
-            throw new ProducerConfigException("Broker addresses for kafka broker not supplied,"
-                    + " use the environment variable KAFKA_BROKER_ADDR");
+            throw new ProducerConfigException("Broker addresses for kafka brokers have not been supplied."
+                    + " Please make sure that this is configured in the kafka.broker.address entry "
+                    + " for the relevant environment profile in the env.conf file.");
         }
     }
-
 }
