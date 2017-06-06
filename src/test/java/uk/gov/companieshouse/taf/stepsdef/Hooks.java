@@ -10,6 +10,8 @@ import java.io.IOException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -18,13 +20,15 @@ import org.springframework.data.mongodb.core.query.Query;
 
 public class Hooks {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Hooks.class);
+
     private static final String COMPANY_PROFILE = "company_profile";
     private static final String COMPANY_FILING_HISTORY = "company_filing_history";
     private static final String COMPANY_NUMBER = "10000000";
     private static final String COMPANY_PROFILES_FOLDER = "src/test/resources/data/"
-            + "company_profiles";
+            + "company_profiles/";
     private static final String COMPANY_FILING_HISTORY_FOLDER = "src/test/resources/data/"
-            + "company_filing_history";
+            + "company_filing_history/";
 
 
     @Autowired
@@ -67,6 +71,7 @@ public class Hooks {
                 String fileNames = file.getName();
                 companyProfileMongoTemplate.insert(getJsonFromFile(fileNames),
                         COMPANY_PROFILE);
+                LOGGER.info("Adding company profile data for company {}", fileNames);
             }
         }
     }
@@ -78,9 +83,9 @@ public class Hooks {
         if (listOfFiles != null) {
             for (File file : listOfFiles) {
                 String fileNames = file.getName();
-                companyFilingHistoryMongoTemplate.insert(getJsonFromFile(
-                        fileNames),
+                companyFilingHistoryMongoTemplate.insert(getJsonFromFile(fileNames),
                         COMPANY_FILING_HISTORY);
+                LOGGER.info("Adding company filing history data for company {}", fileNames);
             }
         }
     }
