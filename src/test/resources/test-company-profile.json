@@ -1,5 +1,5 @@
 {
-  "_id" : "10000000",
+  "_id" : "99990000",
   "_modification_time" : "08-APR-14 14.19.46.000000",
   "has_mortgages" : 0,
   "has_appointments" : 1,
@@ -44,7 +44,7 @@
       "7487"
     ],
     "proof_status" : "none",
-    "company_number" : "86864564",
+    "company_number" : "99990000",
     "registered_office_address" : {
       "address_line_1" : "28 SALOP ROAD",
       "address_line_2" : "OSWESTRY",
