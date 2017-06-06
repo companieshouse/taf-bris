@@ -15,6 +15,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import uk.gov.companieshouse.taf.domain.OutgoingBrisMessage;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
@@ -24,9 +25,11 @@ public class DocumentRequestSteps {
 
     private String messageId = UUID.randomUUID().toString();
     private String correlationId = messageId;
-    private static final String DEFAULT_COMPANY_NUMBER = "00006400";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DocumentRequestSteps.class);
+
+    @Value("${default.company.number}")
+    private String defaultCompanyNumber;
 
     @Autowired
     private SendBrisTestMessageService documentRequest;
@@ -46,7 +49,7 @@ public class DocumentRequestSteps {
         BRRetrieveDocumentRequest retrieveDocumentRequest = RequestHelper.newInstance(
                 correlationId,
                 messageId,
-                DEFAULT_COMPANY_NUMBER,
+                defaultCompanyNumber,
                 "EW",
                 "UK",
                 documentId);
@@ -63,7 +66,7 @@ public class DocumentRequestSteps {
         BRRetrieveDocumentRequest retrieveDocumentRequest = RequestHelper.newInstance(
                 correlationId,
                 messageId,
-                DEFAULT_COMPANY_NUMBER,
+                defaultCompanyNumber,
                 "EW",
                 "UK",
                 RandomStringUtils.randomAlphanumeric(8));
@@ -81,7 +84,7 @@ public class DocumentRequestSteps {
         BRRetrieveDocumentRequest retrieveDocumentRequest = RequestHelper.newInstance(
                 correlationId,
                 messageId,
-                DEFAULT_COMPANY_NUMBER,
+                defaultCompanyNumber,
                 "EW",
                 "UK",
                 null);

@@ -19,6 +19,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import uk.gov.companieshouse.taf.domain.OutgoingBrisMessage;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
@@ -28,13 +29,13 @@ import uk.gov.companieshouse.taf.util.RequestHelper;
 
 public class CompanyDetailsRequestSteps {
 
-    private static final String COMPANY_NUMBER = "10000000";
-
     private String messageId = UUID.randomUUID().toString();
     private String correlationId = messageId;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageTransformer.class);
 
+    @Value("${default.company.number}")
+    private String defaultCompanyNumber;
 
     @Autowired
     private SendBrisTestMessageService companyDetailsRequest;
@@ -52,7 +53,7 @@ public class CompanyDetailsRequestSteps {
         BRCompanyDetailsRequest request = RequestHelper.newInstance(
                 correlationId,
                 messageId,
-                COMPANY_NUMBER,
+                defaultCompanyNumber,
                 "EW",
                 "UK");
 
@@ -82,7 +83,7 @@ public class CompanyDetailsRequestSteps {
         BRCompanyDetailsRequest request = RequestHelper.newInstance(
                 correlationId,
                 messageId,
-                COMPANY_NUMBER,
+                defaultCompanyNumber,
                 "EW",
                 "AA");
 
@@ -97,7 +98,7 @@ public class CompanyDetailsRequestSteps {
         BRCompanyDetailsRequest request = RequestHelper.newInstance(
                 correlationId,
                 messageId,
-                COMPANY_NUMBER,
+                defaultCompanyNumber,
                 "EW",
                 "BRA");
 
@@ -122,7 +123,7 @@ public class CompanyDetailsRequestSteps {
         BRCompanyDetailsRequest request = RequestHelper.newInstance(
                 messageId,
                 messageId,
-                COMPANY_NUMBER,
+                defaultCompanyNumber,
                 "EW",
                 "UK");
 
@@ -139,7 +140,7 @@ public class CompanyDetailsRequestSteps {
         BRCompanyDetailsRequest request = RequestHelper.newInstance(
                 invalidId,
                 invalidId,
-                COMPANY_NUMBER,
+                defaultCompanyNumber,
                 "EW",
                 "UK");
 
@@ -157,7 +158,7 @@ public class CompanyDetailsRequestSteps {
         BRCompanyDetailsRequest request = RequestHelper.newInstance(
                 messageId,
                 correlationId,
-                COMPANY_NUMBER,
+                defaultCompanyNumber,
                 "EW",
                 "UK");
 
@@ -172,7 +173,7 @@ public class CompanyDetailsRequestSteps {
         BRCompanyDetailsRequest request = RequestHelper.newInstance(
                 correlationId,
                 messageId,
-                COMPANY_NUMBER,
+                defaultCompanyNumber,
                 "EW",
                 "GBP");
 
@@ -187,7 +188,7 @@ public class CompanyDetailsRequestSteps {
         BRCompanyDetailsRequest request = RequestHelper.newInstance(
                 correlationId,
                 messageId,
-                COMPANY_NUMBER,
+                defaultCompanyNumber,
                 "WALES",
                 "UK");
 
@@ -202,7 +203,7 @@ public class CompanyDetailsRequestSteps {
         BRCompanyDetailsRequest request = RequestHelper.newInstance(
                 correlationId,
                 messageId,
-                COMPANY_NUMBER,
+                defaultCompanyNumber,
                 "01005",
                 "ES");
 
