@@ -24,7 +24,7 @@ public class DocumentRequestSteps {
 
     private String messageId = UUID.randomUUID().toString();
     private String correlationId = messageId;
-    private static final String DEFAULT_COMPANY_NUMBER = "00006400";
+    private static final String DEFAULT_COMPANY_NUMBER = "99990000";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DocumentRequestSteps.class);
 

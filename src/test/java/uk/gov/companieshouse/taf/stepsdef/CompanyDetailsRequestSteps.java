@@ -28,7 +28,7 @@ import uk.gov.companieshouse.taf.util.RequestHelper;
 
 public class CompanyDetailsRequestSteps {
 
-    private static final String COMPANY_NUMBER = "10000000";
+    private static final String COMPANY_NUMBER = "99990000";
 
     private String messageId = UUID.randomUUID().toString();
     private String correlationId = messageId;
