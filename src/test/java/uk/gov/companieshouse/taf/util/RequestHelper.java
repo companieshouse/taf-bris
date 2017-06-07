@@ -12,8 +12,11 @@ import eu.europa.ec.bris.v140.jaxb.components.basic.CorrelationIDType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.CountryType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.DocumentIDType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.MessageIDType;
+import eu.europa.ec.bris.v140.jaxb.components.basic.PaymentReferenceType;
 
 public class RequestHelper {
+
+    private static final String PAYMENT_REF = "PR";
 
     /**
      * Create new instance of BRCompany Detail Request.
@@ -66,6 +69,10 @@ public class RequestHelper {
         request.setMessageHeader(getMessageHeader(correlationId, messageId));
         request.setBusinessRegisterReference(businessRegReference(countryCode,
                 businessRegisterId));
+
+        PaymentReferenceType paymentReference = new PaymentReferenceType();
+        paymentReference.setValue(PAYMENT_REF);
+        request.setPaymentReference(paymentReference);
         request.setCompanyRegistrationNumber(companyRegNumber(companyRegistrationNumber));
         request.setDocumentID(documentIdType(documentId));
         return request;
@@ -137,9 +144,9 @@ public class RequestHelper {
     }
 
     private static DocumentIDType documentIdType(String documentId) {
-        DocumentIDType documentIDType = new DocumentIDType();
-        documentIDType.setValue(documentId);
-        return documentIDType;
+        DocumentIDType documentIdType = new DocumentIDType();
+        documentIdType.setValue(documentId);
+        return documentIdType;
     }
 
     /* ---- Getters and Setters ---- */

@@ -12,13 +12,12 @@ import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsRequest;
 import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsResponse;
 import eu.europa.ec.bris.v140.jaxb.br.error.BRBusinessError;
 
-import java.util.UUID;
-
 import org.apache.commons.lang3.RandomStringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import uk.gov.companieshouse.taf.domain.OutgoingBrisMessage;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
@@ -28,13 +27,13 @@ import uk.gov.companieshouse.taf.util.RequestHelper;
 
 public class CompanyDetailsRequestSteps {
 
-    private static final String COMPANY_NUMBER = "10000000";
-
-    private String messageId = UUID.randomUUID().toString();
-    private String correlationId = messageId;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageTransformer.class);
 
+    @Autowired
+    private RequestData data;
+
+    @Value("${default.company.number}")
+    private String defaultCompanyNumber;
 
     @Autowired
     private SendBrisTestMessageService companyDetailsRequest;
@@ -50,13 +49,14 @@ public class CompanyDetailsRequestSteps {
     @Given("^I am requesting details for a valid company$")
     public void requestingDetailsForAValidCompany() throws Throwable {
         BRCompanyDetailsRequest request = RequestHelper.newInstance(
-                correlationId,
-                messageId,
-                COMPANY_NUMBER,
+                data.getCorrelationId(),
+                data.getMessageId(),
+                defaultCompanyNumber,
                 "EW",
                 "UK");
 
-        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(request, messageId);
+        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(
+                request, data.getMessageId());
     }
 
     /**
@@ -65,13 +65,14 @@ public class CompanyDetailsRequestSteps {
     @Given("^I am requesting details for a company that does not exist$")
     public void requestingDetailsForACompanyThatDoesNotExist() throws Throwable {
         BRCompanyDetailsRequest request = RequestHelper.newInstance(
-                correlationId,
-                messageId,
+                data.getCorrelationId(),
+                data.getMessageId(),
                 "00000000",
                 "EW",
                 "UK");
 
-        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(request, messageId);
+        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(
+                request, data.getMessageId());
     }
 
     /**
@@ -80,13 +81,14 @@ public class CompanyDetailsRequestSteps {
     @Given("^the request has an invalid country code$")
     public void theRequestHasAnInvalidCountryCode() throws Throwable {
         BRCompanyDetailsRequest request = RequestHelper.newInstance(
-                correlationId,
-                messageId,
-                COMPANY_NUMBER,
+                data.getCorrelationId(),
+                data.getMessageId(),
+                defaultCompanyNumber,
                 "EW",
                 "AA");
 
-        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(request, messageId);
+        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(
+                request, data.getMessageId());
     }
 
     /**
@@ -95,13 +97,14 @@ public class CompanyDetailsRequestSteps {
     @Given("^the request business id and country do not match")
     public void theRequestBusinessIdAndCountryDoNotMatch() throws Throwable {
         BRCompanyDetailsRequest request = RequestHelper.newInstance(
-                correlationId,
-                messageId,
-                COMPANY_NUMBER,
+                data.getCorrelationId(),
+                data.getMessageId(),
+                defaultCompanyNumber,
                 "EW",
                 "BRA");
 
-        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(request, messageId);
+        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(
+                request, data.getMessageId());
     }
 
     @Given("^a company details request for ([^\"]*) has been received$")
@@ -122,7 +125,7 @@ public class CompanyDetailsRequestSteps {
         BRCompanyDetailsRequest request = RequestHelper.newInstance(
                 messageId,
                 messageId,
-                COMPANY_NUMBER,
+                defaultCompanyNumber,
                 "EW",
                 "UK");
 
@@ -139,11 +142,12 @@ public class CompanyDetailsRequestSteps {
         BRCompanyDetailsRequest request = RequestHelper.newInstance(
                 invalidId,
                 invalidId,
-                COMPANY_NUMBER,
+                defaultCompanyNumber,
                 "EW",
                 "UK");
 
-        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(request, messageId);
+        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(
+                request, data.getMessageId());
     }
 
     /**
@@ -152,12 +156,12 @@ public class CompanyDetailsRequestSteps {
      */
     @Given("^the request contains a correlation id that does not match the message id$")
     public void theRequestContainsACorrelationIdThatDoesNotMatchTheMessageId() throws Throwable {
-        messageId = randomAlphanumeric(8);
+        String messageId = randomAlphanumeric(8);
 
         BRCompanyDetailsRequest request = RequestHelper.newInstance(
                 messageId,
-                correlationId,
-                COMPANY_NUMBER,
+                data.getCorrelationId(),
+                defaultCompanyNumber,
                 "EW",
                 "UK");
 
@@ -170,13 +174,14 @@ public class CompanyDetailsRequestSteps {
     @Given("^the request contains a business country that does not exist$")
     public void theRequestContainsABusinessCountryThatDoesNotExist() throws Throwable {
         BRCompanyDetailsRequest request = RequestHelper.newInstance(
-                correlationId,
-                messageId,
-                COMPANY_NUMBER,
+                data.getCorrelationId(),
+                data.getMessageId(),
+                defaultCompanyNumber,
                 "EW",
                 "GBP");
 
-        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(request, messageId);
+        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(
+                request, data.getMessageId());
     }
 
     /**
@@ -185,13 +190,14 @@ public class CompanyDetailsRequestSteps {
     @Given("^the request contains an invalid business register id$")
     public void theRequestContainsAnInvalidBusinessRegisterId() throws Throwable {
         BRCompanyDetailsRequest request = RequestHelper.newInstance(
-                correlationId,
-                messageId,
-                COMPANY_NUMBER,
+                data.getCorrelationId(),
+                data.getMessageId(),
+                defaultCompanyNumber,
                 "WALES",
                 "UK");
 
-        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(request, messageId);
+        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(
+                request, data.getMessageId());
     }
 
     /**
@@ -200,13 +206,14 @@ public class CompanyDetailsRequestSteps {
     @Given("^the request is not correct for the receiving business register$")
     public void theRequestIsNotCorrectForTheReceivingBusinessRegister() throws Throwable {
         BRCompanyDetailsRequest request = RequestHelper.newInstance(
-                correlationId,
-                messageId,
-                COMPANY_NUMBER,
+                data.getCorrelationId(),
+                data.getMessageId(),
+                defaultCompanyNumber,
                 "01005",
                 "ES");
 
-        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(request, messageId);
+        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(
+                request, data.getMessageId());
     }
 
     /**
@@ -252,7 +259,7 @@ public class CompanyDetailsRequestSteps {
 
     @When("^I make a company details request$")
     public void makeACompanyDetailsRequest() throws Throwable {
-        companyDetailsRequest.sendOutgoingBrisMessage(outgoingBrisMessage, messageId);
+        companyDetailsRequest.sendOutgoingBrisMessage(outgoingBrisMessage, data.getMessageId());
     }
 
     /**
@@ -261,9 +268,9 @@ public class CompanyDetailsRequestSteps {
     @Then("^the correct company details will be returned to the ECP$")
     public void theCorrectCompanyDetailsWillBeReturnedToTheEcp() throws Throwable {
         BRCompanyDetailsResponse response = retrieveMessage
-                .checkForResponseByCorrelationId(messageId);
+                .checkForResponseByCorrelationId(data.getMessageId());
         assertNotNull(response);
-        assertEquals("Expected Correlation ID:", correlationId,
+        assertEquals("Expected Correlation ID:", data.getCorrelationId(),
                 response.getMessageHeader().getCorrelationID().getValue());
     }
 
@@ -273,7 +280,7 @@ public class CompanyDetailsRequestSteps {
     @Then("^I should get a message with the error code ([^\"]*)$")
     public void theCorrectErrorWillBeReturnedToTheEcp(String errorCode) throws Throwable {
         BRBusinessError businessError = retrieveMessage
-                .checkForResponseByCorrelationId(messageId);
+                .checkForResponseByCorrelationId(data.getMessageId());
         assertNotNull(businessError);
 
         assertEquals("Expected Error Code:", errorCode,
@@ -286,7 +293,7 @@ public class CompanyDetailsRequestSteps {
     @Then("^no response will be created$")
     public void noResponseWillBeCreated() throws Throwable {
         BRCompanyDetailsResponse response = retrieveMessage
-                .checkForResponseByCorrelationId(messageId);
+                .checkForResponseByCorrelationId(data.getMessageId());
         assertNull(response);
     }
 }
