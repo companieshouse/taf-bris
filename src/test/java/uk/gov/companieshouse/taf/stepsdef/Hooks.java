@@ -12,6 +12,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -23,7 +24,9 @@ public class Hooks {
     private static final String TEST_COMPANY_PROFILE_FILENAME = "test-company-profile.json";
     private static final String TEST_COMPANY_FILING_HISTORY_FILENAME = "test-company-filing"
             + "-history.json";
-    private static final String COMPANY_NUMBER = "10000000";
+
+    @Value("${default.company.number}")
+    private String defaultCompanyNumber;
 
     @Autowired
     @Qualifier("CompanyProfileMongoDbTemplate")
@@ -32,6 +35,10 @@ public class Hooks {
     @Autowired
     @Qualifier("CompanyFilingHistoryMongoDbTemplate")
     private MongoTemplate companyFilingHistoryMongoTemplate;
+
+    @Autowired
+    public RequestData data;
+
 
     /**
      * Inserts the company details data prior to executing the tests to ensure data consistency.
@@ -50,10 +57,10 @@ public class Hooks {
      */
     @After
     public void tearDownData() throws IOException, ParseException {
-        companyProfileMongoTemplate.remove(new Query(Criteria.where("_id").is(COMPANY_NUMBER)),
-                COMPANY_PROFILE);
+        companyProfileMongoTemplate.remove(new Query(Criteria.where("_id")
+                .is(defaultCompanyNumber)), COMPANY_PROFILE);
         companyFilingHistoryMongoTemplate.remove(new Query(Criteria.where("company_number")
-                        .is(COMPANY_NUMBER)),
+                        .is(defaultCompanyNumber)),
                 COMPANY_FILING_HISTORY);
     }
 
