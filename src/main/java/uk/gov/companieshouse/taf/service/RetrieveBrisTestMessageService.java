@@ -26,16 +26,14 @@ import eu.europa.ec.bris.v140.jaxb.br.subscription.BRManageSubscriptionStatus;
 import java.io.StringReader;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+
 import uk.gov.companieshouse.taf.domain.IncomingBrisMessage;
 
 @Component
@@ -65,7 +63,7 @@ public class RetrieveBrisTestMessageService {
         // Keep checking the test MongoDB instance to ensure that the message
         // has been processed successfully
         while (incomingBrisMessage == null && counter <= messageWaitTime) {
-            LOGGER.info("Iteration {}", counter);
+            LOGGER.info("Iteration {}, Correlation Id {}", counter, correlationId);
             incomingBrisMessage = incomingBrisMessageService.findOneByCorrelationId(correlationId);
 
             if (incomingBrisMessage == null) {
