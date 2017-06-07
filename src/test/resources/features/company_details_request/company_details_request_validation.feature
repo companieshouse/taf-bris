@@ -1,5 +1,5 @@
-@regression @company_details_request @company_details_validation @ecp_to_ap_errors
-Feature: Company details request feature
+@wip
+Feature: Duplicate request validation of company details request
 
   In order to request company details
   As a user of the European Central Platform

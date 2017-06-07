@@ -1,5 +1,5 @@
-@regression @company_details_request @company_details_validation @generic_validation
-Feature: Company details request feature
+@wip
+Feature: Generic validation of company details request
 
   In order to request company details
   As a user of the European Central Portal

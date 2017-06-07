@@ -1,10 +1,11 @@
 @regression @document_request
-Feature: Company details request feature
+Feature: Document request feature
 
   In order to receive Companies House documents
   As a customer of BRIS
   I want to request document data from a central location
 
+  @wip
   Scenario: User is able to retrieve a document
     Given the request contains a valid document id of v09C1_5w7-QDthw9_lKJvYUoXX66nBpd3O4-7jT9K98
     When I make a document details request

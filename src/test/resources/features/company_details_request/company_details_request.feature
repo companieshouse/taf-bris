@@ -1,4 +1,4 @@
-@regression @company_details_request @kermit
+@regression @company_details_request
 Feature: Company details request feature
 
   In order to review company details
