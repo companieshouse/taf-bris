@@ -1,5 +1,5 @@
 @regression @document_request
-Feature: Company details request feature
+Feature: Document request feature
 
   In order to receive Companies House documents
   As a customer of BRIS
