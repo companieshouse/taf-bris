@@ -9,8 +9,6 @@ import cucumber.api.java.en.When;
 import eu.europa.ec.bris.v140.jaxb.br.company.document.BRRetrieveDocumentRequest;
 import eu.europa.ec.bris.v140.jaxb.br.company.document.BRRetrieveDocumentResponse;
 
-import java.util.UUID;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,11 +20,10 @@ import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
 import uk.gov.companieshouse.taf.util.RequestHelper;
 
 public class DocumentRequestSteps {
-
-    private String messageId = UUID.randomUUID().toString();
-    private String correlationId = messageId;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(DocumentRequestSteps.class);
+
+    @Autowired
+    private RequestData data;
 
     @Value("${default.company.number}")
     private String defaultCompanyNumber;
@@ -47,15 +44,15 @@ public class DocumentRequestSteps {
     @Given("^the request contains a valid document id of (.*)$")
     public void theRequestContainsAValidDocumentIdOf(String documentId) throws Throwable {
         BRRetrieveDocumentRequest retrieveDocumentRequest = RequestHelper.newInstance(
-                correlationId,
-                messageId,
+                data.getCorrelationId(),
+                data.getMessageId(),
                 defaultCompanyNumber,
                 "EW",
                 "UK",
                 documentId);
 
         outgoingBrisMessage = documentRequest.createOutgoingBrisMessage(retrieveDocumentRequest,
-                messageId);
+                data.getMessageId());
     }
 
     /**
@@ -64,15 +61,15 @@ public class DocumentRequestSteps {
     @Given("^the request contains a document id that does not exist$")
     public void theRequestContainsADocumentIdThatDoesNotExist() throws Throwable {
         BRRetrieveDocumentRequest retrieveDocumentRequest = RequestHelper.newInstance(
-                correlationId,
-                messageId,
+                data.getCorrelationId(),
+                data.getMessageId(),
                 defaultCompanyNumber,
                 "EW",
                 "UK",
                 RandomStringUtils.randomAlphanumeric(8));
 
         outgoingBrisMessage = documentRequest.createOutgoingBrisMessage(retrieveDocumentRequest,
-                messageId);
+                data.getMessageId());
     }
 
     /**
@@ -82,20 +79,20 @@ public class DocumentRequestSteps {
     public void theRequestContainsAnInvalidDocumentId() throws Throwable {
         // Unsure as to what makes document id invalid. Setting to null as placeholder for now
         BRRetrieveDocumentRequest retrieveDocumentRequest = RequestHelper.newInstance(
-                correlationId,
-                messageId,
+                data.getCorrelationId(),
+                data.getMessageId(),
                 defaultCompanyNumber,
                 "EW",
                 "UK",
                 null);
 
         outgoingBrisMessage = documentRequest.createOutgoingBrisMessage(retrieveDocumentRequest,
-                messageId);
+                data.getMessageId());
     }
 
     @When("^I make a document details request$")
     public void makeADocumentDetailsRequest() throws Throwable {
-        documentRequest.sendOutgoingBrisMessage(outgoingBrisMessage, messageId);
+        documentRequest.sendOutgoingBrisMessage(outgoingBrisMessage, data.getMessageId());
     }
 
     /**
@@ -106,9 +103,9 @@ public class DocumentRequestSteps {
     @Then("^the response should contain a document with the id (.*)$")
     public void theResponseShouldContainADocumentWithTheId(String documentId) throws Throwable {
         BRRetrieveDocumentResponse retrieveDocumentResponse =
-                retrieveMessage.checkForResponseByCorrelationId(correlationId);
+                retrieveMessage.checkForResponseByCorrelationId(data.getCorrelationId());
         assertNotNull(retrieveDocumentResponse);
         assertEquals("Expected Document ID:", documentId,
-                retrieveDocumentResponse.getDocumentID().toString());
+                retrieveDocumentResponse.getDocumentID().getValue());
     }
 }

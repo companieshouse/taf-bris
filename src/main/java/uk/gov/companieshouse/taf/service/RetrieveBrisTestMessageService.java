@@ -63,7 +63,7 @@ public class RetrieveBrisTestMessageService {
         // Keep checking the test MongoDB instance to ensure that the message
         // has been processed successfully
         while (incomingBrisMessage == null && counter <= messageWaitTime) {
-            LOGGER.info("Iteration {}", counter);
+            LOGGER.info("Iteration {}, Correlation Id {}", counter, correlationId);
             incomingBrisMessage = incomingBrisMessageService.findOneByCorrelationId(correlationId);
 
             if (incomingBrisMessage == null) {

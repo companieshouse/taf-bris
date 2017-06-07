@@ -36,6 +36,10 @@ public class Hooks {
     @Qualifier("CompanyFilingHistoryMongoDbTemplate")
     private MongoTemplate companyFilingHistoryMongoTemplate;
 
+    @Autowired
+    public RequestData data;
+
+
     /**
      * Inserts the company details data prior to executing the tests to ensure data consistency.
      */
