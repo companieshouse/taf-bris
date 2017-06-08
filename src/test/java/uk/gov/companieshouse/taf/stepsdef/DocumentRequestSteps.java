@@ -1,6 +1,7 @@
 package uk.gov.companieshouse.taf.stepsdef;
 
 import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 import cucumber.api.java.en.Given;
@@ -9,9 +10,8 @@ import cucumber.api.java.en.When;
 import eu.europa.ec.bris.v140.jaxb.br.company.document.BRRetrieveDocumentRequest;
 import eu.europa.ec.bris.v140.jaxb.br.company.document.BRRetrieveDocumentResponse;
 
+import java.util.Arrays;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.companieshouse.taf.domain.OutgoingBrisMessage;
@@ -20,7 +20,8 @@ import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
 import uk.gov.companieshouse.taf.util.RequestHelper;
 
 public class DocumentRequestSteps {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DocumentRequestSteps.class);
+    private static final String BUSINESS_REGISTER_ID = "EW";
+    private static final String BUSINESS_REGISTER_COUNTRY = "UK";
 
     @Autowired
     private RequestData data;
@@ -47,8 +48,8 @@ public class DocumentRequestSteps {
                 data.getCorrelationId(),
                 data.getMessageId(),
                 defaultCompanyNumber,
-                "EW",
-                "UK",
+                BUSINESS_REGISTER_ID,
+                BUSINESS_REGISTER_COUNTRY,
                 documentId);
 
         outgoingBrisMessage = documentRequest.createOutgoingBrisMessage(retrieveDocumentRequest,
@@ -64,8 +65,8 @@ public class DocumentRequestSteps {
                 data.getCorrelationId(),
                 data.getMessageId(),
                 defaultCompanyNumber,
-                "EW",
-                "UK",
+                BUSINESS_REGISTER_ID,
+                BUSINESS_REGISTER_COUNTRY,
                 RandomStringUtils.randomAlphanumeric(8));
 
         outgoingBrisMessage = documentRequest.createOutgoingBrisMessage(retrieveDocumentRequest,
@@ -82,8 +83,8 @@ public class DocumentRequestSteps {
                 data.getCorrelationId(),
                 data.getMessageId(),
                 defaultCompanyNumber,
-                "EW",
-                "UK",
+                BUSINESS_REGISTER_ID,
+                BUSINESS_REGISTER_COUNTRY,
                 null);
 
         outgoingBrisMessage = documentRequest.createOutgoingBrisMessage(retrieveDocumentRequest,
@@ -107,5 +108,51 @@ public class DocumentRequestSteps {
         assertNotNull(retrieveDocumentResponse);
         assertEquals("Expected Document ID:", documentId,
                 retrieveDocumentResponse.getDocumentID().getValue());
+        
+        assertEquals("Business Register ID is not as expected",
+                BUSINESS_REGISTER_ID,
+                retrieveDocumentResponse.getBusinessRegisterReference()
+                        .getBusinessRegisterID().getValue());
+        
+        assertEquals("Business Register Country is not as expected",
+                BUSINESS_REGISTER_COUNTRY,
+                retrieveDocumentResponse.getBusinessRegisterReference()
+                        .getBusinessRegisterCountry().getValue());
+
+        assertEquals("Company Registration Number is not as expected",
+                defaultCompanyNumber,
+                retrieveDocumentResponse.getCompanyRegistrationNumber().getValue());
+
+        assertEquals("Correlation ID in header is not as expected",
+                data.getCorrelationId(),
+                retrieveDocumentResponse.getMessageHeader().getCorrelationID().getValue());
+
+        assertEquals("Business Register ID in header is not as expected",
+                BUSINESS_REGISTER_ID,
+                retrieveDocumentResponse.getMessageHeader().getBusinessRegisterReference()
+                        .getBusinessRegisterID().getValue());
+
+        assertEquals("Business Register Country in header is not as expected",
+                BUSINESS_REGISTER_COUNTRY,
+                retrieveDocumentResponse.getMessageHeader().getBusinessRegisterReference()
+                        .getBusinessRegisterCountry().getValue());
+    }
+
+    /**
+     * Checks the response contains the expected document.
+     */
+    @Then("^the attached document is the expected document$")
+    public void theAttachedDocumentIsTheExpectedDocument() throws Throwable {
+
+        // Get the expected document for the company..
+        byte[] expectedPdfDocument = retrieveMessage.getExpectedPdfDocument();
+        assertNotNull(expectedPdfDocument);
+
+        // And then get the actual document held against the company
+        byte[] actualPdfDocument = retrieveMessage.getActualPdfDocument(data.getCorrelationId());
+        assertNotNull(actualPdfDocument);
+
+        assertTrue("The PDF documents do not match",
+                Arrays.equals(expectedPdfDocument, actualPdfDocument));
     }
 }

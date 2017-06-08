@@ -7,9 +7,10 @@ Feature: Document request feature
 
   @wip
   Scenario: User is able to retrieve a document
-    Given the request contains a valid document id of v09C1_5w7-QDthw9_lKJvYUoXX66nBpd3O4-7jT9K98
+    Given the request contains a valid document id of bbu6A7RoFKI1AmpVMVE2cG6pikNH2lCigB2GVuJ66Zc
     When I make a document details request
-    Then the response should contain a document with the id v09C1_5w7-QDthw9_lKJvYUoXX66nBpd3O4-7jT9K98
+    Then the response should contain a document with the id bbu6A7RoFKI1AmpVMVE2cG6pikNH2lCigB2GVuJ66Zc
+    And the attached document is the expected document
 
   Scenario: User makes a request with a document id that is not found in the Business Register
     Given the request contains a document id that does not exist

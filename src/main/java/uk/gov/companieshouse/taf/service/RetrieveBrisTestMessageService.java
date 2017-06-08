@@ -23,15 +23,18 @@ import eu.europa.ec.bris.v140.jaxb.br.merger.BRCrossBorderMergerSubmissionNotifi
 import eu.europa.ec.bris.v140.jaxb.br.subscription.BRManageSubscriptionRequest;
 import eu.europa.ec.bris.v140.jaxb.br.subscription.BRManageSubscriptionStatus;
 
+import java.io.IOException;
 import java.io.StringReader;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import uk.gov.companieshouse.taf.domain.IncomingBrisMessage;
@@ -42,6 +45,7 @@ public class RetrieveBrisTestMessageService {
     private static final Logger LOGGER = LoggerFactory.getLogger(
             RetrieveBrisTestMessageService.class);
     private static final String MESSAGE_WAIT_TIME = "message.wait.time";
+    private static final String EXPECTED_PDF_DOC = "expected-document.pdf";
 
     @Autowired
     private Environment env;
@@ -50,11 +54,30 @@ public class RetrieveBrisTestMessageService {
     private IncomingBrisMessageService incomingBrisMessageService;
 
     /**
-     * Check the mongo collection for the error message by correlation id.
-     * @param correlationId the message id to be found
+     * Check the mongo collection to retrieve the message by correlation id.
+     * @param correlationId the message id to be retrieved
      * @return T the object retrieved from MongoDB
      */
     public <T> T checkForResponseByCorrelationId(String correlationId) throws Exception {
+        IncomingBrisMessage incomingBrisMessage = getIncomingBrisMessageFromMongo(correlationId);
+
+        // If we have a message after iteration, then set it on the response
+        if (incomingBrisMessage != null) {
+            LOGGER.info("Found message with correlation ID {} !!", correlationId);
+            JAXBContext jaxbContext = getJaxbContext();
+            StringReader reader = new StringReader(incomingBrisMessage.getMessage());
+            Object obj = jaxbContext.createUnmarshaller().unmarshal(reader);
+            return (T)obj;
+        }
+
+        return null;
+    }
+
+    /*
+        Loop for n seconds and check if the expected message is in MongoDB
+     */
+    private IncomingBrisMessage getIncomingBrisMessageFromMongo(String correlationId) {
+
         IncomingBrisMessage incomingBrisMessage = null;
         int counter = 0;
 
@@ -68,21 +91,34 @@ public class RetrieveBrisTestMessageService {
 
             if (incomingBrisMessage == null) {
                 counter++;
-                Thread.sleep(1000);
-                continue;
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException("Unexpected thread interrupt: " + ex.getMessage());
+                }
             }
         }
+        return incomingBrisMessage;
+    }
 
-        // If we have a message after iteration, then set it on the response
-        if (incomingBrisMessage != null) {
-            LOGGER.info("Found message with correlation ID {} !!", correlationId);
-            JAXBContext jaxbContext = getJaxbContext();
-            StringReader reader = new StringReader(incomingBrisMessage.getMessage());
-            Object obj = jaxbContext.createUnmarshaller().unmarshal(reader);
-            return (T)obj;
+    /**
+       Get the Document from the Document Details response using the correlation id.
+     */
+    public byte[] getActualPdfDocument(String correlationId) {
+        IncomingBrisMessage incomingBrisMessage = getIncomingBrisMessageFromMongo(correlationId);
+        return incomingBrisMessage.getData().getData();
+    }
+
+    /**
+     Get the expected Document from the file system.
+     */
+    public byte[] getExpectedPdfDocument() {
+        try {
+            return IOUtils.toByteArray(new ClassPathResource(EXPECTED_PDF_DOC).getInputStream());
+        } catch (IOException ex) {
+            throw new RuntimeException("Unexpected error reading PDF from file system "
+                    + ex.getMessage());
         }
-
-        return null;
     }
 
     @Bean
