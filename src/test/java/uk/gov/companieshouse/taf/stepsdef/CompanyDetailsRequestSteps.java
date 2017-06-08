@@ -51,7 +51,7 @@ public class CompanyDetailsRequestSteps {
         BRCompanyDetailsRequest request = RequestHelper.newInstance(
                 data.getCorrelationId(),
                 data.getMessageId(),
-                defaultCompanyNumber,
+                "00006400",
                 "EW",
                 "UK");
 
