@@ -139,7 +139,7 @@ public class DocumentRequestSteps {
     }
 
     /**
-     * Checks the response contains the correct document id.
+     * Checks the response contains the expected document.
      */
     @Then("^the attached document is the expected document$")
     public void theAttachedDocumentIsTheExpectedDocument() throws Throwable {
