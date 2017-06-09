@@ -1,4 +1,4 @@
-@xsd_validation @company_request_details @company_details_validation
+@regression @xsd_validation @company_request_details @company_details_validation
 Feature: Schema validation of BRIS request messages
 
   In order to ensure valid messages are communicated

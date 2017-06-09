@@ -12,12 +12,15 @@ import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsRequest;
 import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsResponse;
 import eu.europa.ec.bris.v140.jaxb.br.error.BRBusinessError;
 
+import java.util.List;
+
 import org.apache.commons.lang3.RandomStringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+
 import uk.gov.companieshouse.taf.domain.OutgoingBrisMessage;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
@@ -159,8 +162,8 @@ public class CompanyDetailsRequestSteps {
         String messageId = randomAlphanumeric(8);
 
         BRCompanyDetailsRequest request = RequestHelper.newInstance(
-                messageId,
                 data.getCorrelationId(),
+                data.setMessageId(messageId),
                 defaultCompanyNumber,
                 "EW",
                 "UK");
@@ -257,6 +260,25 @@ public class CompanyDetailsRequestSteps {
         }
     }
 
+    /**
+     * Creates a request with the requested company number. ONLY caveat here is that the company
+     * must be loaded in the test data base.
+     *
+     * @param companyNumber the company that is being requested
+     */
+    @Given("^I am requesting the company details for company ([^\"]*)$")
+    public void requestingTheCompanyDetailsForCompany(String companyNumber) throws Throwable {
+        BRCompanyDetailsRequest request = RequestHelper.newInstance(
+                data.getCorrelationId(),
+                data.getMessageId(),
+                companyNumber,
+                "EW",
+                "UK");
+
+        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(
+                request, data.getMessageId());
+    }
+
     @When("^I make a company details request$")
     public void makeACompanyDetailsRequest() throws Throwable {
         companyDetailsRequest.sendOutgoingBrisMessage(outgoingBrisMessage, data.getMessageId());
@@ -280,7 +302,7 @@ public class CompanyDetailsRequestSteps {
     @Then("^I should get a message with the error code ([^\"]*)$")
     public void theCorrectErrorWillBeReturnedToTheEcp(String errorCode) throws Throwable {
         BRBusinessError businessError = retrieveMessage
-                .checkForResponseByCorrelationId(data.getMessageId());
+                .checkForResponseByCorrelationId(data.getCorrelationId());
         assertNotNull(businessError);
 
         assertEquals("Expected Error Code:", errorCode,
@@ -295,5 +317,67 @@ public class CompanyDetailsRequestSteps {
         BRCompanyDetailsResponse response = retrieveMessage
                 .checkForResponseByCorrelationId(data.getMessageId());
         assertNull(response);
+    }
+
+    /**
+     * Checks that the company EUID is correctly formed.
+     */
+    @Then("^the response will contain a valid formed EUID$")
+    public void theResponseWillContainAValidFormedEuid() throws Throwable {
+        BRCompanyDetailsResponse response = retrieveMessage
+                .checkForResponseByCorrelationId(data.getMessageId());
+        assertNotNull(response);
+
+        assertEquals("Expected EUID: ", String.format("UKEW.%s", defaultCompanyNumber),
+                response.getCompany().getCompanyEUID().getValue());
+
+    }
+
+    /**
+     * Checks that the company number in the response is the expected company number.
+     *
+     * @param companyNumber the company number to match in the response
+     */
+    @Then("^the response will contain the company details for ([^\"]*)$")
+    public void theResponseWillContainTheCompanyDetailsFor(String companyNumber) throws Throwable {
+        BRCompanyDetailsResponse response = retrieveMessage
+                .checkForResponseByCorrelationId(data.getMessageId());
+        assertNotNull(response);
+
+        assertEquals("Expected Company Number: ", companyNumber,
+                response.getCompany().getCompanyRegistrationNumber().getValue());
+    }
+
+    /**
+     * Checks that the company registered office details are correct.
+     *
+     * @param addressDetails List containing address details to match against
+     */
+    @Then("^the response should have the following address details$")
+    public void theResponseShouldHaveTheFollowingAddressDetails(List<String> addressDetails)
+            throws Throwable {
+        BRCompanyDetailsResponse response = retrieveMessage
+                .checkForResponseByCorrelationId(data.getMessageId());
+        assertNotNull(response);
+
+        String postCode = addressDetails.get(0);
+        assertEquals("Expected Postal code: ", postCode,
+                response.getCompany().getCompanyRegisteredOffice().getPostalCode().getValue());
+
+        String addressLine1 = addressDetails.get(1);
+        assertEquals("Expected Address Line 1: ", addressLine1,
+                response.getCompany().getCompanyRegisteredOffice().getAddressLine1().getValue());
+
+        String addressLine2 = addressDetails.get(2);
+        assertEquals("Expected Address Line 2: ", addressLine2,
+                response.getCompany().getCompanyRegisteredOffice().getAddressLine2().getValue());
+
+        String addressLine3 = addressDetails.get(3);
+        assertEquals("Expected Address Line 3: ", addressLine3,
+                response.getCompany().getCompanyRegisteredOffice().getAddressLine3().getValue());
+
+        String country = addressDetails.get(4);
+        assertEquals("Expected Country: ", country,
+                response.getCompany().getCompanyRegisteredOffice().getCountry().getValue());
     }
 }

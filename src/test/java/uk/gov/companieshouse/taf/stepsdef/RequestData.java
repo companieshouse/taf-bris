@@ -21,4 +21,12 @@ public class RequestData {
     public String getCorrelationId() {
         return correlationId;
     }
+
+    public String setCorrelationId(String correlationId) {
+        return this.correlationId = correlationId;
+    }
+
+    public String setMessageId(String messageId) {
+        return this.messageId = messageId;
+    }
 }
