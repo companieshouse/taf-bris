@@ -3,6 +3,7 @@ package uk.gov.companieshouse.taf.util;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
@@ -14,6 +15,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 /**
  * This class can be used to load the relevant test data for the test framework.
@@ -35,55 +37,69 @@ public class TestDataHelper {
 
     /**
      * Set up the test data for the specified company.
-     * @param companyNumber The company number to load JSON files for
+     * @param companyNumbers The company numbers to load JSON files for
      */
-    public void setUpTestData(String companyNumber) {
+    public void setUpTestData(List<String> companyNumbers) {
+        if (CollectionUtils.isEmpty(companyNumbers)) {
+            throw new RuntimeException("Cannot pass an empty list of companies.");
+        }
 
         ClassLoader classLoader = getClass().getClassLoader();
 
-        // Firstly locate the folder containing the test data for the relevant company..
-        File file = new File(classLoader.getResource(TEST_DATA_FOLDER
-                + "//" + companyNumber).getFile());
+        // Load data for each company required for the test
+        for (String companyNumber : companyNumbers) {
 
-        if (!file.isDirectory()) {
-            throw new RuntimeException("Unable to locate the test folder for the company "
-                    + companyNumber);
-        }
+            // Firstly locate the folder containing the test data for the relevant company..
+            File file = new File(classLoader.getResource(TEST_DATA_FOLDER
+                    + "//" + companyNumber).getFile());
 
-        File[] testFiles = file.listFiles();
+            if (!file.isDirectory()) {
+                throw new RuntimeException("Unable to locate the test folder for the company "
+                        + companyNumber);
+            }
 
-        // Ensure that there are test file for the selected company
-        if (testFiles == null) {
-            throw new RuntimeException("No test files located for company "
-                    + companyNumber);
-        }
+            File[] testFiles = file.listFiles();
 
-        // Then iterate through each file and save it to MongoDB
-        for (File testFile : testFiles) {
-            if (StringUtils.contains(testFile.getName(),
-                    COMPANY_FILING_HISTORY.replace("_", "-"))) {
-                // Then load a company filing history
-                companyFilingHistoryMongoTemplate.insert(getJsonFromFile(testFile),
-                        COMPANY_FILING_HISTORY);
-            } else if (StringUtils.contains(testFile.getName(),
-                    COMPANY_PROFILE.replace("_", "-"))) {
-                // Otherwise add a company profile
-                companyProfileMongoTemplate.insert(getJsonFromFile(testFile),
-                        COMPANY_PROFILE);
+            // Ensure that there are test file for the selected company
+            if (testFiles == null) {
+                throw new RuntimeException("No test files located for company "
+                        + companyNumber);
+            }
+
+            // Then iterate through each file and save it to MongoDB
+            for (File testFile : testFiles) {
+                if (StringUtils.contains(testFile.getName(),
+                        COMPANY_FILING_HISTORY.replace("_", "-"))) {
+                    // Then load a company filing history
+                    companyFilingHistoryMongoTemplate.insert(getJsonFromFile(testFile),
+                            COMPANY_FILING_HISTORY);
+                } else if (StringUtils.contains(testFile.getName(),
+                        COMPANY_PROFILE.replace("_", "-"))) {
+                    // Otherwise add a company profile
+                    companyProfileMongoTemplate.insert(getJsonFromFile(testFile),
+                            COMPANY_PROFILE);
+                }
             }
         }
     }
 
     /**
      * Method to remove the company records from MongoDB.
-     * @param companyNumber The company number to be used to remove from MongoDB
+     * @param companyNumbers The company numbers to be used to remove records from MongoDB
      */
-    public void tearDownTestData(String companyNumber) {
-        companyProfileMongoTemplate.remove(new Query(Criteria.where("_id")
-                .is(companyNumber)), COMPANY_PROFILE);
-        companyFilingHistoryMongoTemplate.remove(new Query(Criteria.where("company_number")
-                        .is(companyNumber)),
-                COMPANY_FILING_HISTORY);
+    public void tearDownTestData(List<String> companyNumbers) {
+
+        if (CollectionUtils.isEmpty(companyNumbers)) {
+            throw new RuntimeException("Cannot pass an empty list of companies.");
+        }
+
+        for (String companyNumber : companyNumbers) {
+            companyProfileMongoTemplate.remove(new Query(Criteria.where("_id")
+                    .is(companyNumber)), COMPANY_PROFILE);
+            companyFilingHistoryMongoTemplate.remove(new Query(Criteria.where("company_number")
+                            .is(companyNumber)),
+                    COMPANY_FILING_HISTORY);
+        }
     }
 
     private static String getJsonFromFile(File jsonFile) {
