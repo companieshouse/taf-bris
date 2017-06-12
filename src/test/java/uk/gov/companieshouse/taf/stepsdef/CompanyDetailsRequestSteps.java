@@ -324,13 +324,10 @@ public class CompanyDetailsRequestSteps {
      */
     @Then("^the response will contain a valid formed EUID$")
     public void theResponseWillContainAValidFormedEuid() throws Throwable {
-        BRCompanyDetailsResponse response = retrieveMessage
-                .checkForResponseByCorrelationId(data.getMessageId());
-        assertNotNull(response);
+        BRCompanyDetailsResponse response = data.getCompanyDetailsResponse();
 
-        assertEquals("Expected EUID: ", String.format("UKEW.%s", defaultCompanyNumber),
+        assertEquals("Expected EUID is incorrect: ", String.format("UKEW.%s", defaultCompanyNumber),
                 response.getCompany().getCompanyEUID().getValue());
-
     }
 
     /**
@@ -344,7 +341,10 @@ public class CompanyDetailsRequestSteps {
                 .checkForResponseByCorrelationId(data.getMessageId());
         assertNotNull(response);
 
-        assertEquals("Expected Company Number: ", companyNumber,
+        data.setCompanyDetailsResponse(response);
+
+        assertNotNull(response.getCompany().getCompanyRegistrationNumber());
+        assertEquals("Expected Company Number appears incorrect: ", companyNumber,
                 response.getCompany().getCompanyRegistrationNumber().getValue());
     }
 
@@ -356,28 +356,21 @@ public class CompanyDetailsRequestSteps {
     @Then("^the response should have the following address details$")
     public void theResponseShouldHaveTheFollowingAddressDetails(List<String> addressDetails)
             throws Throwable {
-        BRCompanyDetailsResponse response = retrieveMessage
-                .checkForResponseByCorrelationId(data.getMessageId());
-        assertNotNull(response);
+        BRCompanyDetailsResponse response = data.getCompanyDetailsResponse();
 
-        String postCode = addressDetails.get(0);
-        assertEquals("Expected Postal code: ", postCode,
+        assertEquals("Expected Postal code is incorrect: ", addressDetails.get(0),
                 response.getCompany().getCompanyRegisteredOffice().getPostalCode().getValue());
 
-        String addressLine1 = addressDetails.get(1);
-        assertEquals("Expected Address Line 1: ", addressLine1,
+        assertEquals("Expected Address Line 1 is incorrect: ", addressDetails.get(1),
                 response.getCompany().getCompanyRegisteredOffice().getAddressLine1().getValue());
 
-        String addressLine2 = addressDetails.get(2);
-        assertEquals("Expected Address Line 2: ", addressLine2,
+        assertEquals("Expected Address Line 2 is incorrect: ", addressDetails.get(2),
                 response.getCompany().getCompanyRegisteredOffice().getAddressLine2().getValue());
 
-        String addressLine3 = addressDetails.get(3);
-        assertEquals("Expected Address Line 3: ", addressLine3,
+        assertEquals("Expected Address Line 3 is incorrect: ", addressDetails.get(3),
                 response.getCompany().getCompanyRegisteredOffice().getAddressLine3().getValue());
 
-        String country = addressDetails.get(4);
-        assertEquals("Expected Country: ", country,
+        assertEquals("Expected Country is incorrect: ", addressDetails.get(4),
                 response.getCompany().getCompanyRegisteredOffice().getCountry().getValue());
     }
 }
