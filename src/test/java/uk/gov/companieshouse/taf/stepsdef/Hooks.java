@@ -10,6 +10,8 @@ import java.io.IOException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,14 +21,18 @@ import org.springframework.data.mongodb.core.query.Query;
 
 public class Hooks {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Hooks.class);
+
     private static final String COMPANY_PROFILE = "company_profile";
     private static final String COMPANY_FILING_HISTORY = "company_filing_history";
-    private static final String TEST_COMPANY_PROFILE_FILENAME = "test-company-profile.json";
-    private static final String TEST_COMPANY_FILING_HISTORY_FILENAME = "test-company-filing"
-            + "-history.json";
+    private static final String COMPANY_PROFILES_FOLDER = "src/test/resources/data/"
+            + "company_profiles/";
+    private static final String COMPANY_FILING_HISTORY_FOLDER = "src/test/resources/data/"
+            + "company_filing_history/";
 
     @Value("${default.company.number}")
     private String defaultCompanyNumber;
+
 
     @Autowired
     @Qualifier("CompanyProfileMongoDbTemplate")
@@ -45,11 +51,10 @@ public class Hooks {
      */
     @Before
     public void setUpData() throws IOException, ParseException {
-        companyProfileMongoTemplate.insert(getJsonFromFile(TEST_COMPANY_PROFILE_FILENAME),
-                COMPANY_PROFILE);
-        companyFilingHistoryMongoTemplate.insert(getJsonFromFile(
-                TEST_COMPANY_FILING_HISTORY_FILENAME),
-                COMPANY_FILING_HISTORY);
+        // Add all company profiles from the data source folder
+        addCompanyProfileData();
+        // Add all company filing history data
+        addCompanyFilingHistoryData();
     }
 
     /**
@@ -62,6 +67,34 @@ public class Hooks {
         companyFilingHistoryMongoTemplate.remove(new Query(Criteria.where("company_number")
                         .is(defaultCompanyNumber)),
                 COMPANY_FILING_HISTORY);
+    }
+
+    private void addCompanyProfileData() throws IOException, ParseException {
+        File folder = new File(COMPANY_PROFILES_FOLDER);
+        File[] listOfFiles = folder.listFiles((file, name) -> name.endsWith(".json"));
+
+        if (listOfFiles != null) {
+            for (File file : listOfFiles) {
+                String fileNames = file.getName();
+                companyProfileMongoTemplate.insert(getJsonFromFile(fileNames),
+                        COMPANY_PROFILE);
+                LOGGER.info("Adding company profile data for company {}", fileNames);
+            }
+        }
+    }
+
+    private void addCompanyFilingHistoryData() throws IOException, ParseException {
+        File folder = new File(COMPANY_FILING_HISTORY_FOLDER);
+        File[] listOfFiles = folder.listFiles((file, name) -> name.endsWith(".json"));
+
+        if (listOfFiles != null) {
+            for (File file : listOfFiles) {
+                String fileNames = file.getName();
+                companyFilingHistoryMongoTemplate.insert(getJsonFromFile(fileNames),
+                        COMPANY_FILING_HISTORY);
+                LOGGER.info("Adding company filing history data for company {}", fileNames);
+            }
+        }
     }
 
     private String getJsonFromFile(String filename) throws IOException, ParseException {
