@@ -1,6 +1,9 @@
 package uk.gov.companieshouse.taf.stepsdef;
 
+import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsResponse;
+
 import java.util.UUID;
+
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,11 +17,29 @@ public class RequestData {
     private String messageId = UUID.randomUUID().toString();
     private String correlationId = messageId;
 
+    public void setCompanyDetailsResponse(BRCompanyDetailsResponse companyDetailsResponse) {
+        this.companyDetailsResponse = companyDetailsResponse;
+    }
+
+    private BRCompanyDetailsResponse companyDetailsResponse;
+
     public String getMessageId() {
         return messageId;
     }
 
     public String getCorrelationId() {
         return correlationId;
+    }
+
+    public String setCorrelationId(String correlationId) {
+        return this.correlationId = correlationId;
+    }
+
+    public String setMessageId(String messageId) {
+        return this.messageId = messageId;
+    }
+
+    public BRCompanyDetailsResponse getCompanyDetailsResponse() {
+        return companyDetailsResponse;
     }
 }

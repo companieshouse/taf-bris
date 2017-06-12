@@ -29,22 +29,11 @@ public class RequestHelper {
             String countryCode) {
 
         BRCompanyDetailsRequest request = new BRCompanyDetailsRequest();
-        request.setMessageHeader(getMessageHeader(correlationId, messageId));
+        request.setMessageHeader(getMessageHeader(correlationId, messageId,
+                businessRegisterId, countryCode));
         request.setBusinessRegisterReference(businessRegReference(countryCode,
                 businessRegisterId));
         request.setCompanyRegistrationNumber(companyRegNumber(companyRegistrationNumber));
-        return request;
-    }
-
-    /**
-     * Create new instance of Business Error.
-     */
-    public static BRBusinessError newInstance(
-            String correlationId,
-            String messageId) {
-
-        BRBusinessError request = new BRBusinessError();
-        request.setMessageHeader(getMessageHeader(correlationId, messageId));
         return request;
     }
 
@@ -66,7 +55,8 @@ public class RequestHelper {
                                                         String documentId) {
 
         BRRetrieveDocumentRequest request = new BRRetrieveDocumentRequest();
-        request.setMessageHeader(getMessageHeader(correlationId, messageId));
+        request.setMessageHeader(getMessageHeader(correlationId, messageId,
+                businessRegisterId, countryCode));
         request.setBusinessRegisterReference(businessRegReference(countryCode,
                 businessRegisterId));
 
@@ -78,7 +68,10 @@ public class RequestHelper {
         return request;
     }
 
-    private static MessageHeaderType getMessageHeader(String correlationId, String messageId) {
+    private static MessageHeaderType getMessageHeader(String correlationId,
+                                                      String messageId,
+                                                      String businessRegisterId,
+                                                      String countryCode) {
         MessageHeaderType messageHeaderType = new MessageHeaderType();
         CorrelationIDType correlationIdType = new CorrelationIDType();
         correlationIdType.setValue(correlationId);
@@ -94,11 +87,11 @@ public class RequestHelper {
         BusinessRegisterIDType businessRegisterIdType = new BusinessRegisterIDType();
 
         //BusinessRegisterID
-        businessRegisterIdType.setValue("EW");
+        businessRegisterIdType.setValue(businessRegisterId);
 
         //BusinessRegisterCountry Country
         CountryType countryType = new CountryType();
-        countryType.setValue("UK");
+        countryType.setValue(countryCode);
 
         BusinessRegisterReferenceType businessRegisterReferenceType
                 = new BusinessRegisterReferenceType();

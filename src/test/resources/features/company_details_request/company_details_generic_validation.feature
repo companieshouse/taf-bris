@@ -1,4 +1,4 @@
-@wip
+@regression @company_details_request
 Feature: Generic validation of company details request
 
   In order to request company details
@@ -13,9 +13,12 @@ Feature: Generic validation of company details request
   Scenario: Business register id must correspond business country
     Given the request contains an invalid business register id
     When I make a company details request
-    # BRIS-98 Then I should get a message with the error code ERR_BR_5102
+    Then I should get a message with the error code ERR_BR_0103
 
+  @defect
   Scenario: Business register id and country code must match receiving Business Register
     Given the request is not correct for the receiving business register
     When I make a company details request
-    #  BRIS-98  Then I should get a message with the error code ERR_BR_0103
+    Then I should get a message with the error code ERR_BR_0103
+
+    # GEN06 states: BusinessRegisterCountry and/or BusinessRegisterID not correct for the receiving Business Register.
