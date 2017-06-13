@@ -106,6 +106,11 @@ public class RetrieveBrisTestMessageService {
      */
     public byte[] getActualPdfDocument(String correlationId) {
         IncomingBrisMessage incomingBrisMessage = getIncomingBrisMessageFromMongo(correlationId);
+
+        if (incomingBrisMessage.getData() == null) {
+            throw new RuntimeException("No binary object retrieved for the document."
+                    + " Check that the TEST_MODE flag is set to 1 on the components.");
+        }
         return incomingBrisMessage.getData().getData();
     }
 
