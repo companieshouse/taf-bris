@@ -46,6 +46,9 @@ public class CompanyDetailsRequestSteps {
 
     private OutgoingBrisMessage outgoingBrisMessage;
 
+    @Value("${plc.company.number}")
+    private String plc;
+
     /**
      * Create valid company details request.
      */
@@ -224,7 +227,7 @@ public class CompanyDetailsRequestSteps {
      *
      * @param legalEntity code that represents the company type
      */
-    @Given("^the user is requesting the details of a \"([^\"]*)\" company$")
+    @Given("^the user is requesting the details of a ([^\"]*) company$")
     public void theUserIsRequestingTheDetailsOfACompany(String legalEntity) throws Throwable {
         // Load the app data required for the legal entity
         switch (legalEntity.toUpperCase()) {
@@ -242,6 +245,8 @@ public class CompanyDetailsRequestSteps {
                 break;
             case "LF_UK_005":
                 // Load Public Limited Company
+                LOGGER.info("Testing against the cloned data for company {}", plc);
+                requestingTheCompanyDetailsForCompany(plc);
                 break;
             case "LF_UK_006":
                 // Load Unregistered Company
@@ -290,7 +295,7 @@ public class CompanyDetailsRequestSteps {
     @Then("^the correct company details will be returned to the ECP$")
     public void theCorrectCompanyDetailsWillBeReturnedToTheEcp() throws Throwable {
         BRCompanyDetailsResponse response = retrieveMessage
-                .checkForResponseByCorrelationId(data.getMessageId());
+                .checkForResponseByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
         assertEquals("Expected Correlation ID:", data.getCorrelationId(),
                 response.getMessageHeader().getCorrelationID().getValue());

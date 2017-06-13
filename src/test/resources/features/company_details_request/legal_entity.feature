@@ -19,19 +19,19 @@ Feature: This feature demonstrates the various company types that can be searche
   LF_UK_008 - Private Limited by Guarantee/no share capital(use of Limited exemption)
   LF_UK_009 - Overseas Company
 
-  Scenario Outline: User can search for a company with the company type "Limited"
-    Given the user is requesting the details of a "<company_type>" company
+  Scenario Outline: User can search for a company with various company types
+    Given the user is requesting the details of a <company_type> company
     When I make a company details request
     Then the correct company details will be returned to the ECP
 
     Examples:
       | company_type |
-      | LF_UK_001    |
-      | LF_UK_002    |
-      | LF_UK_003    |
-      | LF_UK_004    |
+#      | LF_UK_001    |
+#      | LF_UK_002    |
+#      | LF_UK_003    |
+#      | LF_UK_004    |
       | LF_UK_005    |
-      | LF_UK_006    |
-      | LF_UK_007    |
-      | LF_UK_008    |
-      | LF_UK_009    |
+#      | LF_UK_006    |
+#      | LF_UK_007    |
+#      | LF_UK_008    |
+#      | LF_UK_009    |

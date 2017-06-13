@@ -17,6 +17,9 @@ public class Hooks {
     @Value("${default.company.number}")
     private String defaultCompanyNumber;
 
+    @Value("${plc.company.number}")
+    private String plcCompanyNumber;
+
     /**
      * Inserts the company details data prior to executing the tests to ensure data consistency.
      * Note that this set up step will run for all scenarios.
@@ -25,6 +28,7 @@ public class Hooks {
     public void setUpDataForAllScenarios() {
         List<String> companiesToLoad = new ArrayList<>();
         companiesToLoad.add(defaultCompanyNumber);
+        companiesToLoad.add(plcCompanyNumber);
         testDataHelper.setUpTestData(companiesToLoad);
     }
 
@@ -36,6 +40,7 @@ public class Hooks {
     public void tearDownDataForAllScenarios() {
         List<String> companiesToRemove = new ArrayList<>();
         companiesToRemove.add(defaultCompanyNumber);
+        companiesToRemove.add(plcCompanyNumber);
         testDataHelper.tearDownTestData(companiesToRemove);
     }
 }
