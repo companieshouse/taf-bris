@@ -19,6 +19,8 @@ public class Hooks {
 
     @Value("${plc.company.number}")
     private String plcCompanyNumber;
+    @Value("${ltd.section30.company.number}")
+    private String privateLimitedSharesSection30Exemption;
 
     /**
      * Inserts the company details data prior to executing the tests to ensure data consistency.
@@ -29,6 +31,7 @@ public class Hooks {
         List<String> companiesToLoad = new ArrayList<>();
         companiesToLoad.add(defaultCompanyNumber);
         companiesToLoad.add(plcCompanyNumber);
+        companiesToLoad.add(privateLimitedSharesSection30Exemption);
         testDataHelper.setUpTestData(companiesToLoad);
     }
 
@@ -41,6 +44,7 @@ public class Hooks {
         List<String> companiesToRemove = new ArrayList<>();
         companiesToRemove.add(defaultCompanyNumber);
         companiesToRemove.add(plcCompanyNumber);
+        companiesToRemove.add(privateLimitedSharesSection30Exemption);
         testDataHelper.tearDownTestData(companiesToRemove);
     }
 }

@@ -1,0 +1,111 @@
+{
+  "_id" : "99990002",
+  "data" : {
+    "last_full_members_list_date" : {"$date" : "2015-09-27T00:00:00.000Z"},
+    "date_of_creation" : {"$date" : "1978-11-27T00:00:00.000Z"},
+    "type" : "private-limited-shares-section-30-exemption",
+    "company_name" : "IFPI SECRETARIAT",
+    "sic_codes" : [
+      "94120"
+    ],
+    "jurisdiction" : "england-wales",
+    "proof_status" : "statutory",
+    "undeliverable_registered_office_address" : false,
+    "has_been_liquidated" : false,
+    "accounts" : {
+      "overdue" : true,
+      "next_due" : {"$date" : "2017-03-31T00:00:00.000Z"},
+      "next_made_up_to" : {"$date" : "2016-06-30T00:00:00.000Z"},
+      "accounting_reference_date" : {
+        "month" : "06",
+        "day" : "30"
+      },
+      "last_accounts" : {
+        "type" : "full",
+        "made_up_to" : {"$date" : "2015-06-30T00:00:00.000Z"},
+        "period_end_on" : {"$date" : "2015-06-30T00:00:00.000Z"},
+        "period_start_on" : {"$date" : "2014-07-01T00:00:00.000Z"}
+      },
+      "next_accounts" : {
+        "due_on" : {"$date" : "2017-03-31T00:00:00.000Z"},
+        "overdue" : true,
+        "period_end_on" : {"$date" : "2016-06-30T00:00:00.000Z"},
+        "period_start_on" : {"$date" : "2015-07-01T00:00:00.000Z"}
+      }
+    },
+    "company_number" : "99990002",
+    "registered_office_address" : {
+      "country" : "England",
+      "locality" : "London",
+      "postal_code" : "W1B 5AD",
+      "address_line_1" : "3rd Floor 7 Air Street"
+    },
+    "etag" : "14fd0738da8ced9f8ab95f10891c8ec0d770e018",
+    "company_status" : "active",
+    "has_insolvency_history" : false,
+    "officer_summary" : {
+      "resigned_count" : 11,
+      "active_count" : 4,
+      "officers" : [
+        {
+          "name" : "NOLAN, John Mark",
+          "date_of_birth" : {"$date" : "1970-01-29T00:00:00.000Z"},
+          "officer_role" : "secretary",
+          "appointed_on" : {"$date" : "2007-04-10T00:00:00.000Z"}
+        },
+        {
+          "appointed_on" : {"$date" : "2010-07-01T00:00:00.000Z"},
+          "officer_role" : "director",
+          "date_of_birth" : {"$date" : "1956-08-01T00:00:00.000Z"},
+          "name" : "MOORE, Frances"
+        },
+        {
+          "appointed_on" : {"$date" : "2007-04-10T00:00:00.000Z"},
+          "officer_role" : "director",
+          "name" : "NOLAN, John Mark",
+          "date_of_birth" : {"$date" : "1970-01-29T00:00:00.000Z"}
+        },
+        {
+          "name" : "OLIVER, Joanne Louise",
+          "date_of_birth" : {"$date" : "1974-06-05T00:00:00.000Z"},
+          "appointed_on" : {"$date" : "2008-10-15T00:00:00.000Z"},
+          "officer_role" : "director"
+        }
+      ]
+    },
+    "has_charges" : true,
+    "previous_company_names" : [
+      {
+        "ceased_on" : {"$date" : "1980-12-31T00:00:00.000Z"},
+        "effective_from" : {"$date" : "1978-11-27T00:00:00.000Z"},
+        "name" : "I F P I (SECRETARIAT) LIMITED"
+      }
+    ],
+    "confirmation_statement" : {
+      "overdue" : false,
+      "last_made_up_to" : {"$date" : "2016-09-27T00:00:00.000Z"},
+      "next_made_up_to" : {"$date" : "2017-09-27T00:00:00.000Z"},
+      "next_due" : {"$date" : "2017-10-11T00:00:00.000Z"}
+    },
+    "links" : {
+      "self" : "/company/99990002",
+      "filing_history" : "/company/99990002/filing-history",
+      "officers" : "/company/99990002/officers",
+      "charges" : "/company/99990002/charges",
+      "persons_with_significant_control_statements" : "/company/99990002/persons-with-significant-control-statements"
+    },
+    "registered_office_is_in_dispute" : false
+  },
+  "has_mortgages" : true,
+  "created" : {
+    "at" : {"$date" : "2015-02-21T16:59:31.725Z"},
+    "by" : "54e8b97385dccb11dd88b668",
+    "type" : "refresh_from_mongo"
+  },
+  "updated" : {
+    "type" : "company_delta",
+    "by" : "57ff936d77af4412a1423002",
+    "at" : {"$date" : "2016-10-13T14:00:13.067Z"}
+  },
+  "delta_at" : {"$date" : "2016-10-13T14:59:16.000Z"}
+}

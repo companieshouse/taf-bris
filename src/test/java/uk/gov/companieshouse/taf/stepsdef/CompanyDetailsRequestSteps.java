@@ -48,6 +48,8 @@ public class CompanyDetailsRequestSteps {
 
     @Value("${plc.company.number}")
     private String plc;
+    @Value("${ltd.section30.company.number}")
+    private String privateLimitedSharesSection30Exemption;
 
     /**
      * Create valid company details request.
@@ -223,16 +225,19 @@ public class CompanyDetailsRequestSteps {
     }
 
     /**
-     * Enters the required company data into the mongo collections.
+     * Creates a company details request based on the company type.
      *
-     * @param legalEntity code that represents the company type
+     * @param companyType the company type
      */
     @Given("^the user is requesting the details of a ([^\"]*) company$")
-    public void theUserIsRequestingTheDetailsOfACompany(String legalEntity) throws Throwable {
+    public void theUserIsRequestingTheDetailsOfACompany(String companyType) throws Throwable {
         // Load the app data required for the legal entity
-        switch (legalEntity.toUpperCase()) {
-            case "LF_UK_001":
+        switch (companyType) {
+            case "private-limited-shares-section-30-exemption":
                 // Load Private Limited by shares company
+                LOGGER.info("Testing against the cloned data for company {}",
+                        privateLimitedSharesSection30Exemption);
+                requestingTheCompanyDetailsForCompany(privateLimitedSharesSection30Exemption);
                 break;
             case "LF_UK_002":
                 // Load EEIG company
@@ -240,10 +245,12 @@ public class CompanyDetailsRequestSteps {
             case "LF_UK_003":
                 // Load European Public Limited-Liability Company
                 break;
-            case "LF_UK_004":
+            case "ltd":
                 // Load Private Limited Company
+                LOGGER.info("Testing against the cloned data for company {}", defaultCompanyNumber);
+                requestingTheCompanyDetailsForCompany(defaultCompanyNumber);
                 break;
-            case "LF_UK_005":
+            case "plc":
                 // Load Public Limited Company
                 LOGGER.info("Testing against the cloned data for company {}", plc);
                 requestingTheCompanyDetailsForCompany(plc);
@@ -261,7 +268,7 @@ public class CompanyDetailsRequestSteps {
                 // Load Overseas Company
                 break;
             default:
-                throw new RuntimeException(legalEntity + " is not a known legal entity");
+                throw new RuntimeException(companyType + " is not a known legal entity");
         }
     }
 
@@ -297,8 +304,24 @@ public class CompanyDetailsRequestSteps {
         BRCompanyDetailsResponse response = retrieveMessage
                 .checkForResponseByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
+
+        data.setCompanyDetailsResponse(response);
         assertEquals("Expected Correlation ID:", data.getCorrelationId(),
                 response.getMessageHeader().getCorrelationID().getValue());
+    }
+
+    /**
+     * Compares the legal entity id in the response to the expected value from the feature.
+     *
+     * @param legalEntity the expected legal entity id
+     */
+    @Then("^the company details response will have the legal entity code ([^\"]*)$")
+    public void theCompanyDetailsResponseWillHaveTheLegalEntityCodeCompany_type(String legalEntity)
+            throws Throwable {
+        BRCompanyDetailsResponse response = data.getCompanyDetailsResponse();
+
+        assertEquals("The Legal Entity ID is incorrect: ", legalEntity,
+                response.getCompany().getCompanyLegalForm().getValue());
     }
 
     /**
