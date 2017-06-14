@@ -1,5 +1,5 @@
 {
-  "_id" : "MzA2NjI5Mjg4M2FkaXF6a2N4RS",
+  "_id" : "MzA2NjI5Mjg4M2FkaXF6a2N4RS5",
   "company_number" : "99990001",
   "_entity_id" : "3066292883",
   "original_description" : "Director's change of particulars / mr james dominic rupert holmes / 15/05/2012",
@@ -12,7 +12,7 @@
     "type" : "CH01",
     "description_values" : {
       "officer_name" : "Mr James Dominic Rupert Holmes",
-      "change_date" : {"$date" : "2012-05-15T00:00:00.000Z"
+      "change_date" : {"$date" : "2012-05-15T00:00:00.000Z"}
     },
     "links" : {
       "document_metadata" : "/document/J7BVoEa1ZfpZj1fal1smj0ZkH28tDiBNXEAZmyz6kPg",
@@ -21,5 +21,5 @@
     "pages" : 2
   },
   "_document_id" : "000X1K6NKCG4984",
-  "_barcode" : "X1K6NKCG"}
+  "_barcode" : "X1K6NKCG"
 }
