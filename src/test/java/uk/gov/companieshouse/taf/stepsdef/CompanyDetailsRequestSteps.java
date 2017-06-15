@@ -50,6 +50,18 @@ public class CompanyDetailsRequestSteps {
     private String plc;
     @Value("${ltd.section30.company.number}")
     private String privateLimitedSharesSection30Exemption;
+    @Value("${eeig.company.number}")
+    private String eeig;
+    @Value("${europeanPlcSe.company.number}")
+    private String europeanPublicLimitedLiabilityCompanySe;
+    @Value("${unregistered.company.number}")
+    private String unregisteredCompany;
+    @Value("${ltdGuarantNsc.company.number}")
+    private String privateLimitedGuarantNsc;
+    @Value("${ltdGuarantNscLtdExemption.company.number}")
+    private String privateLimitedGuarantNscLimitedExemption;
+    @Value("${overseas.company.number}")
+    private String overseaCompany;
 
     /**
      * Create valid company details request.
@@ -239,11 +251,16 @@ public class CompanyDetailsRequestSteps {
                         privateLimitedSharesSection30Exemption);
                 requestingTheCompanyDetailsForCompany(privateLimitedSharesSection30Exemption);
                 break;
-            case "LF_UK_002":
+            case "eeig":
                 // Load EEIG company
+                LOGGER.info("Testing against the cloned data for company {}", eeig);
+                requestingTheCompanyDetailsForCompany(eeig);
                 break;
-            case "LF_UK_003":
+            case "european-public-limited-liability-company-se":
                 // Load European Public Limited-Liability Company
+                LOGGER.info("Testing against the cloned data for company {}",
+                        europeanPublicLimitedLiabilityCompanySe);
+                requestingTheCompanyDetailsForCompany(europeanPublicLimitedLiabilityCompanySe);
                 break;
             case "ltd":
                 // Load Private Limited Company
@@ -255,17 +272,27 @@ public class CompanyDetailsRequestSteps {
                 LOGGER.info("Testing against the cloned data for company {}", plc);
                 requestingTheCompanyDetailsForCompany(plc);
                 break;
-            case "LF_UK_006":
+            case "unregistered-company":
                 // Load Unregistered Company
+                LOGGER.info("Testing against the cloned data for company {}", unregisteredCompany);
+                requestingTheCompanyDetailsForCompany(unregisteredCompany);
                 break;
-            case "LF_UK_007":
+            case "private-limited-guarant-nsc":
                 // Load Private Limited by Guarantee (NSC)
+                LOGGER.info("Testing against the cloned data for company {}",
+                        privateLimitedGuarantNsc);
+                requestingTheCompanyDetailsForCompany(privateLimitedGuarantNsc);
                 break;
-            case "LF_UK_008":
+            case "private-limited-guarant-nsc-limited-exemption":
                 // Load Private Limited by Guarantee (NSC) (Exempt)
+                LOGGER.info("Testing against the cloned data for company {}",
+                        privateLimitedGuarantNscLimitedExemption);
+                requestingTheCompanyDetailsForCompany(privateLimitedGuarantNscLimitedExemption);
                 break;
-            case "LF_UK_009":
+            case "oversea-company":
                 // Load Overseas Company
+                LOGGER.info("Testing against the cloned data for company {}", overseaCompany);
+                requestingTheCompanyDetailsForCompany(overseaCompany);
                 break;
             default:
                 throw new RuntimeException(companyType + " is not a known legal entity");

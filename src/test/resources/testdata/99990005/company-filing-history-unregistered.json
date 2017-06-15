@@ -1,0 +1,23 @@
+{
+  "_id": "MDE1ODc3ODc2MWFkaXF6a2RS",
+  "company_number": "99990005",
+  "_document_id": "000A5DMSDL42945",
+  "data": {
+    "type": "288a",
+    "description_values": {
+      "description": "New secretary appointed"
+    },
+    "category": "officers",
+    "description": "legacy",
+    "date": {
+      "$date": "2006-03-15T12:00:01.000Z"
+    },
+    "links": {
+      "self": "/company/99990005/filing-history/MDE1ODc3ODc2MWFkaXF6a2N4",
+      "document_metadata": "/document/yys3hE0qbIPXh0LqxbDEWfMKb4uTEH6rszZMnDXQ9tI"
+    },
+    "pages": 2,
+    "paper_filed": true
+  },
+  "_entity_id": "0158778761"
+}

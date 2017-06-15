@@ -26,13 +26,13 @@ Feature: This feature demonstrates the various company types that can be searche
     And the company details response will have the legal entity code <legal_entity_code>
 
     Examples:
-      | company_type                                | legal_entity_code |
-      | private-limited-shares-section-30-exemption | LF_UK_001         |
-#      || LF_UK_002    |
-#      || LF_UK_003    |
-#      | ltd          | LF_UK_004         |
-#      | plc          | LF_UK_005         |
-#      || LF_UK_006    |
-#      || LF_UK_007    |
-#      || LF_UK_008    |
-#      || LF_UK_009    |
+      | company_type                                  | legal_entity_code |
+      | private-limited-shares-section-30-exemption   | LF_UK_001         |
+      | eeig                                          | LF_UK_002         |
+      | european-public-limited-liability-company-se  | LF_UK_003         |
+#      | ltd                                           | LF_UK_004         |
+#      | plc                                           | LF_UK_005         |
+      | unregistered-company                          | LF_UK_006         |
+      | private-limited-guarant-nsc                   | LF_UK_007         |
+#      | private-limited-guarant-nsc-limited-exemption | LF_UK_008         |
+#      | oversea-company                               | LF_UK_009         |

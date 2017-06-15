@@ -21,6 +21,18 @@ public class Hooks {
     private String plcCompanyNumber;
     @Value("${ltd.section30.company.number}")
     private String privateLimitedSharesSection30Exemption;
+    @Value("${eeig.company.number}")
+    private String eeig;
+    @Value("${europeanPlcSe.company.number}")
+    private String europeanPublicLimitedLiabilityCompanySe;
+    @Value("${unregistered.company.number}")
+    private String unregisteredCompany;
+    @Value("${ltdGuarantNsc.company.number}")
+    private String privateLimitedGuarantNsc;
+    @Value("${ltdGuarantNscLtdExemption.company.number}")
+    private String privateLimitedGuarantNscLimitedExemption;
+    @Value("${overseas.company.number}")
+    private String overseaCompany;
 
     /**
      * Inserts the company details data prior to executing the tests to ensure data consistency.
@@ -32,6 +44,12 @@ public class Hooks {
         companiesToLoad.add(defaultCompanyNumber);
         companiesToLoad.add(plcCompanyNumber);
         companiesToLoad.add(privateLimitedSharesSection30Exemption);
+        companiesToLoad.add(eeig);
+        companiesToLoad.add(europeanPublicLimitedLiabilityCompanySe);
+        companiesToLoad.add(unregisteredCompany);
+        companiesToLoad.add(privateLimitedGuarantNsc);
+        companiesToLoad.add(privateLimitedGuarantNscLimitedExemption);
+        companiesToLoad.add(overseaCompany);
         testDataHelper.setUpTestData(companiesToLoad);
     }
 
@@ -45,6 +63,12 @@ public class Hooks {
         companiesToRemove.add(defaultCompanyNumber);
         companiesToRemove.add(plcCompanyNumber);
         companiesToRemove.add(privateLimitedSharesSection30Exemption);
+        companiesToRemove.add(eeig);
+        companiesToRemove.add(europeanPublicLimitedLiabilityCompanySe);
+        companiesToRemove.add(unregisteredCompany);
+        companiesToRemove.add(privateLimitedGuarantNsc);
+        companiesToRemove.add(privateLimitedGuarantNscLimitedExemption);
+        companiesToRemove.add(overseaCompany);
         testDataHelper.tearDownTestData(companiesToRemove);
     }
 }

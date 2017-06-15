@@ -1,0 +1,21 @@
+{
+  "_id": "MDA3ODM1MjA2NGFkaXF6a2RS",
+  "_entity_id": "0078352064",
+  "data": {
+    "date": {
+      "$date": "1997-06-30T11:59:56.000Z"
+    },
+    "category": "incorporation",
+    "description": "registration-of-european-economic-interest-group-address-in-uk",
+    "type": "EEIG-ADD",
+    "links": {
+      "document_metadata": "/document/6aqWbO4ahngoLpOCtmEP-fVomVKP1aZLcLvSzOhc1ZI",
+      "self": "/company/99990003/filing-history/MDA3ODM1MjA2NGFkaXF6a2N4"
+    },
+    "pages": 6,
+    "paper_filed": true
+  },
+  "company_number": "99990003",
+  "_document_id": "000A31XBWWE0636",
+  "original_description": "E.E.I.G. record added"
+}

@@ -1,0 +1,133 @@
+{
+  "_id": "99990004",
+  "has_mortgages": false,
+  "data": {
+    "undeliverable_registered_office_address": false,
+    "company_number": "99990004",
+    "has_been_liquidated": false,
+    "last_full_members_list_date": {
+      "$date": "2016-05-12T00:00:00.000Z"
+    },
+    "company_name": "LOS ABRIGOS SE",
+    "accounts": {
+      "next_due": {
+        "$date": "2016-10-31T00:00:00.000Z"
+      },
+      "accounting_reference_date": {
+        "day": "31",
+        "month": "05"
+      },
+      "last_accounts": {
+        "made_up_to": {
+          "$date": "2015-05-31T00:00:00.000Z"
+        },
+        "type": "dormant",
+        "period_end_on": {
+          "$date": "2015-05-31T00:00:00.000Z"
+        },
+        "period_start_on": {
+          "$date": "2014-06-01T00:00:00.000Z"
+        }
+      },
+      "next_made_up_to": {
+        "$date": "2016-05-31T00:00:00.000Z"
+      },
+      "overdue": true,
+      "next_accounts": {
+        "due_on": {
+          "$date": "2016-10-31T00:00:00.000Z"
+        },
+        "overdue": true,
+        "period_end_on": {
+          "$date": "2016-05-31T00:00:00.000Z"
+        },
+        "period_start_on": {
+          "$date": "2015-06-01T00:00:00.000Z"
+        }
+      }
+    },
+    "sic_codes": [
+      "64209"
+    ],
+    "annual_return": {
+      "overdue": false,
+      "last_made_up_to": {
+        "$date": "2016-05-12T00:00:00.000Z"
+      }
+    },
+    "type": "european-public-limited-liability-company-se",
+    "registered_office_address": {
+      "address_line_2": "Wood Green",
+      "postal_code": "N22 8HH",
+      "address_line_1": "Dept 1254 196 High Road",
+      "locality": "London"
+    },
+    "jurisdiction": "united-kingdom",
+    "date_of_creation": {
+      "$date": "2012-05-01T00:00:00.000Z"
+    },
+    "officer_summary": {
+      "officers": [
+        {
+          "name": "HERYCH, Michal",
+          "officer_role": "member-of-an-administrative-organ",
+          "appointed_on": {
+            "$date": "2014-04-25T00:00:00.000Z"
+          },
+          "date_of_birth": {
+            "$date": "1964-03-20T00:00:00.000Z"
+          }
+        }
+      ],
+      "resigned_count": 3,
+      "active_count": 1
+    },
+    "etag": "2043c84d12eb742ae28421daf6c68694ed381d98",
+    "company_status": "active",
+    "previous_company_names": [
+      {
+        "ceased_on": {
+          "$date": "2014-05-27T00:00:00.000Z"
+        },
+        "name": "ALIARSE SE",
+        "effective_from": {
+          "$date": "2012-05-01T00:00:00.000Z"
+        }
+      }
+    ],
+    "has_insolvency_history": false,
+    "has_charges": false,
+    "confirmation_statement": {
+      "overdue": false,
+      "next_made_up_to": {
+        "$date": "2017-05-12T00:00:00.000Z"
+      },
+      "next_due": {
+        "$date": "2017-05-26T00:00:00.000Z"
+      }
+    },
+    "links": {
+      "self": "/company/99990004",
+      "filing_history": "/company/99990004/filing-history",
+      "officers": "/company/99990004/officers"
+    },
+    "registered_office_is_in_dispute": false
+  },
+  "updated": {
+    "type": "officer_delta",
+    "by": "5819dc57147a2840aa740b01",
+    "at": {
+      "$date": "2016-11-02T14:49:11.046Z"
+    }
+  },
+  "created": {
+    "at": {
+      "$date": "2015-02-21T18:40:28.732Z"
+    },
+    "by": "54e8d11c85dccb11dd52377d",
+    "type": "refresh_from_mongo"
+  },
+  "delta_at": {
+    "$date": "2016-11-02T11:15:24.000Z"
+  }
+}
