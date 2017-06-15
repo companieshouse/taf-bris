@@ -15,10 +15,7 @@ Feature: Generic validation of company details request
     When I make a company details request
     Then I should get a message with the error code ERR_BR_0103
 
-  @defect
   Scenario: Business register id and country code must match receiving Business Register
     Given the request is not correct for the receiving business register
     When I make a company details request
     Then I should get a message with the error code ERR_BR_0103
-
-    # GEN06 states: BusinessRegisterCountry and/or BusinessRegisterID not correct for the receiving Business Register.

@@ -290,7 +290,7 @@ public class CompanyDetailsRequestSteps {
     @Then("^the correct company details will be returned to the ECP$")
     public void theCorrectCompanyDetailsWillBeReturnedToTheEcp() throws Throwable {
         BRCompanyDetailsResponse response = retrieveMessage
-                .checkForResponseByCorrelationId(data.getMessageId());
+                .checkForResponseByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
         assertEquals("Expected Correlation ID:", data.getCorrelationId(),
                 response.getMessageHeader().getCorrelationID().getValue());
@@ -315,7 +315,7 @@ public class CompanyDetailsRequestSteps {
     @Then("^no response will be created$")
     public void noResponseWillBeCreated() throws Throwable {
         BRCompanyDetailsResponse response = retrieveMessage
-                .checkForResponseByCorrelationId(data.getMessageId());
+                .checkForResponseByCorrelationId(data.getCorrelationId());
         assertNull(response);
     }
 
@@ -338,7 +338,7 @@ public class CompanyDetailsRequestSteps {
     @Then("^the response will contain the company details for ([^\"]*)$")
     public void theResponseWillContainTheCompanyDetailsFor(String companyNumber) throws Throwable {
         BRCompanyDetailsResponse response = retrieveMessage
-                .checkForResponseByCorrelationId(data.getMessageId());
+                .checkForResponseByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
 
         data.setCompanyDetailsResponse(response);

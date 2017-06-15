@@ -8,7 +8,7 @@ Feature: Schema validation of BRIS request messages
   Information:
   The below scenarios should never be sent from the BRIS ECP due to failing schema validation.
   The scenarios are provided for context to demonstrate what could happen if these messages were to
-  sent to our BRIS service.
+  be sent from the BRIS service.
 
   Scenario: Request contains an invalid correlation id
     Given the request contains an invalid correlation id
