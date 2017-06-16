@@ -1,4 +1,4 @@
-@wip
+@regression @company_details_request @legal_entity
 Feature: This feature demonstrates the various company types that can be searched for by the ECP
 
   In order to review company details regardless of company type
