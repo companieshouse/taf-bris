@@ -44,7 +44,8 @@ public class DocumentRequestSteps {
      */
     @Given("^the request contains a valid document id of (.*)$")
     public void theRequestContainsAValidDocumentIdOf(String documentId) throws Throwable {
-        BRRetrieveDocumentRequest retrieveDocumentRequest = RequestHelper.newInstance(
+        BRRetrieveDocumentRequest retrieveDocumentRequest = RequestHelper
+                .getRetrieveDocumentRequest(
                 data.getCorrelationId(),
                 data.getMessageId(),
                 defaultCompanyNumber,
@@ -61,7 +62,8 @@ public class DocumentRequestSteps {
      */
     @Given("^the request contains a document id that does not exist$")
     public void theRequestContainsADocumentIdThatDoesNotExist() throws Throwable {
-        BRRetrieveDocumentRequest retrieveDocumentRequest = RequestHelper.newInstance(
+        BRRetrieveDocumentRequest retrieveDocumentRequest = RequestHelper
+                .getRetrieveDocumentRequest(
                 data.getCorrelationId(),
                 data.getMessageId(),
                 defaultCompanyNumber,
@@ -79,7 +81,8 @@ public class DocumentRequestSteps {
     @Given("^the request contains an invalid document id$")
     public void theRequestContainsAnInvalidDocumentId() throws Throwable {
         // Unsure as to what makes document id invalid. Setting to null as placeholder for now
-        BRRetrieveDocumentRequest retrieveDocumentRequest = RequestHelper.newInstance(
+        BRRetrieveDocumentRequest retrieveDocumentRequest = RequestHelper
+                .getRetrieveDocumentRequest(
                 data.getCorrelationId(),
                 data.getMessageId(),
                 defaultCompanyNumber,
