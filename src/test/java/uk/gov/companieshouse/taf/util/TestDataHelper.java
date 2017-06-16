@@ -17,6 +17,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -34,6 +35,9 @@ public class TestDataHelper {
     private static final String COMPANY_PROFILE = "company_profile";
     private static final String COMPANY_FILING_HISTORY = "company_filing_history";
     private static final String TEST_DATA_FOLDER = "testdata";
+
+    @Value("${default.company.number}")
+    private String defaultCompanyNumber;
 
     @Autowired
     @Qualifier("BrisMongoDbTemplate")
@@ -137,10 +141,9 @@ public class TestDataHelper {
 
     /**
      * Helper method to setup test data required to force the BRIS application to
-     * reject a message with a duplicate corrleation id and message id.
-     * @param companyNumber company number used to genarate the duplicate entry
+     * reject a message with a duplicate corrlelation id and message id.
      */
-    public void setupDataForDuplicateMessageTest(String companyNumber) {
+    public void setupDataForDuplicateMessageTest() {
 
         // First add the duplicate request directly to the Bris Incoming collection so that it will
         // clash when we try to send another request with the same correlation and message id
@@ -152,7 +155,7 @@ public class TestDataHelper {
         BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
                 requestData.getCorrelationId(),
                 requestData.getMessageId(),
-                companyNumber,
+                defaultCompanyNumber,
                 "EW",
                 "UK");
 
@@ -167,7 +170,7 @@ public class TestDataHelper {
 
         } catch (JAXBException ex) {
             throw new RuntimeException("Unable to marshal duplicate message for the company "
-                    + companyNumber);
+                    + defaultCompanyNumber);
         }
 
         incomingBrisMessage.setMessage(xmlString);

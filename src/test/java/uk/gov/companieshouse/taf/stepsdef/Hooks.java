@@ -98,6 +98,6 @@ public class Hooks {
      */
     @Before("@loadDuplicateCompanyDetailsRequestData")
     public void setupDataForDuplicateMessageTest() {
-        testDataHelper.setupDataForDuplicateMessageTest(defaultCompanyNumber);
+        testDataHelper.setupDataForDuplicateMessageTest();
     }
 }
