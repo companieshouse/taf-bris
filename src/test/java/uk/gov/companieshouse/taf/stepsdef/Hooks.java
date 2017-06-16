@@ -60,7 +60,6 @@ public class Hooks {
         companiesToLoad.add(privateLimitedGuarantNscLimitedExemption);
         companiesToLoad.add(overseaCompany);
         testDataHelper.setUpTestData(companiesToLoad);
-
     }
 
     /**
@@ -70,14 +69,7 @@ public class Hooks {
     @After
     public void tearDownDataForAllScenarios() {
         List<String> companiesToRemove = new ArrayList<>();
-        companiesToRemove.add(plcCompanyNumber);
-        companiesToRemove.add(privateLimitedSharesSection30Exemption);
-        companiesToRemove.add(eeig);
-        companiesToRemove.add(europeanPublicLimitedLiabilityCompanySe);
-        companiesToRemove.add(unregisteredCompany);
-        companiesToRemove.add(privateLimitedGuarantNsc);
-        companiesToRemove.add(privateLimitedGuarantNscLimitedExemption);
-        companiesToRemove.add(overseaCompany);
+        companiesToRemove.add(defaultCompanyNumber);
         testDataHelper.tearDownTestData(companiesToRemove);
     }
 
@@ -87,7 +79,13 @@ public class Hooks {
     @After("@legal_entity")
     public void tearDownDataForLegalEntityScenario() {
         List<String> companiesToRemove = new ArrayList<>();
-        companiesToRemove.add(defaultCompanyNumber);
+        companiesToRemove.add(privateLimitedSharesSection30Exemption);
+        companiesToRemove.add(eeig);
+        companiesToRemove.add(europeanPublicLimitedLiabilityCompanySe);
+        companiesToRemove.add(unregisteredCompany);
+        companiesToRemove.add(privateLimitedGuarantNsc);
+        companiesToRemove.add(privateLimitedGuarantNscLimitedExemption);
+        companiesToRemove.add(overseaCompany);
         testDataHelper.tearDownTestData(companiesToRemove);
     }
 }
