@@ -13,7 +13,9 @@ import eu.europa.ec.bris.v140.jaxb.components.basic.CountryType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.DocumentIDType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.MessageIDType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.PaymentReferenceType;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RequestHelper {
 
     private static final String PAYMENT_REF = "PR";
@@ -21,7 +23,7 @@ public class RequestHelper {
     /**
      * Create new instance of BRCompany Detail Request.
      */
-    public static BRCompanyDetailsRequest newInstance(
+    public static BRCompanyDetailsRequest getCompanyDetailsRequest(
             String correlationId,
             String messageId,
             String companyRegistrationNumber,
@@ -47,12 +49,13 @@ public class RequestHelper {
      * @param countryCode               the business country code e.g. UK
      * @param documentId                the document to be requested id
      */
-    public static BRRetrieveDocumentRequest newInstance(String correlationId,
-                                                        String messageId,
-                                                        String companyRegistrationNumber,
-                                                        String businessRegisterId,
-                                                        String countryCode,
-                                                        String documentId) {
+    public static BRRetrieveDocumentRequest getRetrieveDocumentRequest(
+            String correlationId,
+            String messageId,
+            String companyRegistrationNumber,
+            String businessRegisterId,
+            String countryCode,
+            String documentId) {
 
         BRRetrieveDocumentRequest request = new BRRetrieveDocumentRequest();
         request.setMessageHeader(getMessageHeader(correlationId, messageId,
@@ -141,6 +144,4 @@ public class RequestHelper {
         documentIdType.setValue(documentId);
         return documentIdType;
     }
-
-    /* ---- Getters and Setters ---- */
 }
