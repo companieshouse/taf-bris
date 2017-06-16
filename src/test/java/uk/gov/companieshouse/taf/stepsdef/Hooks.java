@@ -42,6 +42,15 @@ public class Hooks {
     public void setUpDataForAllScenarios() {
         List<String> companiesToLoad = new ArrayList<>();
         companiesToLoad.add(defaultCompanyNumber);
+        testDataHelper.setUpTestData(companiesToLoad);
+    }
+
+    /**
+     * Inserts all the test data required for testing the legal entity feature.
+     */
+    @Before("@legal_entity")
+    public void setDataForLegalEntityScenario() {
+        List<String> companiesToLoad = new ArrayList<>();
         companiesToLoad.add(plcCompanyNumber);
         companiesToLoad.add(privateLimitedSharesSection30Exemption);
         companiesToLoad.add(eeig);
@@ -51,6 +60,7 @@ public class Hooks {
         companiesToLoad.add(privateLimitedGuarantNscLimitedExemption);
         companiesToLoad.add(overseaCompany);
         testDataHelper.setUpTestData(companiesToLoad);
+
     }
 
     /**
@@ -60,7 +70,6 @@ public class Hooks {
     @After
     public void tearDownDataForAllScenarios() {
         List<String> companiesToRemove = new ArrayList<>();
-        companiesToRemove.add(defaultCompanyNumber);
         companiesToRemove.add(plcCompanyNumber);
         companiesToRemove.add(privateLimitedSharesSection30Exemption);
         companiesToRemove.add(eeig);
@@ -69,6 +78,16 @@ public class Hooks {
         companiesToRemove.add(privateLimitedGuarantNsc);
         companiesToRemove.add(privateLimitedGuarantNscLimitedExemption);
         companiesToRemove.add(overseaCompany);
+        testDataHelper.tearDownTestData(companiesToRemove);
+    }
+
+    /**
+     * Cleans up the data that has been injected for legal entity testing purposes.
+     */
+    @After("@legal_entity")
+    public void tearDownDataForLegalEntityScenario() {
+        List<String> companiesToRemove = new ArrayList<>();
+        companiesToRemove.add(defaultCompanyNumber);
         testDataHelper.tearDownTestData(companiesToRemove);
     }
 }
