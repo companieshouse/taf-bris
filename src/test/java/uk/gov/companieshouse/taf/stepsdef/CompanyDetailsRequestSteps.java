@@ -46,6 +46,23 @@ public class CompanyDetailsRequestSteps {
 
     private OutgoingBrisMessage outgoingBrisMessage;
 
+    @Value("${plc.company.number}")
+    private String plc;
+    @Value("${ltd.section30.company.number}")
+    private String privateLimitedSharesSection30Exemption;
+    @Value("${eeig.company.number}")
+    private String eeig;
+    @Value("${europeanPlcSe.company.number}")
+    private String europeanPublicLimitedLiabilityCompanySe;
+    @Value("${unregistered.company.number}")
+    private String unregisteredCompany;
+    @Value("${ltdGuarantNsc.company.number}")
+    private String privateLimitedGuarantNsc;
+    @Value("${ltdGuarantNscLtdExemption.company.number}")
+    private String privateLimitedGuarantNscLimitedExemption;
+    @Value("${overseas.company.number}")
+    private String overseaCompany;
+
     /**
      * Create valid company details request.
      */
@@ -220,43 +237,65 @@ public class CompanyDetailsRequestSteps {
     }
 
     /**
-     * Enters the required company data into the mongo collections.
+     * Creates a company details request based on the company type.
      *
-     * @param legalEntity code that represents the company type
+     * @param companyType the company type
      */
-    @Given("^the user is requesting the details of a \"([^\"]*)\" company$")
-    public void theUserIsRequestingTheDetailsOfACompany(String legalEntity) throws Throwable {
+    @Given("^the user is requesting the details of a ([^\"]*) company$")
+    public void theUserIsRequestingTheDetailsOfACompany(String companyType) throws Throwable {
         // Load the app data required for the legal entity
-        switch (legalEntity.toUpperCase()) {
-            case "LF_UK_001":
+        switch (companyType) {
+            case "private-limited-shares-section-30-exemption":
                 // Load Private Limited by shares company
+                LOGGER.info("Testing against the cloned data for company {}",
+                        privateLimitedSharesSection30Exemption);
+                requestingTheCompanyDetailsForCompany(privateLimitedSharesSection30Exemption);
                 break;
-            case "LF_UK_002":
+            case "eeig":
                 // Load EEIG company
+                LOGGER.info("Testing against the cloned data for company {}", eeig);
+                requestingTheCompanyDetailsForCompany(eeig);
                 break;
-            case "LF_UK_003":
+            case "european-public-limited-liability-company-se":
                 // Load European Public Limited-Liability Company
+                LOGGER.info("Testing against the cloned data for company {}",
+                        europeanPublicLimitedLiabilityCompanySe);
+                requestingTheCompanyDetailsForCompany(europeanPublicLimitedLiabilityCompanySe);
                 break;
-            case "LF_UK_004":
+            case "ltd":
                 // Load Private Limited Company
+                LOGGER.info("Testing against the cloned data for company {}", defaultCompanyNumber);
+                requestingTheCompanyDetailsForCompany(defaultCompanyNumber);
                 break;
-            case "LF_UK_005":
+            case "plc":
                 // Load Public Limited Company
+                LOGGER.info("Testing against the cloned data for company {}", plc);
+                requestingTheCompanyDetailsForCompany(plc);
                 break;
-            case "LF_UK_006":
+            case "unregistered-company":
                 // Load Unregistered Company
+                LOGGER.info("Testing against the cloned data for company {}", unregisteredCompany);
+                requestingTheCompanyDetailsForCompany(unregisteredCompany);
                 break;
-            case "LF_UK_007":
+            case "private-limited-guarant-nsc":
                 // Load Private Limited by Guarantee (NSC)
+                LOGGER.info("Testing against the cloned data for company {}",
+                        privateLimitedGuarantNsc);
+                requestingTheCompanyDetailsForCompany(privateLimitedGuarantNsc);
                 break;
-            case "LF_UK_008":
+            case "private-limited-guarant-nsc-limited-exemption":
                 // Load Private Limited by Guarantee (NSC) (Exempt)
+                LOGGER.info("Testing against the cloned data for company {}",
+                        privateLimitedGuarantNscLimitedExemption);
+                requestingTheCompanyDetailsForCompany(privateLimitedGuarantNscLimitedExemption);
                 break;
-            case "LF_UK_009":
+            case "oversea-company":
                 // Load Overseas Company
+                LOGGER.info("Testing against the cloned data for company {}", overseaCompany);
+                requestingTheCompanyDetailsForCompany(overseaCompany);
                 break;
             default:
-                throw new RuntimeException(legalEntity + " is not a known legal entity");
+                throw new RuntimeException(companyType + " is not a known legal entity");
         }
     }
 
@@ -292,8 +331,24 @@ public class CompanyDetailsRequestSteps {
         BRCompanyDetailsResponse response = retrieveMessage
                 .checkForResponseByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
+
+        data.setCompanyDetailsResponse(response);
         assertEquals("Expected Correlation ID:", data.getCorrelationId(),
                 response.getMessageHeader().getCorrelationID().getValue());
+    }
+
+    /**
+     * Compares the legal entity id in the response to the expected value from the feature.
+     *
+     * @param legalEntity the expected legal entity id
+     */
+    @Then("^the company details response will have the legal entity code ([^\"]*)$")
+    public void theCompanyDetailsResponseWillHaveTheLegalEntityCodeCompany_type(String legalEntity)
+            throws Throwable {
+        BRCompanyDetailsResponse response = data.getCompanyDetailsResponse();
+
+        assertEquals("The Legal Entity ID is incorrect: ", legalEntity,
+                response.getCompany().getCompanyLegalForm().getValue());
     }
 
     /**

@@ -1,0 +1,123 @@
+{
+  "_id": "99990006",
+  "has_mortgages": true,
+  "data": {
+    "date_of_creation": {
+      "$date": "2003-06-02T00:00:00.000Z"
+    },
+    "has_been_liquidated": false,
+    "type": "private-limited-guarant-nsc",
+    "annual_return": {
+      "overdue": false,
+      "last_made_up_to": {
+        "$date": "2016-06-02T00:00:00.000Z"
+      }
+    },
+    "company_number": "99990006",
+    "sic_codes": [
+      "93199"
+    ],
+    "undeliverable_registered_office_address": false,
+    "proof_status": "statutory",
+    "jurisdiction": "england-wales",
+    "registered_office_address": {
+      "address_line_1": "Tickton Hall",
+      "postal_code": "HU17 9RX",
+      "locality": "Beverley",
+      "region": "East Yorkshire",
+      "address_line_2": "Tickton"
+    },
+    "company_name": "BEVERLEY POLO CLUB LIMITED",
+    "accounts": {
+      "next_due": {
+        "$date": "2017-01-31T00:00:00.000Z"
+      },
+      "overdue": true,
+      "accounting_reference_date": {
+        "day": "30",
+        "month": "04"
+      },
+      "last_accounts": {
+        "made_up_to": {
+          "$date": "2015-04-30T00:00:00.000Z"
+        },
+        "type": "total-exemption-small",
+        "period_end_on": {
+          "$date": "2015-04-30T00:00:00.000Z"
+        },
+        "period_start_on": {
+          "$date": "2014-05-01T00:00:00.000Z"
+        }
+      },
+      "next_made_up_to": {
+        "$date": "2016-04-30T00:00:00.000Z"
+      },
+      "next_accounts": {
+        "due_on": {
+          "$date": "2017-01-31T00:00:00.000Z"
+        },
+        "overdue": true,
+        "period_end_on": {
+          "$date": "2016-04-30T00:00:00.000Z"
+        },
+        "period_start_on": {
+          "$date": "2015-05-01T00:00:00.000Z"
+        }
+      }
+    },
+    "etag": "300678cf9516dd72e832022e526899f31fdbb582",
+    "officer_summary": {
+      "resigned_count": 8,
+      "active_count": 1,
+      "officers": [
+        {
+          "appointed_on": {
+            "$date": "2005-11-24T00:00:00.000Z"
+          },
+          "officer_role": "director",
+          "date_of_birth": {
+            "$date": "1986-09-11T00:00:00.000Z"
+          },
+          "name": "FOREMAN, Benjamin Andrew"
+        }
+      ]
+    },
+    "has_insolvency_history": false,
+    "has_charges": true,
+    "company_status": "active",
+    "previous_company_names": [],
+    "confirmation_statement": {
+      "next_due": {
+        "$date": "2017-06-16T00:00:00.000Z"
+      },
+      "next_made_up_to": {
+        "$date": "2017-06-02T00:00:00.000Z"
+      },
+      "overdue": false
+    },
+    "links": {
+      "self": "/company/99990006",
+      "filing_history": "/company/99990006/filing-history",
+      "officers": "/company/99990006/officers",
+      "charges": "/company/99990006/charges"
+    },
+    "registered_office_is_in_dispute": false
+  },
+  "updated": {
+    "by": "585c878ed206194451acb803",
+    "type": "company_delta",
+    "at": {
+      "$date": "2016-12-23T02:10:23.419Z"
+    }
+  },
+  "created": {
+    "type": "refresh_from_mongo",
+    "at": {
+      "$date": "2015-02-21T18:40:50.360Z"
+    },
+    "by": "54e8d13285dccb11dd684a7d"
+  },
+  "delta_at": {
+    "$date": "2016-12-23T02:09:54.000Z"
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "_id": "99990005",
+  "has_mortgages": true,
+  "data": {
+    "has_been_liquidated": false,
+    "company_name": "PACIFIC STEAM NAVIGATION COMPANY",
+    "accounts": {
+      "last_accounts": {
+        "made_up_to": {
+          "$date": "2015-12-31T00:00:00.000Z"
+        }
+      },
+      "accounting_reference_date": {
+        "day": "31",
+        "month": "12"
+      }
+    },
+    "registered_office_address": {
+      "locality": "London",
+      "postal_code": "EC2M 7EA",
+      "address_line_1": "Finsbury House 23 Finsbury Circus"
+    },
+    "sic_codes": [
+      "64209"
+    ],
+    "type": "unregistered-company",
+    "undeliverable_registered_office_address": false,
+    "jurisdiction": "england-wales",
+    "last_full_members_list_date": {
+      "$date": "2008-09-21T00:00:00.000Z"
+    },
+    "annual_return": {
+      "last_made_up_to": {
+        "$date": "2015-09-21T00:00:00.000Z"
+      }
+    },
+    "company_number": "99990005",
+    "date_of_creation": "",
+    "officer_summary": {
+      "officers": [
+        {
+          "name": "MOHAN, Carolyn Patricia",
+          "appointed_on": {
+            "$date": "2006-03-01T00:00:00.000Z"
+          },
+          "date_of_birth": {
+            "$date": "1972-08-15T00:00:00.000Z"
+          },
+          "officer_role": "secretary"
+        },
+        {
+          "officer_role": "director",
+          "date_of_birth": {
+            "$date": "1957-09-21T00:00:00.000Z"
+          },
+          "appointed_on": {
+            "$date": "2007-03-31T00:00:00.000Z"
+          },
+          "name": "DAVIDSON, George Tolmie"
+        },
+        {
+          "appointed_on": {
+            "$date": "2006-03-02T00:00:00.000Z"
+          },
+          "name": "ROSAM, Charles Peter",
+          "officer_role": "director",
+          "date_of_birth": {
+            "$date": "1952-03-25T00:00:00.000Z"
+          }
+        }
+      ],
+      "active_count": 3,
+      "resigned_count": 10
+    },
+    "etag": "c257c40e72e0499b11f2612da25c42d253e14bda",
+    "company_status": "active",
+    "has_insolvency_history": false,
+    "has_charges": true,
+    "previous_company_names": [],
+    "links": {
+      "self": "/company/99990005",
+      "filing_history": "/company/99990005/filing-history",
+      "officers": "/company/99990005/officers",
+      "charges": "/company/99990005/charges"
+    },
+    "registered_office_is_in_dispute": false
+  },
+  "created": {
+    "type": "refresh_from_mongo",
+    "by": "54e8c7d785dccb11dd421075",
+    "at": {
+      "$date": "2015-02-21T18:00:56.132Z"
+    }
+  },
+  "updated": {
+    "by": "586f4ac785dccb1673489902",
+    "type": "company_delta",
+    "at": {
+      "$date": "2017-01-06T07:44:07.688Z"
+    }
+  },
+  "delta_at": {
+    "$date": "2017-01-06T07:43:03.000Z"
+  }
+}

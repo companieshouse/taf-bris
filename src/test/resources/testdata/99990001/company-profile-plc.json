@@ -1,0 +1,115 @@
+{
+  "_id": "99990001",
+  "has_mortgages": false,
+  "data": {
+    "type": "plc",
+    "has_been_liquidated": false,
+    "annual_return": {
+      "last_made_up_to": {
+        "$date": "2012-09-30T00:00:00.000Z"
+      }
+    },
+    "date_of_creation": {
+      "$date": "2010-09-30T00:00:00.000Z"
+    },
+    "status": "active",
+    "company_number": "99990001",
+    "registered_office_address": {
+      "locality": "London",
+      "postal_code": "EC3M 7AT",
+      "country": "United Kingdom",
+      "address_line_1": "34 Lime Street"
+    },
+    "last_full_members_list_date": {
+      "$date": "2012-09-30T00:00:00.000Z"
+    },
+    "company_name": "MERCHANT STRATEGIC RENEWAL PLC",
+    "undeliverable_registered_office_address": false,
+    "jurisdiction": "england-wales",
+    "accounts": {
+      "last_accounts": {
+        "type": "null"
+      },
+      "accounting_reference_date": {
+        "month": "12",
+        "day": "31"
+      }
+    },
+    "sic_codes": [
+      "64929"
+    ],
+    "has_insolvency_history": false,
+    "etag": "1095b3b7a6540bbdac4af665e496156cf3ef948e",
+    "company_status": "dissolved",
+    "officer_summary": {
+      "resigned_count": 2,
+      "officers": [
+        {
+          "name": "FLEMING, Hugh",
+          "officer_role": "secretary",
+          "appointed_on": {
+            "$date": "2010-10-15T00:00:00.000Z"
+          }
+        },
+        {
+          "appointed_on": {
+            "$date": "2010-09-30T00:00:00.000Z"
+          },
+          "officer_role": "director",
+          "name": "HOLMES, James Dominic Rupert",
+          "date_of_birth": {
+            "$date": "1972-11-30T00:00:00.000Z"
+          }
+        },
+        {
+          "appointed_on": {
+            "$date": "2012-04-16T00:00:00.000Z"
+          },
+          "officer_role": "director",
+          "name": "O'DOHERTY, Alan Thomas",
+          "date_of_birth": {
+            "$date": "1979-02-22T00:00:00.000Z"
+          }
+        }
+      ],
+      "active_count": 3
+    },
+    "has_charges": false,
+    "previous_company_names": [
+      {
+        "ceased_on": {
+          "$date": "2010-10-06T00:00:00.000Z"
+        },
+        "effective_from": {
+          "$date": "2010-09-30T00:00:00.000Z"
+        },
+        "name": "MERCHANT BUSINESS RENEWAL PLC"
+      }
+    ],
+    "date_of_dissolution": {
+      "$date": "2016-01-05T00:00:00.000Z"
+    },
+    "links": {
+      "self": "/company/99990001",
+      "filing_history": "/company/99990001/filing-history",
+      "officers": "/company/99990001/officers"
+    }
+  },
+  "updated": {
+    "by": "56933bd13f08ded10414560c",
+    "at": {
+      "$date": "2016-01-11T05:21:32.332Z"
+    },
+    "type": "officer_delta"
+  },
+  "created": {
+    "type": "refresh_from_mongo",
+    "by": "54e8d10585dccb11dd35237d",
+    "at": {
+      "$date": "2015-02-21T18:40:05.607Z"
+    }
+  },
+  "delta_at": {
+    "$date": "2015-12-30T04:08:44.000Z"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "_id": "MDA2MzQ3MjU3NGFkaXF6a2AB",
+  "data": {
+    "category": "annual-return",
+    "description": "legacy",
+    "type": "363s",
+    "date": {
+      "$date": "2005-03-07T11:59:58.000Z"
+    },
+    "description_values": {
+      "description": "Annual return made up to 01/03/05"
+    },
+    "links": {
+      "self": "/company/99990007/filing-history/MDA2MzQ3MjU3NGFkaXF6a2N4",
+      "document_metadata": "/document/hWqqVnpGgcgA8MmBuvurKnMX9NL_2Ye2-e7801DL3EY"
+    },
+    "pages": 2
+  },
+  "_document_id": "000X74263DW2686",
+  "_entity_id": "0063472574",
+  "company_number": "99990007"
+}

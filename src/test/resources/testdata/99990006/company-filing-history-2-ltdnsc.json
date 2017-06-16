@@ -1,0 +1,31 @@
+{
+  "_id": "MzAwNjgyNDQ1MWFkaXF6a2AZ",
+  "original_description": "Director's change of particulars / mrs sara carolyn goodfellow / 28/12/2009",
+  "_barcode": "XXW9CGKB",
+  "_document_id": "000XXW9CGKB4088",
+  "company_number": "99990006",
+  "_entity_id": "3006824451",
+  "data": {
+    "date": {
+      "$date": "2010-01-11T16:17:09.000Z"
+    },
+    "action_date": {
+      "$date": "2009-12-28T00:00:00.000Z"
+    },
+    "description_values": {
+      "officer_name": "Mrs Sara Carolyn Goodfellow",
+      "change_date": {
+        "$date": "2009-12-28T00:00:00.000Z"
+      }
+    },
+    "category": "officers",
+    "subcategory": "change",
+    "description": "change-person-director-company-with-change-date",
+    "type": "CH01",
+    "links": {
+      "document_metadata": "/document/-s3ijRsDcanzctMG2HuHRnK_QLn0XUw4C7jKjRpTNVc",
+      "self": "/company/99990006/filing-history/MzAwNjgyNDQ1MWFkaXF6a2N4"
+    },
+    "pages": 2
+  }
+}

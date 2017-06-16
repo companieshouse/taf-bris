@@ -1,0 +1,31 @@
+{
+  "_id": "MzEwMDc0NjU0MWFkaXF6a2LP",
+  "original_description": "Registered office changed on 27/05/2014 from\\12 old bond street\\london\\W1S 4PW",
+  "_document_id": "000A387ZR4R5564",
+  "company_number": "99990004",
+  "_entity_id": "3100746541",
+  "data": {
+    "action_date": {
+      "$date": "2014-05-27T00:00:00.000Z"
+    },
+    "description": "change-registered-office-address-company-with-date-old-address",
+    "date": {
+      "$date": "2014-05-27T10:55:49.000Z"
+    },
+    "type": "AD01",
+    "description_values": {
+      "change_date": {
+        "$date": "2014-05-27T00:00:00.000Z"
+      },
+      "old_address": "\\12 Old Bond Street\\London\\W1S 4PW"
+    },
+    "category": "address",
+    "links": {
+      "self": "/company/99990004/filing-history/MzEwMDc0NjU0MWFkaXF6a2N4",
+      "document_metadata": "/document/kZF5ufV3OhesRPcGczk29InA_6XKOeW7qNsPKIH7GK8"
+    },
+    "pages": 1,
+    "paper_filed": true
+  },
+  "_barcode": "A387ZR4R"
+}
