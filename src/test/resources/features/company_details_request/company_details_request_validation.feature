@@ -12,6 +12,6 @@ Feature: Duplicate request validation of company details request
   @loadDuplicateCompanyDetailsRequestData
   Scenario: User makes a request that is not unique - duplicate message id
     Given a company details request exists
-    And a company details request for is created for the same message
+    And a new company details request is created using the same message id
     When I make a company details request
     Then I should get a message with the error code ERR_BR_5103

@@ -140,7 +140,7 @@ public class CompanyDetailsRequestSteps {
      * in the mongo collection outgoing_messages.
      *
      */
-    @Given("^a company details request for is created for the same message$")
+    @Given("^a new company details request is created using the same message id$")
     public void companyDetailsRequestForMessageIdIsCreated() throws Throwable {
         BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
                 data.getCorrelationId(),
