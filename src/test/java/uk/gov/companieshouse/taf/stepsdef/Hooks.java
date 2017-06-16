@@ -4,15 +4,18 @@ import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import uk.gov.companieshouse.taf.util.RequestHelper;
 import uk.gov.companieshouse.taf.util.TestDataHelper;
 
 public class Hooks {
 
     @Autowired
     private TestDataHelper testDataHelper;
+
+    @Autowired
+    private RequestHelper requestHelper;
 
     @Value("${default.company.number}")
     private String defaultCompanyNumber;
@@ -87,5 +90,14 @@ public class Hooks {
         companiesToRemove.add(privateLimitedGuarantNscLimitedExemption);
         companiesToRemove.add(overseaCompany);
         testDataHelper.tearDownTestData(companiesToRemove);
+    }
+
+    /**
+     * Sets up a duplicate message in the BRIS incoming messages collection prior to sending
+     * a message in with the same correlation and message id.
+     */
+    @Before("@loadDuplicateCompanyDetailsRequestData")
+    public void setupDataForDuplicateMessageTest() {
+        testDataHelper.setupDataForDuplicateMessageTest(defaultCompanyNumber);
     }
 }

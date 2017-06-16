@@ -68,10 +68,11 @@ public class CompanyDetailsRequestSteps {
      */
     @Given("^I am requesting details for a valid company$")
     public void requestingDetailsForAValidCompany() throws Throwable {
-        BRCompanyDetailsRequest request = RequestHelper.newInstance(
+        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
                 data.getCorrelationId(),
                 data.getMessageId(),
                 defaultCompanyNumber,
+                //"00006400",
                 "EW",
                 "UK");
 
@@ -84,7 +85,7 @@ public class CompanyDetailsRequestSteps {
      */
     @Given("^I am requesting details for a company that does not exist$")
     public void requestingDetailsForACompanyThatDoesNotExist() throws Throwable {
-        BRCompanyDetailsRequest request = RequestHelper.newInstance(
+        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
                 data.getCorrelationId(),
                 data.getMessageId(),
                 "00000000",
@@ -100,7 +101,7 @@ public class CompanyDetailsRequestSteps {
      */
     @Given("^the request has an invalid country code$")
     public void theRequestHasAnInvalidCountryCode() throws Throwable {
-        BRCompanyDetailsRequest request = RequestHelper.newInstance(
+        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
                 data.getCorrelationId(),
                 data.getMessageId(),
                 defaultCompanyNumber,
@@ -116,7 +117,7 @@ public class CompanyDetailsRequestSteps {
      */
     @Given("^the request business id and country do not match")
     public void theRequestBusinessIdAndCountryDoNotMatch() throws Throwable {
-        BRCompanyDetailsRequest request = RequestHelper.newInstance(
+        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
                 data.getCorrelationId(),
                 data.getMessageId(),
                 defaultCompanyNumber,
@@ -127,29 +128,29 @@ public class CompanyDetailsRequestSteps {
                 request, data.getMessageId());
     }
 
-    @Given("^a company details request for ([^\"]*) has been received$")
-    public void companyDetailsRequestForMessageIdHasBeenReceived(String messageId)
+    @Given("^a company details request exists$")
+    public void companyDetailRequestExists()
             throws Throwable {
-        //TODO Load json document - company details request with message id
-        LOGGER.info("Inserting company details request document for {}", messageId);
+        LOGGER.info("This step is deliberately empty as the pre-requisite data "
+                + "loaded in the @Before hook.");
     }
 
     /**
      * Create a company details request with a message id that is already present
      * in the mongo collection outgoing_messages.
      *
-     * @param messageId the known message id
      */
-    @Given("^a company details request for ([^\"]*) is created$")
-    public void companyDetailsRequestForMessageIdIsCreated(String messageId) throws Throwable {
-        BRCompanyDetailsRequest request = RequestHelper.newInstance(
-                messageId,
-                messageId,
+    @Given("^a company details request for is created for the same message$")
+    public void companyDetailsRequestForMessageIdIsCreated() throws Throwable {
+        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
+                data.getCorrelationId(),
+                data.getMessageId(),
                 defaultCompanyNumber,
                 "EW",
                 "UK");
 
-        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(request, messageId);
+        outgoingBrisMessage = companyDetailsRequest
+                .createOutgoingBrisMessage(request, data.getMessageId());
     }
 
     /**
@@ -159,7 +160,7 @@ public class CompanyDetailsRequestSteps {
     @Given("^the request contains an invalid correlation id$")
     public void theRequestContainsAnInvalidCorrelationId() throws Throwable {
         String invalidId = RandomStringUtils.randomAlphanumeric(65);
-        BRCompanyDetailsRequest request = RequestHelper.newInstance(
+        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
                 invalidId,
                 invalidId,
                 defaultCompanyNumber,
@@ -178,7 +179,7 @@ public class CompanyDetailsRequestSteps {
     public void theRequestContainsACorrelationIdThatDoesNotMatchTheMessageId() throws Throwable {
         String messageId = randomAlphanumeric(8);
 
-        BRCompanyDetailsRequest request = RequestHelper.newInstance(
+        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
                 data.getCorrelationId(),
                 data.setMessageId(messageId),
                 defaultCompanyNumber,
@@ -193,7 +194,7 @@ public class CompanyDetailsRequestSteps {
      */
     @Given("^the request contains a business country that does not exist$")
     public void theRequestContainsABusinessCountryThatDoesNotExist() throws Throwable {
-        BRCompanyDetailsRequest request = RequestHelper.newInstance(
+        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
                 data.getCorrelationId(),
                 data.getMessageId(),
                 defaultCompanyNumber,
@@ -209,7 +210,7 @@ public class CompanyDetailsRequestSteps {
      */
     @Given("^the request contains an invalid business register id$")
     public void theRequestContainsAnInvalidBusinessRegisterId() throws Throwable {
-        BRCompanyDetailsRequest request = RequestHelper.newInstance(
+        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
                 data.getCorrelationId(),
                 data.getMessageId(),
                 defaultCompanyNumber,
@@ -225,7 +226,7 @@ public class CompanyDetailsRequestSteps {
      */
     @Given("^the request is not correct for the receiving business register$")
     public void theRequestIsNotCorrectForTheReceivingBusinessRegister() throws Throwable {
-        BRCompanyDetailsRequest request = RequestHelper.newInstance(
+        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
                 data.getCorrelationId(),
                 data.getMessageId(),
                 defaultCompanyNumber,
@@ -307,7 +308,7 @@ public class CompanyDetailsRequestSteps {
      */
     @Given("^I am requesting the company details for company ([^\"]*)$")
     public void requestingTheCompanyDetailsForCompany(String companyNumber) throws Throwable {
-        BRCompanyDetailsRequest request = RequestHelper.newInstance(
+        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
                 data.getCorrelationId(),
                 data.getMessageId(),
                 companyNumber,

@@ -13,7 +13,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection = "outgoing_messages")
 public class OutgoingBrisMessage {
 
-
     @Id
     private String id;
 
