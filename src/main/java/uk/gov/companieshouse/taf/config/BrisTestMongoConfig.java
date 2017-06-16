@@ -39,8 +39,6 @@ public class BrisTestMongoConfig extends MongoConfig {
         return new MongoTemplate(mongoTestDbFactory());
     }
 
-    @Bean
-    @Qualifier("BrisTestMongoDbFactory")
     private MongoDbFactory mongoTestDbFactory() throws UnknownHostException {
         return new SimpleMongoDbFactory(new MongoClientURI(env.config.getString(MONGO_URI)
                 + URI_SLASH + BRIS_MESSAGES_TEST_DATABASE));

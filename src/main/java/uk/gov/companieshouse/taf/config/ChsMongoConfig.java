@@ -33,11 +33,9 @@ public class ChsMongoConfig extends MongoConfig {
         return new MongoTemplate(mongoCompanyProfileDbFactory());
     }
 
-    /**
+    /*
      * Mongo config for Company Profile MongoDb Factory.
      */
-    @Bean
-    @Qualifier("CompanyProfileMongoDbFactory")
     private MongoDbFactory mongoCompanyProfileDbFactory() throws UnknownHostException {
         return new SimpleMongoDbFactory(new MongoClientURI(
                 env.config.getString(MongoConfig.MONGO_URI)
@@ -53,11 +51,9 @@ public class ChsMongoConfig extends MongoConfig {
         return new MongoTemplate(mongoCompanyFilingHistoryDbFactory());
     }
 
-    /**
+    /*
      * Mongo config for Company Filing History Factory.
      */
-    @Bean
-    @Qualifier("CompanyFilingHistoryMongoDbFactory")
     private MongoDbFactory mongoCompanyFilingHistoryDbFactory() throws UnknownHostException {
         return new SimpleMongoDbFactory(new MongoClientURI(
                 env.config.getString(MongoConfig.MONGO_URI)
