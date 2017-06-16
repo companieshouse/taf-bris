@@ -1,0 +1,54 @@
+{
+  "_id": "99990003",
+  "data": {
+    "has_been_liquidated": false,
+    "jurisdiction": "england-wales",
+    "type": "eeig",
+    "company_number": "99990003",
+    "company_name": "ARIEL (ADVANCED RESEARCH INTO EUROPEAN LEXICOGRAPHY) EEIG",
+    "undeliverable_registered_office_address": false,
+    "registered_office_address": {
+      "region": "England",
+      "postal_code": "BA1 7AA",
+      "country": "United Kingdom",
+      "locality": "Bath",
+      "address_line_2": "172 Bailbrook Lane",
+      "address_line_1": "Batheaston Villa"
+    },
+    "date_of_creation": {
+      "$date": "1997-06-30T00:00:00.000Z"
+    },
+    "etag": "a9f2e6b166b92866f18fee6d86f2bab9f9730ba1",
+    "officer_summary": {
+      "officers": [],
+      "active_count": 0,
+      "resigned_count": 0
+    },
+    "company_status": "active",
+    "has_charges": false,
+    "previous_company_names": [],
+    "has_insolvency_history": false,
+    "links": {
+      "self": "/company/99990003",
+      "filing_history": "/company/99990003/filing-history"
+    }
+  },
+  "has_mortgages": false,
+  "created": {
+    "type": "refresh_from_mongo",
+    "at": {
+      "$date": "2015-02-21T18:40:17.414Z"
+    },
+    "by": "54e8d11185dccb11dd0a2d7d"
+  },
+  "updated": {
+    "by": "5619cb8cafa24c0eddafe52f",
+    "type": "company_delta",
+    "at": {
+      "$date": "2015-10-11T02:38:04.866Z"
+    }
+  },
+  "delta_at": {
+    "$date": "2015-10-10T10:12:58.000Z"
+  }
+}

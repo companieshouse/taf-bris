@@ -1,0 +1,106 @@
+{
+  "_id": "99990008",
+  "has_mortgages": false,
+  "data": {
+    "date_of_creation": {
+      "$date": "2003-07-01T00:00:00.000Z"
+    },
+    "jurisdiction": "united-kingdom",
+    "registered_office_address": {
+      "address_line_1": "Branch Registration",
+      "country": "Spain",
+      "address_line_2": "Refer To Parent Registry"
+    },
+    "company_number": "99990008",
+    "accounts": {
+      "next_made_up_to": {
+        "$date": "2006-11-30T00:00:00.000Z"
+      },
+      "last_accounts": {
+        "made_up_to": {
+          "$date": "2004-12-31T00:00:00.000Z"
+        },
+        "type": "full"
+      },
+      "overdue": false
+    },
+    "company_name": "VINAS DEL VERO, S.A.",
+    "type": "oversea-company",
+    "has_been_liquidated": false,
+    "undeliverable_registered_office_address": false,
+    "officer_summary": {
+      "active_count": 3,
+      "officers": [
+        {
+          "appointed_on": {
+            "$date": "2003-11-18T00:00:00.000Z"
+          },
+          "officer_role": "secretary",
+          "name": "TOLEDO, Juan Antonio Garcia"
+        },
+        {
+          "appointed_on": {
+            "$date": "2003-11-18T00:00:00.000Z"
+          },
+          "date_of_birth": {
+            "$date": "1964-06-12T00:00:00.000Z"
+          },
+          "officer_role": "director",
+          "name": "AIBAR SANCHEZ, Pedro Jose"
+        },
+        {
+          "date_of_birth": {
+            "$date": "1960-03-22T00:00:00.000Z"
+          },
+          "officer_role": "director",
+          "name": "ARTASONA LARROSA, Enrique",
+          "appointed_on": {
+            "$date": "2003-11-18T00:00:00.000Z"
+          }
+        }
+      ],
+      "resigned_count": 0
+    },
+    "etag": "26c8283ca3a91f5ff585e34a70ab7bb50144f62e",
+    "company_status": "active",
+    "links": {
+      "self": "/company/99990008",
+      "filing_history": "/company/99990008/filing-history",
+      "officers": "/company/99990008/officers",
+      "uk_establishments": "/company/99990008/uk-establishments"
+    },
+    "has_charges": false,
+    "has_insolvency_history": false,
+    "previous_company_names": [],
+    "foreign_company_details": {
+      "originating_registry": {
+        "country": "SPAIN",
+        "name": "Zaragoza"
+      },
+      "legal_form": "Sociedad Anonima (Public Company Limited By Shares)",
+      "is_a_credit_financial_institution": false,
+      "registration_number": "A-50155910",
+      "accounting_requirement": {
+        "terms_of_account_publication": "accounting-publication-date-does-not-need-to-be-supplied-by-company",
+        "foreign_account_type": "accounting-requirements-of-originating-country-apply"
+      }
+    }
+  },
+  "created": {
+    "at": {
+      "$date": "2015-02-21T18:40:12.093Z"
+    },
+    "by": "54e8d10b85dccb11dd0a297d",
+    "type": "refresh_from_mongo"
+  },
+  "updated": {
+    "at": {
+      "$date": "2016-05-24T14:29:22.580Z"
+    },
+    "by": "57444d6eafa24c29ce70ef02",
+    "type": "company_delta"
+  },
+  "delta_at": {
+    "$date": "2016-05-24T12:36:08.000Z"
+  }
+}
