@@ -20,4 +20,4 @@ Feature: Document request feature
   Scenario: User makes a request with an invalid document id
     Given the request contains an invalid document id
     When I make a document details request
-    Then no response will be created
+    Then I should get a message with the error code ERR_BR_5102

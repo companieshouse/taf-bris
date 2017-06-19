@@ -87,7 +87,7 @@ public class DocumentRequestSteps {
                 defaultCompanyNumber,
                 BUSINESS_REGISTER_ID,
                 BUSINESS_REGISTER_COUNTRY,
-                null);
+                RandomStringUtils.randomAlphanumeric(65));
 
         outgoingBrisMessage = documentRequest.createOutgoingBrisMessage(retrieveDocumentRequest,
                 data.getMessageId());
