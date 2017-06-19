@@ -64,23 +64,6 @@ public class CompanyDetailsRequestSteps {
     private String overseaCompany;
 
     /**
-     * Create valid company details request.
-     */
-    @Given("^I am requesting details for a valid company$")
-    public void requestingDetailsForAValidCompany() throws Throwable {
-        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
-                data.getCorrelationId(),
-                data.getMessageId(),
-                defaultCompanyNumber,
-                //"00006400",
-                "EW",
-                "UK");
-
-        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(
-                request, data.getMessageId());
-    }
-
-    /**
      * Create a request with an invalid company number.
      */
     @Given("^I am requesting details for a company that does not exist$")
@@ -91,22 +74,6 @@ public class CompanyDetailsRequestSteps {
                 "00000000",
                 "EW",
                 "UK");
-
-        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(
-                request, data.getMessageId());
-    }
-
-    /**
-     * Create request with an invalid country code.
-     */
-    @Given("^the request has an invalid country code$")
-    public void theRequestHasAnInvalidCountryCode() throws Throwable {
-        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
-                data.getCorrelationId(),
-                data.getMessageId(),
-                defaultCompanyNumber,
-                "EW",
-                "AA");
 
         outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(
                 request, data.getMessageId());
@@ -371,7 +338,7 @@ public class CompanyDetailsRequestSteps {
     @Then("^no response will be created$")
     public void noResponseWillBeCreated() throws Throwable {
         BRCompanyDetailsResponse response = retrieveMessage
-                .checkForResponseByCorrelationId(data.getMessageId());
+                .checkForResponseByCorrelationId(data.getCorrelationId());
         assertNull(response);
     }
 
@@ -394,7 +361,7 @@ public class CompanyDetailsRequestSteps {
     @Then("^the response will contain the company details for ([^\"]*)$")
     public void theResponseWillContainTheCompanyDetailsFor(String companyNumber) throws Throwable {
         BRCompanyDetailsResponse response = retrieveMessage
-                .checkForResponseByCorrelationId(data.getMessageId());
+                .checkForResponseByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
 
         data.setCompanyDetailsResponse(response);

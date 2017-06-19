@@ -3,7 +3,6 @@ package uk.gov.companieshouse.taf.util;
 import eu.europa.ec.bris.v140.jaxb.br.aggregate.MessageHeaderType;
 import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsRequest;
 import eu.europa.ec.bris.v140.jaxb.br.company.document.BRRetrieveDocumentRequest;
-import eu.europa.ec.bris.v140.jaxb.br.error.BRBusinessError;
 import eu.europa.ec.bris.v140.jaxb.components.aggregate.BusinessRegisterReferenceType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.BusinessRegisterIDType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.BusinessRegisterNameType;

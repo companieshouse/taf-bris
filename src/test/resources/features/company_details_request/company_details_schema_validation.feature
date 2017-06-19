@@ -5,10 +5,11 @@ Feature: Schema validation of BRIS request messages
   As an ECP
   I want to check messages conform to schema validation
 
+  * ECP - European Central Portal
+
   Information:
-  The below scenarios should never be sent from the BRIS ECP due to failing schema validation.
-  The scenarios are provided for context to demonstrate what could happen if these messages were to
-  sent to our BRIS service.
+  The below scenarios are for illustration.
+  Requests should never be sent from the BRIS ECP due to failing schema validation.
 
   Scenario: Request contains an invalid correlation id
     Given the request contains an invalid correlation id

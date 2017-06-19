@@ -80,7 +80,6 @@ public class DocumentRequestSteps {
      */
     @Given("^the request contains an invalid document id$")
     public void theRequestContainsAnInvalidDocumentId() throws Throwable {
-        // Unsure as to what makes document id invalid. Setting to null as placeholder for now
         BRRetrieveDocumentRequest retrieveDocumentRequest = RequestHelper
                 .getRetrieveDocumentRequest(
                 data.getCorrelationId(),
@@ -88,7 +87,7 @@ public class DocumentRequestSteps {
                 defaultCompanyNumber,
                 BUSINESS_REGISTER_ID,
                 BUSINESS_REGISTER_COUNTRY,
-                null);
+                RandomStringUtils.randomAlphanumeric(65));
 
         outgoingBrisMessage = documentRequest.createOutgoingBrisMessage(retrieveDocumentRequest,
                 data.getMessageId());
