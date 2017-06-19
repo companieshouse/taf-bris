@@ -19,7 +19,6 @@ public class Hooks {
 
     @Value("${default.company.number}")
     private String defaultCompanyNumber;
-
     @Value("${plc.company.number}")
     private String plcCompanyNumber;
     @Value("${ltd.section30.company.number}")
@@ -82,6 +81,7 @@ public class Hooks {
     @After("@legal_entity")
     public void tearDownDataForLegalEntityScenario() {
         List<String> companiesToRemove = new ArrayList<>();
+        companiesToRemove.add(plcCompanyNumber);
         companiesToRemove.add(privateLimitedSharesSection30Exemption);
         companiesToRemove.add(eeig);
         companiesToRemove.add(europeanPublicLimitedLiabilityCompanySe);

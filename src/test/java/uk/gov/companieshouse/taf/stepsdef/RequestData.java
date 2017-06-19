@@ -16,11 +16,6 @@ public class RequestData {
 
     private String messageId = UUID.randomUUID().toString();
     private String correlationId = messageId;
-
-    public void setCompanyDetailsResponse(BRCompanyDetailsResponse companyDetailsResponse) {
-        this.companyDetailsResponse = companyDetailsResponse;
-    }
-
     private BRCompanyDetailsResponse companyDetailsResponse;
 
     public String getMessageId() {
@@ -31,15 +26,15 @@ public class RequestData {
         return correlationId;
     }
 
-    public String setCorrelationId(String correlationId) {
-        return this.correlationId = correlationId;
+    public BRCompanyDetailsResponse getCompanyDetailsResponse() {
+        return companyDetailsResponse;
+    }
+
+    public void setCompanyDetailsResponse(BRCompanyDetailsResponse companyDetailsResponse) {
+        this.companyDetailsResponse = companyDetailsResponse;
     }
 
     public String setMessageId(String messageId) {
         return this.messageId = messageId;
-    }
-
-    public BRCompanyDetailsResponse getCompanyDetailsResponse() {
-        return companyDetailsResponse;
     }
 }
