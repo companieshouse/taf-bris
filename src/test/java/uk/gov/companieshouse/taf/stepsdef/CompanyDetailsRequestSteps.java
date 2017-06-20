@@ -2,9 +2,11 @@ package uk.gov.companieshouse.taf.stepsdef;
 
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertNull;
+import static junit.framework.TestCase.assertTrue;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -12,6 +14,7 @@ import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsRequest;
 import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsResponse;
 import eu.europa.ec.bris.v140.jaxb.br.error.BRBusinessError;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -105,7 +108,6 @@ public class CompanyDetailsRequestSteps {
     /**
      * Create a company details request with a message id that is already present
      * in the mongo collection outgoing_messages.
-     *
      */
     @Given("^a new company details request is created using the same message id$")
     public void companyDetailsRequestForMessageIdIsCreated() throws Throwable {
@@ -215,51 +217,38 @@ public class CompanyDetailsRequestSteps {
         switch (companyType) {
             case "private-limited-shares-section-30-exemption":
                 // Load Private Limited by shares company
-                LOGGER.info("Testing against the cloned data for company {}",
-                        privateLimitedSharesSection30Exemption);
                 requestingTheCompanyDetailsForCompany(privateLimitedSharesSection30Exemption);
                 break;
             case "eeig":
                 // Load EEIG company
-                LOGGER.info("Testing against the cloned data for company {}", eeig);
                 requestingTheCompanyDetailsForCompany(eeig);
                 break;
             case "european-public-limited-liability-company-se":
                 // Load European Public Limited-Liability Company
-                LOGGER.info("Testing against the cloned data for company {}",
-                        europeanPublicLimitedLiabilityCompanySe);
                 requestingTheCompanyDetailsForCompany(europeanPublicLimitedLiabilityCompanySe);
                 break;
             case "ltd":
                 // Load Private Limited Company
-                LOGGER.info("Testing against the cloned data for company {}", defaultCompanyNumber);
                 requestingTheCompanyDetailsForCompany(defaultCompanyNumber);
                 break;
             case "plc":
                 // Load Public Limited Company
-                LOGGER.info("Testing against the cloned data for company {}", plc);
                 requestingTheCompanyDetailsForCompany(plc);
                 break;
             case "unregistered-company":
                 // Load Unregistered Company
-                LOGGER.info("Testing against the cloned data for company {}", unregisteredCompany);
                 requestingTheCompanyDetailsForCompany(unregisteredCompany);
                 break;
             case "private-limited-guarant-nsc":
                 // Load Private Limited by Guarantee (NSC)
-                LOGGER.info("Testing against the cloned data for company {}",
-                        privateLimitedGuarantNsc);
                 requestingTheCompanyDetailsForCompany(privateLimitedGuarantNsc);
                 break;
             case "private-limited-guarant-nsc-limited-exemption":
                 // Load Private Limited by Guarantee (NSC) (Exempt)
-                LOGGER.info("Testing against the cloned data for company {}",
-                        privateLimitedGuarantNscLimitedExemption);
                 requestingTheCompanyDetailsForCompany(privateLimitedGuarantNscLimitedExemption);
                 break;
             case "oversea-company":
                 // Load Overseas Company
-                LOGGER.info("Testing against the cloned data for company {}", overseaCompany);
                 requestingTheCompanyDetailsForCompany(overseaCompany);
                 break;
             default:
@@ -275,6 +264,7 @@ public class CompanyDetailsRequestSteps {
      */
     @Given("^I am requesting the company details for company ([^\"]*)$")
     public void requestingTheCompanyDetailsForCompany(String companyNumber) throws Throwable {
+        LOGGER.info("Testing against the cloned data for company {}", companyNumber);
         BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
                 data.getCorrelationId(),
                 data.getMessageId(),
@@ -284,6 +274,30 @@ public class CompanyDetailsRequestSteps {
 
         outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(
                 request, data.getMessageId());
+    }
+
+    /**
+     * Creates a request for the known companies that will have the expected test data.
+     *
+     * @param formType the expected form included in the filing history
+     */
+    @Given("^a request for a company that has a ([^\"]*) form$")
+    public void requestForACompanyThatHasAForm(String formType) throws Throwable {
+        // As we're reliant on predetermined data we will need to use the loaded companies
+        switch (formType) {
+            case "288a":
+                requestingTheCompanyDetailsForCompany(unregisteredCompany);
+                break;
+            case "CERTNM":
+                requestingTheCompanyDetailsForCompany(europeanPublicLimitedLiabilityCompanySe);
+                break;
+            case "288b":
+                requestingTheCompanyDetailsForCompany(privateLimitedGuarantNsc);
+                break;
+            default:
+                throw new RuntimeException("There is no known company to test the form "
+                        + formType);
+        }
     }
 
     @When("^I make a company details request$")
@@ -395,5 +409,37 @@ public class CompanyDetailsRequestSteps {
 
         assertEquals("Expected Country is incorrect: ", addressDetails.get(4),
                 response.getCompany().getCompanyRegisteredOffice().getCountry().getValue());
+    }
+
+    /**
+     * Checks that the company details response contains the expected document by asserting the
+     * expected explanatory label. The explanatory label will map to a form type.
+     * e.g. AD01 = EL_UK_016
+     *
+     * @param explanatoryLabel the code that relates to the document type
+     */
+    @Then("^the response will contain the explanatory label ([^\"]*)$")
+    public void theResponseWillContainTheExplanatoryLabel(String explanatoryLabel)
+            throws Throwable {
+        BRCompanyDetailsResponse response = retrieveMessage
+                .checkForResponseByCorrelationId(data.getCorrelationId());
+        assertNotNull(response);
+
+        assertTrue("The label does not match.",
+                checkResponseContainsExpectedLabel(explanatoryLabel, response));
+
+    }
+
+    private boolean checkResponseContainsExpectedLabel(String explanatoryLabel,
+                                                       BRCompanyDetailsResponse response) {
+        for (int i = 0; i < response.getDocuments().getDocument().size(); i++) {
+            final String label = response.getDocuments().getDocument().get(i)
+                    .getCompanyItem().getCompanyItemExplanatoryLabel().getValue();
+            LOGGER.info("Label Text: {}", label);
+            if (label.equalsIgnoreCase(explanatoryLabel)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
