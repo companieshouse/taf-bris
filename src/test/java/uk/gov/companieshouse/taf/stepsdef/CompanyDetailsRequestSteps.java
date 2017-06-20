@@ -6,7 +6,6 @@ import static junit.framework.TestCase.assertTrue;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -14,7 +13,6 @@ import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsRequest;
 import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsResponse;
 import eu.europa.ec.bris.v140.jaxb.br.error.BRBusinessError;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.RandomStringUtils;
