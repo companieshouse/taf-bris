@@ -15,8 +15,10 @@ import eu.europa.ec.bris.v140.jaxb.br.error.BRBusinessError;
 
 import java.util.List;
 
+import eu.europa.ec.bris.v140.jaxb.components.aggregate.DocumentType;
 import org.apache.commons.lang3.RandomStringUtils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -287,7 +289,7 @@ public class CompanyDetailsRequestSteps {
                 requestingTheCompanyDetailsForCompany(unregisteredCompany);
                 break;
             case "CERTNM":
-                requestingTheCompanyDetailsForCompany(europeanPublicLimitedLiabilityCompanySe);
+                requestingTheCompanyDetailsForCompany(plc);
                 break;
             case "288b":
                 requestingTheCompanyDetailsForCompany(privateLimitedGuarantNsc);
@@ -296,6 +298,11 @@ public class CompanyDetailsRequestSteps {
                 throw new RuntimeException("There is no known company to test the form "
                         + formType);
         }
+    }
+
+    @Given("^a company has a restricted document present in it's filing history$")
+    public void companyHasARestrictedDocumentPresentInItSFilingHistory() throws Throwable {
+        requestingTheCompanyDetailsForCompany(defaultCompanyNumber);
     }
 
     @When("^I make a company details request$")
@@ -428,13 +435,31 @@ public class CompanyDetailsRequestSteps {
 
     }
 
+    /**
+     * Compares the expected amount of documents returned in the response.
+     */
+    @Then("^the response will not include the details of the restricted document$")
+    public void theResponseWillNotIncludeTheDetailsOfTheRestrictedDocument() throws Throwable {
+        BRCompanyDetailsResponse response = retrieveMessage
+                .checkForResponseByCorrelationId(data.getCorrelationId());
+        assertNotNull(response);
+
+        // Check the expected amount of documents
+        assertEquals("Incorrect document count.", 1,
+                response.getDocuments().getDocument().size());
+        // Assert that the document is the expected document
+        assertEquals("Incorrect document attached.", "EL_UK_001",
+                response.getDocuments().getDocument().get(0).getCompanyItem()
+                        .getCompanyItemExplanatoryLabel().getValue());
+    }
+
     private boolean checkResponseContainsExpectedLabel(String explanatoryLabel,
                                                        BRCompanyDetailsResponse response) {
-        for (int i = 0; i < response.getDocuments().getDocument().size(); i++) {
-            final String label = response.getDocuments().getDocument().get(i)
-                    .getCompanyItem().getCompanyItemExplanatoryLabel().getValue();
+        for (DocumentType documentType : response.getDocuments().getDocument()) {
+            final String label = documentType.getCompanyItem()
+                    .getCompanyItemExplanatoryLabel().getValue();
             LOGGER.info("Label Text: {}", label);
-            if (label.equalsIgnoreCase(explanatoryLabel)) {
+            if (StringUtils.equalsAnyIgnoreCase(explanatoryLabel, label)) {
                 return true;
             }
         }

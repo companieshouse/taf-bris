@@ -8,8 +8,10 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         glue = {"uk.gov.companieshouse.taf"},
         features = "src/test/resources/features",
-        format = {"pretty", "json:target/cucumber-reports/cucumber.json"},
-        tags = {"@regression"}
+        tags = {"~@regression"},
+        format = {"pretty", "json:target/cucumber-reports/cucumber.json",
+        "html:target/TestReport"},
+        monochrome = true
 )
 public class AllTests {
 }
