@@ -145,10 +145,11 @@ public class CompanyDetailsRequestSteps {
     @Given("^the request contains a correlation id that does not match the message id$")
     public void theRequestContainsACorrelationIdThatDoesNotMatchTheMessageId() throws Throwable {
         String messageId = randomAlphanumeric(8);
+        data.setMessageId(messageId);
 
         BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
                 data.getCorrelationId(),
-                data.setMessageId(messageId),
+                data.getMessageId(),
                 defaultCompanyNumber,
                 "EW",
                 "UK");
@@ -325,7 +326,7 @@ public class CompanyDetailsRequestSteps {
     @Then("^I should get a message with the error code ([^\"]*)$")
     public void theCorrectErrorWillBeReturnedToTheEcp(String errorCode) throws Throwable {
         BRBusinessError businessError = retrieveMessage
-                .checkForResponseByCorrelationId(data.getCorrelationId());
+                .checkForResponseByCorrelationId(data.getMessageId());
         assertNotNull(businessError);
 
         assertEquals("Expected Error Code:", errorCode,
