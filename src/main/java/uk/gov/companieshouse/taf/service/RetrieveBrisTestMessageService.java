@@ -62,13 +62,9 @@ public class RetrieveBrisTestMessageService {
     public <T> T checkForResponseByCorrelationId(String correlationId) throws Exception {
         IncomingBrisMessage incomingBrisMessage = getIncomingBrisMessageFromMongo(correlationId);
 
-        if (incomingBrisMessage != null) {
-            LOGGER.info("Message found in MongoDB : " + incomingBrisMessage.toString());
-        }
-
         // If we have a message after iteration, then set it on the response
         if (incomingBrisMessage != null) {
-            LOGGER.info("Found message with correlation ID {} !!", correlationId);
+            LOGGER.info("Message found in MongoDB : " + incomingBrisMessage.toString());
             JAXBContext jaxbContext = getJaxbContext();
             StringReader reader = new StringReader(incomingBrisMessage.getMessage());
             Object obj = jaxbContext.createUnmarshaller().unmarshal(reader);

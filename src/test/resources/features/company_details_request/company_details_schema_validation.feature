@@ -19,4 +19,4 @@ Feature: Schema validation of BRIS request messages
   Scenario: Business register country does not exist
     Given the request contains a business country GBP that does not exist
     When I make a company details request
-    Then I should receive a validation error with a country code of GBP
+    Then I should receive a validation error

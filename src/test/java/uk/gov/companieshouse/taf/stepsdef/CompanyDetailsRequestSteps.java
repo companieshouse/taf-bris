@@ -250,7 +250,6 @@ public class CompanyDetailsRequestSteps {
      */
     @Given("^I am requesting the company details for company ([^\"]*)$")
     public void requestingTheCompanyDetailsForCompany(String companyNumber) throws Throwable {
-
         data.setCompanyNumber(companyNumber);
         BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(data);
 
@@ -387,7 +386,7 @@ public class CompanyDetailsRequestSteps {
     /**
      * Country Code error validation.
      */
-    @Then("^I should receive a validation error with a country code of ([^\"]*)$")
+    @Then("^I should receive a validation error$")
     public void shouldReceiveACountryCodeValidationError() throws Throwable {
         ValidationError validationError = retrieveMessage
                 .checkForResponseByCorrelationId(data.getCorrelationId());
