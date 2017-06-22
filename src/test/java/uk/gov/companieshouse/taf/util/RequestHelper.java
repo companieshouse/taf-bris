@@ -32,6 +32,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.taf.config.constants.BusinessRegisterConstants;
+import uk.gov.companieshouse.taf.stepsdef.RequestData;
 
 @Component
 public class RequestHelper {
@@ -41,19 +42,17 @@ public class RequestHelper {
     /**
      * Create new instance of BRCompany Detail Request.
      */
-    public static BRCompanyDetailsRequest getCompanyDetailsRequest(
-            String correlationId,
-            String messageId,
-            String companyRegistrationNumber,
-            String businessRegisterId,
-            String countryCode) {
+    public static BRCompanyDetailsRequest getCompanyDetailsRequest(RequestData requestData) {
 
         BRCompanyDetailsRequest request = new BRCompanyDetailsRequest();
-        request.setMessageHeader(getMessageHeader(correlationId, messageId,
-                businessRegisterId, countryCode));
-        request.setBusinessRegisterReference(businessRegReference(countryCode,
-                businessRegisterId));
-        request.setCompanyRegistrationNumber(companyRegNumber(companyRegistrationNumber));
+        request.setMessageHeader(getMessageHeader(requestData.getCorrelationId(),
+                requestData.getMessageId(),
+                requestData.getBusinessRegisterId(),
+                requestData.getCountryCode()));
+        request.setBusinessRegisterReference(businessRegReference(
+                requestData.getCountryCode(),
+                requestData.getBusinessRegisterId()));
+        request.setCompanyRegistrationNumber(companyRegNumber(requestData.getCompanyNumber()));
         return request;
     }
 

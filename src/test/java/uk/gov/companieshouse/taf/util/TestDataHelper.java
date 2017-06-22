@@ -161,12 +161,7 @@ public class TestDataHelper {
         incomingBrisMessage.setCorrelationId(requestData.getCorrelationId());
         incomingBrisMessage.setMessageId(requestData.getMessageId());
         incomingBrisMessage.setMessageType("BRCompanyDetailsRequest");
-        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
-                requestData.getCorrelationId(),
-                requestData.getMessageId(),
-                defaultCompanyNumber,
-                "EW",
-                "UK");
+        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(requestData);
 
         String xmlString;
 
