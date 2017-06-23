@@ -1,4 +1,4 @@
-@company_details_request
+@company_details_request @restricted_documents
 Feature: Restricting sensitive documents on the register that are not to be returned to the ECP
 
   As a registry

@@ -5,20 +5,12 @@ Feature: This feature is to ensure that we correctly map to legacy forms in the 
   As a customer of the ECP
   I want to ensure that all legacy forms are included in company detail responses
 
-  Scenario: Company details response contains details of 288a
-    Given a request for a company that has a 288a form
+  Scenario Outline: The correct explanatory label is mapped to the correct form
+    Given a request for a company that has a <form> form
     When I make a company details request
-    # The below step needs to be amended once Kev has resolved the list
-    Then the response will contain the explanatory label EL_UK_
-
-  Scenario: Company details response contains details of 288b
-    Given a request for a company that has a 288b form
-    When I make a company details request
-    # The below step needs to be amended once Kev has resolved the list
-    Then the response will contain the explanatory label EL_UK_
-
-  Scenario: Company details response contains details of CERTNM
-    Given a request for a company that has a CERTNM form
-    When I make a company details request
-    # The below step needs to be amended once Kev has resolved the list
-    Then the response will contain the explanatory label EL_UK_
+    Then the response will contain the explanatory label <explanatory_label>
+    Examples:
+      | form     | explanatory_label |
+      | 288a     | EL_UK_008         |
+      | 288b     | EL_UK_039         |
+      | EEIG-ADD | EL_UK_004         |

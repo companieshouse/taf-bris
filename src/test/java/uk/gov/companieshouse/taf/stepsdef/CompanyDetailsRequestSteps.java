@@ -203,7 +203,7 @@ public class CompanyDetailsRequestSteps {
                 break;
             case "ltd":
                 // Load Private Limited Company
-                requestingTheCompanyDetailsForCompany(defaultCompanyNumber);
+                requestingTheCompanyDetailsForCompany(data.getCompanyNumber());
                 break;
             case "plc":
                 // Load Public Limited Company
@@ -258,8 +258,8 @@ public class CompanyDetailsRequestSteps {
             case "288a":
                 requestingTheCompanyDetailsForCompany(unregisteredCompany);
                 break;
-            case "CERTNM":
-                requestingTheCompanyDetailsForCompany(plc);
+            case "EEIG-ADD":
+                requestingTheCompanyDetailsForCompany(eeig);
                 break;
             case "288b":
                 requestingTheCompanyDetailsForCompany(privateLimitedGuarantNsc);
@@ -270,9 +270,15 @@ public class CompanyDetailsRequestSteps {
         }
     }
 
+    /**
+     * Creates a request for the company 99990000 which currently contains two filing history
+     * entries for forms 244 and 288b.
+     * 244 - currently not mapped so should not be returned
+     * 288b - mapped to EL_UK_039
+     */
     @Given("^a company has a restricted document present in it's filing history$")
     public void companyHasARestrictedDocumentPresentInItSFilingHistory() throws Throwable {
-        requestingTheCompanyDetailsForCompany(defaultCompanyNumber);
+        requestingTheCompanyDetailsForCompany(data.getCompanyNumber());
     }
 
     @When("^I make a company details request$")
@@ -418,6 +424,9 @@ public class CompanyDetailsRequestSteps {
         assertTrue("The label does not match.",
                 checkResponseContainsExpectedLabel(explanatoryLabel, response));
 
+        // And assert that the header details are correct
+        validateHeader(response.getMessageHeader());
+
     }
 
     /**
@@ -433,9 +442,26 @@ public class CompanyDetailsRequestSteps {
         assertEquals("Incorrect document count.", 1,
                 response.getDocuments().getDocument().size());
         // Assert that the document is the expected document
-        assertEquals("Incorrect document attached.", "EL_UK_001",
+        assertEquals("Incorrect document attached.", "EL_UK_039",
                 response.getDocuments().getDocument().get(0).getCompanyItem()
                         .getCompanyItemExplanatoryLabel().getValue());
+
+        // And assert that the header details are correct
+        validateHeader(response.getMessageHeader());
+    }
+
+    /**
+     * Checks for a validation error. Validation errors are created upon schema validation.
+     */
+    @Then("^I should receive a validation error$")
+    public void shouldReceiveAValidationError() throws Throwable {
+        ValidationError validationError = retrieveMessage
+                .checkForResponseByCorrelationId(data.getCorrelationId());
+
+        assertNotNull(validationError);
+
+        // And assert that the header details are correct
+        validateHeader(validationError.getMessageHeader());
     }
 
     private boolean checkResponseContainsExpectedLabel(String explanatoryLabel,
@@ -449,20 +475,6 @@ public class CompanyDetailsRequestSteps {
             }
         }
         return false;
-    }
-
-    /**
-     * Country Code error validation.
-     */
-    @Then("^I should receive a validation error$")
-    public void shouldReceiveACountryCodeValidationError() throws Throwable {
-        ValidationError validationError = retrieveMessage
-                .checkForResponseByCorrelationId(data.getCorrelationId());
-
-        assertNotNull(validationError);
-
-        // And assert that the header details are correct
-        validateHeader(validationError.getMessageHeader());
     }
 
     /*
