@@ -17,6 +17,6 @@ Feature: Schema validation of BRIS request messages
     Then no response will be created
 
   Scenario: Business register country does not exist
-    Given the request contains a business country that does not exist
+    Given the request contains a business country GBP that does not exist
     When I make a company details request
-    Then no response will be created
+    Then I should receive a validation error

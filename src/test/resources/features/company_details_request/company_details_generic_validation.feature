@@ -10,8 +10,8 @@ Feature: Generic validation of company details request
     When I make a company details request
     Then I should get a message with the error code ERR_BR_5103
 
-  Scenario: Business register id must correspond business country
-    Given the request contains an invalid business register id
+  Scenario: Business register id must correspond to the business country
+    Given the request contains an invalid business register id ZZ
     When I make a company details request
     Then I should get a message with the error code ERR_BR_0103
 

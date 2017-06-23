@@ -12,6 +12,7 @@ import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.gov.companieshouse.taf.config.constants.ConfigConstants;
 
 /**
  * Created by jblandford on 30/05/2017.

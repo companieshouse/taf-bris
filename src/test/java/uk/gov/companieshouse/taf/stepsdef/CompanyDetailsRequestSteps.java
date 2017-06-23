@@ -9,6 +9,7 @@ import static org.springframework.test.util.AssertionErrors.assertEquals;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import eu.europa.ec.bris.v140.jaxb.br.aggregate.MessageHeaderType;
 import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsRequest;
 import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsResponse;
 import eu.europa.ec.bris.v140.jaxb.br.error.BRBusinessError;
@@ -24,7 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import uk.gov.companieshouse.taf.domain.OutgoingBrisMessage;
+import uk.gov.companieshouse.taf.domain.ValidationError;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
 import uk.gov.companieshouse.taf.transformer.MessageTransformer;
@@ -38,31 +39,33 @@ public class CompanyDetailsRequestSteps {
     @Autowired
     private RequestData data;
 
-    @Value("${default.company.number}")
-    private String defaultCompanyNumber;
-
     @Autowired
     private SendBrisTestMessageService companyDetailsRequest;
 
     @Autowired
     private RetrieveBrisTestMessageService retrieveMessage;
 
-    private OutgoingBrisMessage outgoingBrisMessage;
-
     @Value("${plc.company.number}")
     private String plc;
+
     @Value("${ltd.section30.company.number}")
     private String privateLimitedSharesSection30Exemption;
+
     @Value("${eeig.company.number}")
     private String eeig;
+
     @Value("${europeanPlcSe.company.number}")
     private String europeanPublicLimitedLiabilityCompanySe;
+
     @Value("${unregistered.company.number}")
     private String unregisteredCompany;
+
     @Value("${ltdGuarantNsc.company.number}")
     private String privateLimitedGuarantNsc;
+
     @Value("${ltdGuarantNscLtdExemption.company.number}")
     private String privateLimitedGuarantNscLimitedExemption;
+
     @Value("${overseas.company.number}")
     private String overseaCompany;
 
@@ -71,15 +74,11 @@ public class CompanyDetailsRequestSteps {
      */
     @Given("^I am requesting details for a company that does not exist$")
     public void requestingDetailsForACompanyThatDoesNotExist() throws Throwable {
-        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
-                data.getCorrelationId(),
-                data.getMessageId(),
-                "00000000",
-                "EW",
-                "UK");
+        data.setCompanyNumber("00000000");
+        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(data);
 
-        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(
-                request, data.getMessageId());
+        data.setOutgoingBrisMessage((companyDetailsRequest.createOutgoingBrisMessage(
+                request, data.getMessageId())));
     }
 
     /**
@@ -87,15 +86,11 @@ public class CompanyDetailsRequestSteps {
      */
     @Given("^the request business id and country do not match")
     public void theRequestBusinessIdAndCountryDoNotMatch() throws Throwable {
-        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
-                data.getCorrelationId(),
-                data.getMessageId(),
-                defaultCompanyNumber,
-                "EW",
-                "BRA");
+        data.setCountryCode("BRA");
+        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(data);
 
-        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(
-                request, data.getMessageId());
+        data.setOutgoingBrisMessage(companyDetailsRequest.createOutgoingBrisMessage(
+                request, data.getMessageId()));
     }
 
     @Given("^a company details request exists$")
@@ -111,15 +106,10 @@ public class CompanyDetailsRequestSteps {
      */
     @Given("^a new company details request is created using the same message id$")
     public void companyDetailsRequestForMessageIdIsCreated() throws Throwable {
-        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
-                data.getCorrelationId(),
-                data.getMessageId(),
-                defaultCompanyNumber,
-                "EW",
-                "UK");
+        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(data);
 
-        outgoingBrisMessage = companyDetailsRequest
-                .createOutgoingBrisMessage(request, data.getMessageId());
+        data.setOutgoingBrisMessage(companyDetailsRequest
+                .createOutgoingBrisMessage(request, data.getMessageId()));
     }
 
     /**
@@ -129,15 +119,12 @@ public class CompanyDetailsRequestSteps {
     @Given("^the request contains an invalid correlation id$")
     public void theRequestContainsAnInvalidCorrelationId() throws Throwable {
         String invalidId = RandomStringUtils.randomAlphanumeric(65);
-        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
-                invalidId,
-                invalidId,
-                defaultCompanyNumber,
-                "EW",
-                "UK");
 
-        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(
-                request, data.getMessageId());
+        data.setMessageId(invalidId);
+        data.setCorrelationId(invalidId);
+        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(data);
+        data.setOutgoingBrisMessage(companyDetailsRequest.createOutgoingBrisMessage(
+                request, data.getMessageId()));
     }
 
     /**
@@ -147,47 +134,37 @@ public class CompanyDetailsRequestSteps {
     @Given("^the request contains a correlation id that does not match the message id$")
     public void theRequestContainsACorrelationIdThatDoesNotMatchTheMessageId() throws Throwable {
         String messageId = randomAlphanumeric(8);
+        data.setMessageId(messageId);
 
-        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
-                data.getCorrelationId(),
-                data.setMessageId(messageId),
-                defaultCompanyNumber,
-                "EW",
-                "UK");
-
-        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(request, messageId);
+        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(data);
+        data.setOutgoingBrisMessage(companyDetailsRequest.createOutgoingBrisMessage(request,
+                messageId));
     }
 
     /**
      * Create a company details request with a country code that does not exist.
      */
-    @Given("^the request contains a business country that does not exist$")
-    public void theRequestContainsABusinessCountryThatDoesNotExist() throws Throwable {
-        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
-                data.getCorrelationId(),
-                data.getMessageId(),
-                defaultCompanyNumber,
-                "EW",
-                "GBP");
+    @Given("^the request contains a business country ([^\"]*) that does not exist$")
+    public void theRequestContainsABusinessCountryThatDoesNotExist(String countryCode)
+            throws Throwable {
+        data.setCountryCode(countryCode);
+        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(data);
 
-        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(
-                request, data.getMessageId());
+        data.setOutgoingBrisMessage(companyDetailsRequest.createOutgoingBrisMessage(
+                request, data.getMessageId()));
     }
 
     /**
      * Create a company details request with an invalid business register id.
      */
-    @Given("^the request contains an invalid business register id$")
-    public void theRequestContainsAnInvalidBusinessRegisterId() throws Throwable {
-        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
-                data.getCorrelationId(),
-                data.getMessageId(),
-                defaultCompanyNumber,
-                "WALES",
-                "UK");
+    @Given("^the request contains an invalid business register id ([^\"]*)$")
+    public void theRequestContainsAnInvalidBusinessRegisterId(String businessRegisterId)
+            throws Throwable {
+        data.setBusinessRegisterId(businessRegisterId);
+        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(data);
 
-        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(
-                request, data.getMessageId());
+        data.setOutgoingBrisMessage(companyDetailsRequest.createOutgoingBrisMessage(
+                request, data.getMessageId()));
     }
 
     /**
@@ -195,15 +172,12 @@ public class CompanyDetailsRequestSteps {
      */
     @Given("^the request is not correct for the receiving business register$")
     public void theRequestIsNotCorrectForTheReceivingBusinessRegister() throws Throwable {
-        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
-                data.getCorrelationId(),
-                data.getMessageId(),
-                defaultCompanyNumber,
-                "01005",
-                "ES");
+        data.setCountryCode("ES");
+        data.setBusinessRegisterId("01005");
+        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(data);
 
-        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(
-                request, data.getMessageId());
+        data.setOutgoingBrisMessage(companyDetailsRequest.createOutgoingBrisMessage(
+                request, data.getMessageId()));
     }
 
     /**
@@ -265,15 +239,11 @@ public class CompanyDetailsRequestSteps {
     @Given("^I am requesting the company details for company ([^\"]*)$")
     public void requestingTheCompanyDetailsForCompany(String companyNumber) throws Throwable {
         LOGGER.info("Testing against the cloned data for company {}", companyNumber);
-        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
-                data.getCorrelationId(),
-                data.getMessageId(),
-                companyNumber,
-                "EW",
-                "UK");
+        data.setCompanyNumber(companyNumber);
+        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(data);
 
-        outgoingBrisMessage = companyDetailsRequest.createOutgoingBrisMessage(
-                request, data.getMessageId());
+        data.setOutgoingBrisMessage(companyDetailsRequest.createOutgoingBrisMessage(
+                request, data.getMessageId()));
     }
 
     /**
@@ -307,7 +277,8 @@ public class CompanyDetailsRequestSteps {
 
     @When("^I make a company details request$")
     public void makeACompanyDetailsRequest() throws Throwable {
-        companyDetailsRequest.sendOutgoingBrisMessage(outgoingBrisMessage, data.getMessageId());
+        companyDetailsRequest.sendOutgoingBrisMessage(data.getOutgoingBrisMessage(),
+                data.getMessageId());
     }
 
     /**
@@ -320,8 +291,9 @@ public class CompanyDetailsRequestSteps {
         assertNotNull(response);
 
         data.setCompanyDetailsResponse(response);
-        assertEquals("Expected Correlation ID:", data.getCorrelationId(),
-                response.getMessageHeader().getCorrelationID().getValue());
+
+        // And assert that the header details are correct
+        validateHeader(response.getMessageHeader());
     }
 
     /**
@@ -336,6 +308,9 @@ public class CompanyDetailsRequestSteps {
 
         assertEquals("The Legal Entity ID is incorrect: ", legalEntity,
                 response.getCompany().getCompanyLegalForm().getValue());
+
+        // And assert that the header details are correct
+        validateHeader(response.getMessageHeader());
     }
 
     /**
@@ -344,11 +319,14 @@ public class CompanyDetailsRequestSteps {
     @Then("^I should get a message with the error code ([^\"]*)$")
     public void theCorrectErrorWillBeReturnedToTheEcp(String errorCode) throws Throwable {
         BRBusinessError businessError = retrieveMessage
-                .checkForResponseByCorrelationId(data.getCorrelationId());
+                .checkForResponseByCorrelationId(data.getMessageId());
         assertNotNull(businessError);
 
         assertEquals("Expected Error Code:", errorCode,
                 businessError.getFaultError().get(0).getFaultErrorCode().getValue());
+
+        // And assert that the header details are correct
+        validateHeader(businessError.getMessageHeader());
     }
 
     /**
@@ -368,8 +346,12 @@ public class CompanyDetailsRequestSteps {
     public void theResponseWillContainAValidFormedEuid() throws Throwable {
         BRCompanyDetailsResponse response = data.getCompanyDetailsResponse();
 
-        assertEquals("Expected EUID is incorrect: ", String.format("UKEW.%s", defaultCompanyNumber),
+        assertEquals("Expected EUID is incorrect: ", String.format("UKEW.%s",
+                data.getCompanyNumber()),
                 response.getCompany().getCompanyEUID().getValue());
+
+        // And assert that the header details are correct
+        validateHeader(response.getMessageHeader());
     }
 
     /**
@@ -388,6 +370,9 @@ public class CompanyDetailsRequestSteps {
         assertNotNull(response.getCompany().getCompanyRegistrationNumber());
         assertEquals("Expected Company Number appears incorrect: ", companyNumber,
                 response.getCompany().getCompanyRegistrationNumber().getValue());
+
+        // And assert that the header details are correct
+        validateHeader(response.getMessageHeader());
     }
 
     /**
@@ -464,5 +449,37 @@ public class CompanyDetailsRequestSteps {
             }
         }
         return false;
+    }
+
+    /**
+     * Country Code error validation.
+     */
+    @Then("^I should receive a validation error$")
+    public void shouldReceiveACountryCodeValidationError() throws Throwable {
+        ValidationError validationError = retrieveMessage
+                .checkForResponseByCorrelationId(data.getCorrelationId());
+
+        assertNotNull(validationError);
+
+        // And assert that the header details are correct
+        validateHeader(validationError.getMessageHeader());
+    }
+
+    /*
+     Check that the message header is as expected.
+     */
+    private void validateHeader(MessageHeaderType messageHeader) {
+        assertEquals("Correlation ID in header is not as expected",
+                data.getMessageId(),
+                messageHeader.getCorrelationID().getValue());
+
+        assertEquals("Business Register ID in header is not as expected",
+                data.getBusinessRegisterId(),
+                messageHeader.getBusinessRegisterReference().getBusinessRegisterID().getValue());
+
+        assertEquals("Business Register Country in header is not as expected",
+                data.getCountryCode(),
+                messageHeader.getBusinessRegisterReference()
+                        .getBusinessRegisterCountry().getValue());
     }
 }

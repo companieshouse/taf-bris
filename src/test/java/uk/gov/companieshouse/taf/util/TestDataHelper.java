@@ -15,6 +15,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +34,8 @@ import uk.gov.companieshouse.taf.stepsdef.RequestData;
 
 @Component
 public class TestDataHelper {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestDataHelper.class);
     private static final String COMPANY_PROFILE = "company_profile";
     private static final String COMPANY_FILING_HISTORY = "company_filing_history";
     private static final String TEST_DATA_FOLDER = "testdata";
@@ -61,6 +65,7 @@ public class TestDataHelper {
 
     /**
      * Set up the test data for the specified company.
+     *
      * @param companyNumbers The company numbers to load JSON files for
      */
     public void setUpTestData(List<String> companyNumbers) {
@@ -105,10 +110,12 @@ public class TestDataHelper {
                 }
             }
         }
+        LOGGER.info("Test data entered for company/companies: {}", companyNumbers);
     }
 
     /**
      * Method to remove the company records from MongoDB.
+     *
      * @param companyNumbers The company numbers to be used to remove records from MongoDB
      */
     public void tearDownTestData(List<String> companyNumbers) {
@@ -124,6 +131,8 @@ public class TestDataHelper {
                             .is(companyNumber)),
                     COMPANY_FILING_HISTORY);
         }
+
+        LOGGER.info("Test data removed for company/companies: {}", companyNumbers);
     }
 
     private static String getJsonFromFile(File jsonFile) {
@@ -152,12 +161,7 @@ public class TestDataHelper {
         incomingBrisMessage.setCorrelationId(requestData.getCorrelationId());
         incomingBrisMessage.setMessageId(requestData.getMessageId());
         incomingBrisMessage.setMessageType("BRCompanyDetailsRequest");
-        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(
-                requestData.getCorrelationId(),
-                requestData.getMessageId(),
-                defaultCompanyNumber,
-                "EW",
-                "UK");
+        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(requestData);
 
         String xmlString;
 
