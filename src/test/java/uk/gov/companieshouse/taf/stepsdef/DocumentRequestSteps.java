@@ -110,7 +110,6 @@ public class DocumentRequestSteps {
         assertNotNull(retrieveDocumentResponse);
         assertEquals("Expected Document ID:", documentId,
                 retrieveDocumentResponse.getDocumentID().getValue());
-        
         assertEquals("Business Register ID is not as expected",
                 BUSINESS_REGISTER_ID,
                 retrieveDocumentResponse.getBusinessRegisterReference()

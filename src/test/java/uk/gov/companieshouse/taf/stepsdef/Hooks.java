@@ -48,6 +48,17 @@ public class Hooks {
     }
 
     /**
+     * Cleans up the data that has been injected for testing purposes.
+     * Note that this tear down step will run for all scenarios.
+     */
+    @After
+    public void tearDownDataForAllScenarios() {
+        List<String> companiesToRemove = new ArrayList<>();
+        companiesToRemove.add(defaultCompanyNumber);
+        testDataHelper.tearDownTestData(companiesToRemove);
+    }
+
+    /**
      * Inserts all the test data required for testing the legal entity feature.
      */
     @Before("@legal_entity")
@@ -65,17 +76,6 @@ public class Hooks {
     }
 
     /**
-     * Cleans up the data that has been injected for testing purposes.
-     * Note that this tear down step will run for all scenarios.
-     */
-    @After
-    public void tearDownDataForAllScenarios() {
-        List<String> companiesToRemove = new ArrayList<>();
-        companiesToRemove.add(defaultCompanyNumber);
-        testDataHelper.tearDownTestData(companiesToRemove);
-    }
-
-    /**
      * Cleans up the data that has been injected for legal entity testing purposes.
      */
     @After("@legal_entity")
@@ -89,6 +89,50 @@ public class Hooks {
         companiesToRemove.add(privateLimitedGuarantNsc);
         companiesToRemove.add(privateLimitedGuarantNscLimitedExemption);
         companiesToRemove.add(overseaCompany);
+        testDataHelper.tearDownTestData(companiesToRemove);
+    }
+
+    /**
+     * Inserts all the test data required for testing the legacy forms feature.
+     */
+    @Before("@legacy_forms")
+    public void setDataForLegacyFormsScenario() {
+        List<String> companiesToLoad = new ArrayList<>();
+        companiesToLoad.add(unregisteredCompany);
+        companiesToLoad.add(europeanPublicLimitedLiabilityCompanySe);
+        companiesToLoad.add(eeig);
+        testDataHelper.setUpTestData(companiesToLoad);
+    }
+
+    /**
+     * Cleans up the data that has been injected for legal entity testing purposes.
+     */
+    @After("@legacy_forms")
+    public void tearDownDataForLegacyFormsScenario() {
+        List<String> companiesToRemove = new ArrayList<>();
+        companiesToRemove.add(unregisteredCompany);
+        companiesToRemove.add(europeanPublicLimitedLiabilityCompanySe);
+        companiesToRemove.add(eeig);
+        testDataHelper.tearDownTestData(companiesToRemove);
+    }
+
+    /**
+     * Inserts all the test data required for testing the legacy forms feature.
+     */
+    @Before("@restricted_documents")
+    public void setDataForRestrictedDocumentScenario() {
+        List<String> companiesToLoad = new ArrayList<>();
+        companiesToLoad.add(plcCompanyNumber);
+        testDataHelper.setUpTestData(companiesToLoad);
+    }
+
+    /**
+     * Cleans up the data that has been injected for legal entity testing purposes.
+     */
+    @After("@restricted_documents")
+    public void tearDownDataForRestrictedDocumentScenario() {
+        List<String> companiesToRemove = new ArrayList<>();
+        companiesToRemove.add(plcCompanyNumber);
         testDataHelper.tearDownTestData(companiesToRemove);
     }
 
