@@ -40,8 +40,7 @@ public class CrossBorderMergerReceptionSteps {
         BRCrossBorderMergerReceptionNotification notification = NotificationHelper
                 .getCrossBorderMergerNotification(data);
 
-        data.setOutgoingBrisMessage((cbMergerNotification.createOutgoingBrisMessage(
-                notification, data.getMessageId())));
+        setCbmOutgoingMessage(notification);
     }
 
     /**
@@ -53,8 +52,7 @@ public class CrossBorderMergerReceptionSteps {
         BRCrossBorderMergerReceptionNotification notification = NotificationHelper
                 .getCrossBorderMergerNotification(data);
 
-        data.setOutgoingBrisMessage((cbMergerNotification.createOutgoingBrisMessage(
-                notification, data.getMessageId())));
+        setCbmOutgoingMessage(notification);
     }
 
     /**
@@ -67,8 +65,7 @@ public class CrossBorderMergerReceptionSteps {
         BRCrossBorderMergerReceptionNotification notification = NotificationHelper
                 .getCrossBorderMergerNotification(data);
 
-        data.setOutgoingBrisMessage((cbMergerNotification.createOutgoingBrisMessage(
-                notification, data.getMessageId())));
+        setCbmOutgoingMessage(notification);
     }
 
     @When("^I make a cross border merger request$")
@@ -97,5 +94,11 @@ public class CrossBorderMergerReceptionSteps {
         assertEquals("Correlation ID in header is not as expected",
                 data.getCorrelationId(),
                 ack.getMessageHeader().getCorrelationID().getValue());
+    }
+
+    private void setCbmOutgoingMessage(BRCrossBorderMergerReceptionNotification notification)
+            throws Exception {
+        data.setOutgoingBrisMessage((cbMergerNotification.createOutgoingBrisMessage(
+                notification, data.getMessageId())));
     }
 }
