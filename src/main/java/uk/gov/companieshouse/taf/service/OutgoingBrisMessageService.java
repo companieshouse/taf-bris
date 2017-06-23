@@ -16,6 +16,7 @@ public class OutgoingBrisMessageService {
     private OutgoingBrisMessageRepository outgoingBrisMessageRepository;
 
     public OutgoingBrisMessage save(OutgoingBrisMessage outgoingBrisMessage) {
+        logger.info("Outgoing message from test:- {}", outgoingBrisMessage);
         return outgoingBrisMessageRepository.save(outgoingBrisMessage);
     }
 

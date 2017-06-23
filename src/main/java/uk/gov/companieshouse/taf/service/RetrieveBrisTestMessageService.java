@@ -38,6 +38,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import uk.gov.companieshouse.taf.domain.IncomingBrisMessage;
+import uk.gov.companieshouse.taf.domain.ValidationError;
 
 @Component
 public class RetrieveBrisTestMessageService {
@@ -63,7 +64,7 @@ public class RetrieveBrisTestMessageService {
 
         // If we have a message after iteration, then set it on the response
         if (incomingBrisMessage != null) {
-            LOGGER.info("Found message with correlation ID {} !!", correlationId);
+            LOGGER.info("Message found in MongoDB : " + incomingBrisMessage.toString());
             JAXBContext jaxbContext = getJaxbContext();
             StringReader reader = new StringReader(incomingBrisMessage.getMessage());
             Object obj = jaxbContext.createUnmarshaller().unmarshal(reader);
@@ -150,7 +151,8 @@ public class RetrieveBrisTestMessageService {
                 Acknowledgement.class,
                 DeliveryBody.class,
                 SubmissionBody.class,
-                SubmissionHeader.class);
+                SubmissionHeader.class,
+                ValidationError.class);
 
         return context;
     }

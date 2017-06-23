@@ -1,4 +1,4 @@
-package uk.gov.companieshouse.taf.config;
+package uk.gov.companieshouse.taf.config.constants;
 
 /**
  * Created by jblandford on 30/05/2017.
