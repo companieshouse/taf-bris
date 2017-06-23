@@ -4,6 +4,7 @@ import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsResponse;
 
 import java.util.UUID;
 
+import eu.europa.ec.bris.v140.jaxb.br.merger.BRCrossBorderMergerReceptionNotification;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.taf.config.constants.BusinessRegisterConstants;
@@ -25,8 +26,12 @@ public class RequestData {
     private String correlationId = messageId;
     private String businessRegisterId = BusinessRegisterConstants.EW_REGISTER_ID;
     private String countryCode = BusinessRegisterConstants.UK_COUNTRY_CODE;
+    private String issuingCountryCode = BusinessRegisterConstants.FRANCE_COUNTRY_CODE;
+    private String issuingBusinessRegId = BusinessRegisterConstants.FR_BUSINESS_REGISTER_ID;
+    private String issuingCompanyNumber = BusinessRegisterConstants.DUMMY_COMPANY_NUMBER;
     private BRCompanyDetailsResponse companyDetailsResponse;
     private OutgoingBrisMessage outgoingBrisMessage;
+    private BRCrossBorderMergerReceptionNotification brCrossBorderMergerReceptionNotification;
 
     public String getMessageId() {
         return messageId;
@@ -82,5 +87,37 @@ public class RequestData {
 
     public void setCorrelationId(String correlationId) {
         this.correlationId = correlationId;
+    }
+
+    public BRCrossBorderMergerReceptionNotification getBrCrossBorderMergerReceptionNotification() {
+        return brCrossBorderMergerReceptionNotification;
+    }
+
+    public void setBrCrossBorderMergerReceptionNotification(BRCrossBorderMergerReceptionNotification brCrossBorderMergerReceptionNotification) {
+        this.brCrossBorderMergerReceptionNotification = brCrossBorderMergerReceptionNotification;
+    }
+
+    public String getIssuingCountryCode() {
+        return issuingCountryCode;
+    }
+
+    public void setIssuingCountryCode(String issuingCountryCode) {
+        this.issuingCountryCode = issuingCountryCode;
+    }
+
+    public String getIssuingBusinessRegId() {
+        return issuingBusinessRegId;
+    }
+
+    public void setIssuingBusinessRegId(String issuingBusinessRegId) {
+        this.issuingBusinessRegId = issuingBusinessRegId;
+    }
+
+    public String getIssuingCompanyNumber() {
+        return issuingCompanyNumber;
+    }
+
+    public void setIssuingCompanyNumber(String issuingCompanyNumber) {
+        this.issuingCompanyNumber = issuingCompanyNumber;
     }
 }

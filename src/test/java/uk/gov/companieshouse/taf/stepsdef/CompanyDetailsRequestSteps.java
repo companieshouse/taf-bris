@@ -309,7 +309,7 @@ public class CompanyDetailsRequestSteps {
      * @param legalEntity the expected legal entity id
      */
     @Then("^the company details response will have the legal entity code ([^\"]*)$")
-    public void theCompanyDetailsResponseWillHaveTheLegalEntityCodeCompany_type(String legalEntity)
+    public void theCompanyDetailsResponseWillHaveTheLegalEntityCodeCompanyType(String legalEntity)
             throws Throwable {
         BRCompanyDetailsResponse response = data.getCompanyDetailsResponse();
 
