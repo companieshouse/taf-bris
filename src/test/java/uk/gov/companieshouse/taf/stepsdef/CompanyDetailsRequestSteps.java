@@ -5,6 +5,7 @@ import static junit.framework.TestCase.assertNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -437,6 +438,11 @@ public class CompanyDetailsRequestSteps {
         BRCompanyDetailsResponse response = retrieveMessage
                 .checkForResponseByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
+
+        // Ensure the response contains documents
+        assertNotNull(response.getDocuments());
+        assertTrue("There are no documents in this response",
+                !isEmpty(response.getDocuments().getDocument()));
 
         // Check the expected amount of documents
         assertEquals("Incorrect document count.", 1,
