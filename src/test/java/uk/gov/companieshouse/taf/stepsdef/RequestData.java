@@ -1,10 +1,10 @@
 package uk.gov.companieshouse.taf.stepsdef;
 
 import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsResponse;
+import eu.europa.ec.bris.v140.jaxb.br.merger.BRCrossBorderMergerReceptionNotification;
 
 import java.util.UUID;
 
-import eu.europa.ec.bris.v140.jaxb.br.merger.BRCrossBorderMergerReceptionNotification;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.taf.config.constants.BusinessRegisterConstants;
@@ -93,7 +93,8 @@ public class RequestData {
         return brCrossBorderMergerReceptionNotification;
     }
 
-    public void setBrCrossBorderMergerReceptionNotification(BRCrossBorderMergerReceptionNotification brCrossBorderMergerReceptionNotification) {
+    public void setBrCrossBorderMergerReceptionNotification(
+            BRCrossBorderMergerReceptionNotification brCrossBorderMergerReceptionNotification) {
         this.brCrossBorderMergerReceptionNotification = brCrossBorderMergerReceptionNotification;
     }
 

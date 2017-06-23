@@ -24,12 +24,13 @@ import eu.europa.ec.bris.v140.jaxb.components.basic.DateTimeType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.EffectiveDateType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.LegalFormCodeType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.MergerType;
-import uk.gov.companieshouse.taf.stepsdef.RequestData;
 
 import java.util.GregorianCalendar;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+
+import uk.gov.companieshouse.taf.stepsdef.RequestData;
 
 public class NotificationHelper {
 
