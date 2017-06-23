@@ -271,14 +271,14 @@ public class CompanyDetailsRequestSteps {
     }
 
     /**
-     * Creates a request for the company 99990000 which currently contains two filing history
-     * entries for forms 244 and 288b.
-     * 244 - currently not mapped so should not be returned
-     * 288b - mapped to EL_UK_039
+     * Creates a request for the company 99990001 which currently contains two filing history
+     * entries for forms GAZ1 and CH01.
+     * GAZ1 - currently not mapped so should not be returned
+     * CH01 - mapped to EL_UK_011
      */
     @Given("^a company has a restricted document present in it's filing history$")
     public void companyHasARestrictedDocumentPresentInItSFilingHistory() throws Throwable {
-        requestingTheCompanyDetailsForCompany(data.getCompanyNumber());
+        requestingTheCompanyDetailsForCompany(plc);
     }
 
     @When("^I make a company details request$")
@@ -442,7 +442,7 @@ public class CompanyDetailsRequestSteps {
         assertEquals("Incorrect document count.", 1,
                 response.getDocuments().getDocument().size());
         // Assert that the document is the expected document
-        assertEquals("Incorrect document attached.", "EL_UK_039",
+        assertEquals("Incorrect document attached.", "EL_UK_011",
                 response.getDocuments().getDocument().get(0).getCompanyItem()
                         .getCompanyItemExplanatoryLabel().getValue());
 
