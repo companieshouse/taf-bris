@@ -13,10 +13,10 @@ import eu.europa.ec.bris.v140.jaxb.br.aggregate.MessageHeaderType;
 import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsRequest;
 import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsResponse;
 import eu.europa.ec.bris.v140.jaxb.br.error.BRBusinessError;
+import eu.europa.ec.bris.v140.jaxb.components.aggregate.DocumentType;
 
 import java.util.List;
 
-import eu.europa.ec.bris.v140.jaxb.components.aggregate.DocumentType;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import org.apache.commons.lang3.StringUtils;
