@@ -100,7 +100,7 @@ public class Hooks {
         List<String> companiesToLoad = new ArrayList<>();
         companiesToLoad.add(unregisteredCompany);
         companiesToLoad.add(europeanPublicLimitedLiabilityCompanySe);
-        companiesToLoad.add(privateLimitedGuarantNsc);
+        companiesToLoad.add(eeig);
         testDataHelper.setUpTestData(companiesToLoad);
     }
 
@@ -112,7 +112,27 @@ public class Hooks {
         List<String> companiesToRemove = new ArrayList<>();
         companiesToRemove.add(unregisteredCompany);
         companiesToRemove.add(europeanPublicLimitedLiabilityCompanySe);
-        companiesToRemove.add(privateLimitedGuarantNsc);
+        companiesToRemove.add(eeig);
+        testDataHelper.tearDownTestData(companiesToRemove);
+    }
+
+    /**
+     * Inserts all the test data required for testing the legacy forms feature.
+     */
+    @Before("@restricted_documents")
+    public void setDataForRestrictedDocumentScenario() {
+        List<String> companiesToLoad = new ArrayList<>();
+        companiesToLoad.add(plcCompanyNumber);
+        testDataHelper.setUpTestData(companiesToLoad);
+    }
+
+    /**
+     * Cleans up the data that has been injected for legal entity testing purposes.
+     */
+    @After("@restricted_documents")
+    public void tearDownDataForRestrictedDocumentScenario() {
+        List<String> companiesToRemove = new ArrayList<>();
+        companiesToRemove.add(plcCompanyNumber);
         testDataHelper.tearDownTestData(companiesToRemove);
     }
 
