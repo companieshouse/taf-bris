@@ -1,15 +1,14 @@
 package uk.gov.companieshouse.taf.util;
 
 import eu.europa.ec.bris.v140.jaxb.br.company.document.BRRetrieveDocumentRequest;
+import eu.europa.ec.bris.v140.jaxb.components.basic.DocumentIDType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.PaymentReferenceType;
 import uk.gov.companieshouse.taf.data.DocumentRequestData;
 
-import static uk.gov.companieshouse.taf.util.RequestBuilder.businessRegReference;
-import static uk.gov.companieshouse.taf.util.RequestBuilder.companyRegNumber;
-import static uk.gov.companieshouse.taf.util.RequestBuilder.documentIdType;
-import static uk.gov.companieshouse.taf.util.RequestBuilder.getMessageHeader;
-
-public class DocumentRequestBuilder {
+/**
+ * Used to build a request object for Documents with default values.
+ */
+public class DocumentRequestBuilder extends RequestBuilder {
 
     private static final String PAYMENT_REF = "PR";
 
@@ -24,7 +23,6 @@ public class DocumentRequestBuilder {
                 data.getBusinessRegisterId(), data.getCountryCode()));
         request.setBusinessRegisterReference(businessRegReference(data.getCountryCode(),
                 data.getBusinessRegisterId()));
-
         PaymentReferenceType paymentReference = new PaymentReferenceType();
         paymentReference.setValue(PAYMENT_REF);
         request.setPaymentReference(paymentReference);
@@ -33,4 +31,10 @@ public class DocumentRequestBuilder {
         return request;
     }
 
+
+    private static DocumentIDType documentIdType(String documentId) {
+        DocumentIDType documentIdType = new DocumentIDType();
+        documentIdType.setValue(documentId);
+        return documentIdType;
+    }
 }

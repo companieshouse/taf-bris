@@ -1,6 +1,5 @@
 package uk.gov.companieshouse.taf.util;
 
-
 import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsRequest;
 import uk.gov.companieshouse.taf.data.RequestData;
 

@@ -14,7 +14,7 @@ import uk.gov.companieshouse.taf.config.constants.BusinessRegisterConstants;
 import uk.gov.companieshouse.taf.data.CrossBorderMergerNotificationData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
-import uk.gov.companieshouse.taf.util.CrossBorderMergerNotificationBuilder;
+import uk.gov.companieshouse.taf.util.CrossBorderMergerNotificationRequestBuilder;
 
 public class CrossBorderMergerReceptionSteps {
 
@@ -35,7 +35,8 @@ public class CrossBorderMergerReceptionSteps {
      */
     @Given("^a valid cross border merger request is created$")
     public void crossBorderMergerRequestExists() throws Throwable {
-        BRCrossBorderMergerReceptionNotification notification = CrossBorderMergerNotificationBuilder
+        BRCrossBorderMergerReceptionNotification notification =
+                CrossBorderMergerNotificationRequestBuilder
                 .getCrossBorderMergerNotification(data);
 
         data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
@@ -48,7 +49,8 @@ public class CrossBorderMergerReceptionSteps {
     @Given("^the notification does not have a valid merging country code$")
     public void theNotificationDoesNotHaveAValidMergingCountryCode() throws Throwable {
         data.setIssuingCountryCode("GG");
-        BRCrossBorderMergerReceptionNotification notification = CrossBorderMergerNotificationBuilder
+        BRCrossBorderMergerReceptionNotification notification =
+                CrossBorderMergerNotificationRequestBuilder
                 .getCrossBorderMergerNotification(data);
 
         data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
@@ -62,7 +64,8 @@ public class CrossBorderMergerReceptionSteps {
     @Given("^the notification does not have a valid business register id$")
     public void theNotificationDoesNotHaveAValidBusinessRegisterId() throws Throwable {
         data.setIssuingBusinessRegId("12     04");
-        BRCrossBorderMergerReceptionNotification notification = CrossBorderMergerNotificationBuilder
+        BRCrossBorderMergerReceptionNotification notification =
+                CrossBorderMergerNotificationRequestBuilder
                 .getCrossBorderMergerNotification(data);
 
         data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
