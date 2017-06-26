@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import uk.gov.companieshouse.taf.domain.OutgoingBrisMessage;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
-import uk.gov.companieshouse.taf.util.RequestHelper;
+import uk.gov.companieshouse.taf.util.DocumentRequestBuilder;
 
 public class DocumentRequestSteps {
     private static final String BUSINESS_REGISTER_ID = "EW";
@@ -44,7 +44,7 @@ public class DocumentRequestSteps {
      */
     @Given("^the request contains a valid document id of (.*)$")
     public void theRequestContainsAValidDocumentIdOf(String documentId) throws Throwable {
-        BRRetrieveDocumentRequest retrieveDocumentRequest = RequestHelper
+        BRRetrieveDocumentRequest retrieveDocumentRequest = DocumentRequestBuilder
                 .getRetrieveDocumentRequest(
                 data.getCorrelationId(),
                 data.getMessageId(),
@@ -62,7 +62,7 @@ public class DocumentRequestSteps {
      */
     @Given("^the request contains a document id that does not exist$")
     public void theRequestContainsADocumentIdThatDoesNotExist() throws Throwable {
-        BRRetrieveDocumentRequest retrieveDocumentRequest = RequestHelper
+        BRRetrieveDocumentRequest retrieveDocumentRequest = DocumentRequestBuilder
                 .getRetrieveDocumentRequest(
                 data.getCorrelationId(),
                 data.getMessageId(),
@@ -80,7 +80,7 @@ public class DocumentRequestSteps {
      */
     @Given("^the request contains an invalid document id$")
     public void theRequestContainsAnInvalidDocumentId() throws Throwable {
-        BRRetrieveDocumentRequest retrieveDocumentRequest = RequestHelper
+        BRRetrieveDocumentRequest retrieveDocumentRequest = DocumentRequestBuilder
                 .getRetrieveDocumentRequest(
                 data.getCorrelationId(),
                 data.getMessageId(),
