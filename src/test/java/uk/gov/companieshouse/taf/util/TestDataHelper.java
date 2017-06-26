@@ -25,8 +25,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-import uk.gov.companieshouse.taf.domain.IncomingBrisMessage;
 import uk.gov.companieshouse.taf.data.RequestData;
+import uk.gov.companieshouse.taf.domain.IncomingBrisMessage;
 
 /**
  * This class can be used to load the relevant test data for the test framework.
@@ -161,7 +161,8 @@ public class TestDataHelper {
         incomingBrisMessage.setCorrelationId(requestData.getCorrelationId());
         incomingBrisMessage.setMessageId(requestData.getMessageId());
         incomingBrisMessage.setMessageType("BRCompanyDetailsRequest");
-        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(requestData);
+        BRCompanyDetailsRequest request = CompanyDetailsRequestBuilder
+                .getCompanyDetailsRequest(requestData);
 
         String xmlString;
 

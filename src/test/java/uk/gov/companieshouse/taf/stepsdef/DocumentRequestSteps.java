@@ -11,21 +11,21 @@ import eu.europa.ec.bris.v140.jaxb.br.company.document.BRRetrieveDocumentRequest
 import eu.europa.ec.bris.v140.jaxb.br.company.document.BRRetrieveDocumentResponse;
 
 import java.util.Arrays;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import uk.gov.companieshouse.taf.data.RequestData;
-import uk.gov.companieshouse.taf.domain.OutgoingBrisMessage;
+import uk.gov.companieshouse.taf.data.DocumentRequestData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
-import uk.gov.companieshouse.taf.util.RequestHelper;
+import uk.gov.companieshouse.taf.util.DocumentRequestBuilder;
 
 public class DocumentRequestSteps {
     private static final String BUSINESS_REGISTER_ID = "EW";
     private static final String BUSINESS_REGISTER_COUNTRY = "UK";
 
     @Autowired
-    private RequestData data;
+    private DocumentRequestData data;
 
     @Value("${default.company.number}")
     private String defaultCompanyNumber;
@@ -36,8 +36,6 @@ public class DocumentRequestSteps {
     @Autowired
     private RetrieveBrisTestMessageService retrieveMessage;
 
-    private OutgoingBrisMessage outgoingBrisMessage;
-
     /**
      * Create valid document request.
      *
@@ -45,17 +43,12 @@ public class DocumentRequestSteps {
      */
     @Given("^the request contains a valid document id of (.*)$")
     public void theRequestContainsAValidDocumentIdOf(String documentId) throws Throwable {
-        BRRetrieveDocumentRequest retrieveDocumentRequest = RequestHelper
-                .getRetrieveDocumentRequest(
-                data.getCorrelationId(),
-                data.getMessageId(),
-                defaultCompanyNumber,
-                BUSINESS_REGISTER_ID,
-                BUSINESS_REGISTER_COUNTRY,
-                documentId);
+        data.setDocumentId(documentId);
+        BRRetrieveDocumentRequest retrieveDocumentRequest = DocumentRequestBuilder
+                .getRetrieveDocumentRequest(data);
 
-        outgoingBrisMessage = documentRequest.createOutgoingBrisMessage(retrieveDocumentRequest,
-                data.getMessageId());
+        data.setOutgoingBrisMessage((documentRequest.createOutgoingBrisMessage(
+                retrieveDocumentRequest, data.getMessageId())));
     }
 
     /**
@@ -63,17 +56,12 @@ public class DocumentRequestSteps {
      */
     @Given("^the request contains a document id that does not exist$")
     public void theRequestContainsADocumentIdThatDoesNotExist() throws Throwable {
-        BRRetrieveDocumentRequest retrieveDocumentRequest = RequestHelper
-                .getRetrieveDocumentRequest(
-                data.getCorrelationId(),
-                data.getMessageId(),
-                defaultCompanyNumber,
-                BUSINESS_REGISTER_ID,
-                BUSINESS_REGISTER_COUNTRY,
-                RandomStringUtils.randomAlphanumeric(8));
+        data.setDocumentId(RandomStringUtils.randomAlphanumeric(8));
+        BRRetrieveDocumentRequest retrieveDocumentRequest = DocumentRequestBuilder
+                .getRetrieveDocumentRequest(data);
 
-        outgoingBrisMessage = documentRequest.createOutgoingBrisMessage(retrieveDocumentRequest,
-                data.getMessageId());
+        data.setOutgoingBrisMessage((documentRequest.createOutgoingBrisMessage(
+                retrieveDocumentRequest, data.getMessageId())));
     }
 
     /**
@@ -81,22 +69,17 @@ public class DocumentRequestSteps {
      */
     @Given("^the request contains an invalid document id$")
     public void theRequestContainsAnInvalidDocumentId() throws Throwable {
-        BRRetrieveDocumentRequest retrieveDocumentRequest = RequestHelper
-                .getRetrieveDocumentRequest(
-                data.getCorrelationId(),
-                data.getMessageId(),
-                defaultCompanyNumber,
-                BUSINESS_REGISTER_ID,
-                BUSINESS_REGISTER_COUNTRY,
-                RandomStringUtils.randomAlphanumeric(65));
+        data.setDocumentId(RandomStringUtils.randomAlphanumeric(65));
+        BRRetrieveDocumentRequest retrieveDocumentRequest = DocumentRequestBuilder
+                .getRetrieveDocumentRequest(data);
 
-        outgoingBrisMessage = documentRequest.createOutgoingBrisMessage(retrieveDocumentRequest,
-                data.getMessageId());
+        data.setOutgoingBrisMessage((documentRequest.createOutgoingBrisMessage(
+                retrieveDocumentRequest, data.getMessageId())));
     }
 
     @When("^I make a document details request$")
     public void makeADocumentDetailsRequest() throws Throwable {
-        documentRequest.sendOutgoingBrisMessage(outgoingBrisMessage, data.getMessageId());
+        documentRequest.sendOutgoingBrisMessage(data.getOutgoingBrisMessage(), data.getMessageId());
     }
 
     /**
@@ -115,7 +98,7 @@ public class DocumentRequestSteps {
                 BUSINESS_REGISTER_ID,
                 retrieveDocumentResponse.getBusinessRegisterReference()
                         .getBusinessRegisterID().getValue());
-        
+
         assertEquals("Business Register Country is not as expected",
                 BUSINESS_REGISTER_COUNTRY,
                 retrieveDocumentResponse.getBusinessRegisterReference()

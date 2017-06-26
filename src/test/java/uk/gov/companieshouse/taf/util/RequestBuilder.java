@@ -14,62 +14,9 @@ import eu.europa.ec.bris.v140.jaxb.components.basic.MessageIDType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.PaymentReferenceType;
 
 import org.springframework.stereotype.Component;
-import uk.gov.companieshouse.taf.data.RequestData;
 
 @Component
-public class RequestHelper {
-
-    private static final String PAYMENT_REF = "PR";
-
-    /**
-     * Create new instance of BRCompany Detail Request.
-     */
-    public static BRCompanyDetailsRequest getCompanyDetailsRequest(RequestData requestData) {
-
-        BRCompanyDetailsRequest request = new BRCompanyDetailsRequest();
-        request.setMessageHeader(getMessageHeader(requestData.getCorrelationId(),
-                requestData.getMessageId(),
-                requestData.getBusinessRegisterId(),
-                requestData.getCountryCode()));
-        request.setBusinessRegisterReference(businessRegReference(
-                requestData.getCountryCode(),
-                requestData.getBusinessRegisterId()));
-        request.setCompanyRegistrationNumber(companyRegNumber(requestData.getCompanyNumber()));
-        return request;
-    }
-
-    /**
-     * Create new instance of BRRetrieveDocumentRequest.
-     *
-     * @param correlationId             the correlation id of the message header
-     * @param messageId                 the message id of the message header
-     * @param companyRegistrationNumber the company number
-     * @param businessRegisterId        the business registration id e.g EW
-     * @param countryCode               the business country code e.g. UK
-     * @param documentId                the document to be requested id
-     */
-    public static BRRetrieveDocumentRequest getRetrieveDocumentRequest(
-            String correlationId,
-            String messageId,
-            String companyRegistrationNumber,
-            String businessRegisterId,
-            String countryCode,
-            String documentId) {
-
-        BRRetrieveDocumentRequest request = new BRRetrieveDocumentRequest();
-        request.setMessageHeader(getMessageHeader(correlationId, messageId,
-                businessRegisterId, countryCode));
-        request.setBusinessRegisterReference(businessRegReference(countryCode,
-                businessRegisterId));
-
-        PaymentReferenceType paymentReference = new PaymentReferenceType();
-        paymentReference.setValue(PAYMENT_REF);
-        request.setPaymentReference(paymentReference);
-        request.setCompanyRegistrationNumber(companyRegNumber(companyRegistrationNumber));
-        request.setDocumentID(documentIdType(documentId));
-        return request;
-    }
-
+public class RequestBuilder {
 
     /**
      * Populate the message header for the request.
@@ -113,7 +60,7 @@ public class RequestHelper {
         return messageHeaderType;
     }
 
-    private static BusinessRegisterReferenceType businessRegReference(String countryCode,
+    protected static BusinessRegisterReferenceType businessRegReference(String countryCode,
                                                                       String businessRegisterId) {
         BusinessRegisterReferenceType businessRegisterReference =
                 new BusinessRegisterReferenceType();
@@ -122,7 +69,7 @@ public class RequestHelper {
         return businessRegisterReference;
     }
 
-    private static CompanyRegistrationNumberType companyRegNumber(String companyRegNumber) {
+    protected static CompanyRegistrationNumberType companyRegNumber(String companyRegNumber) {
         CompanyRegistrationNumberType companyRegistrationNumber =
                 new CompanyRegistrationNumberType();
         companyRegistrationNumber.setValue(companyRegNumber);
@@ -141,7 +88,7 @@ public class RequestHelper {
         return businessRegisterId;
     }
 
-    private static DocumentIDType documentIdType(String documentId) {
+    protected static DocumentIDType documentIdType(String documentId) {
         DocumentIDType documentIdType = new DocumentIDType();
         documentIdType.setValue(documentId);
         return documentIdType;

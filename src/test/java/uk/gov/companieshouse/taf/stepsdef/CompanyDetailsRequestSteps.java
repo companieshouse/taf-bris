@@ -30,7 +30,7 @@ import uk.gov.companieshouse.taf.data.CompanyDetailsRequestData;
 import uk.gov.companieshouse.taf.domain.ValidationError;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
-import uk.gov.companieshouse.taf.util.RequestHelper;
+import uk.gov.companieshouse.taf.util.CompanyDetailsRequestBuilder;
 
 
 public class CompanyDetailsRequestSteps {
@@ -76,7 +76,8 @@ public class CompanyDetailsRequestSteps {
     @Given("^I am requesting details for a company that does not exist$")
     public void requestingDetailsForACompanyThatDoesNotExist() throws Throwable {
         data.setCompanyNumber("00000000");
-        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(data);
+        BRCompanyDetailsRequest request = CompanyDetailsRequestBuilder
+                .getCompanyDetailsRequest(data);
 
         data.setOutgoingBrisMessage((companyDetailsRequest.createOutgoingBrisMessage(
                 request, data.getMessageId())));
@@ -88,7 +89,8 @@ public class CompanyDetailsRequestSteps {
     @Given("^the request business id and country do not match")
     public void theRequestBusinessIdAndCountryDoNotMatch() throws Throwable {
         data.setCountryCode("BRA");
-        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(data);
+        BRCompanyDetailsRequest request = CompanyDetailsRequestBuilder
+                .getCompanyDetailsRequest(data);
 
         data.setOutgoingBrisMessage(companyDetailsRequest.createOutgoingBrisMessage(
                 request, data.getMessageId()));
@@ -107,7 +109,8 @@ public class CompanyDetailsRequestSteps {
      */
     @Given("^a new company details request is created using the same message id$")
     public void companyDetailsRequestForMessageIdIsCreated() throws Throwable {
-        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(data);
+        BRCompanyDetailsRequest request = CompanyDetailsRequestBuilder
+                .getCompanyDetailsRequest(data);
 
         data.setOutgoingBrisMessage(companyDetailsRequest
                 .createOutgoingBrisMessage(request, data.getMessageId()));
@@ -123,7 +126,8 @@ public class CompanyDetailsRequestSteps {
 
         data.setMessageId(invalidId);
         data.setCorrelationId(invalidId);
-        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(data);
+        BRCompanyDetailsRequest request = CompanyDetailsRequestBuilder
+                .getCompanyDetailsRequest(data);
         data.setOutgoingBrisMessage(companyDetailsRequest.createOutgoingBrisMessage(
                 request, data.getMessageId()));
     }
@@ -137,7 +141,8 @@ public class CompanyDetailsRequestSteps {
         String messageId = randomAlphanumeric(8);
         data.setMessageId(messageId);
 
-        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(data);
+        BRCompanyDetailsRequest request = CompanyDetailsRequestBuilder
+                .getCompanyDetailsRequest(data);
         data.setOutgoingBrisMessage(companyDetailsRequest.createOutgoingBrisMessage(request,
                 messageId));
     }
@@ -149,7 +154,8 @@ public class CompanyDetailsRequestSteps {
     public void theRequestContainsABusinessCountryThatDoesNotExist(String countryCode)
             throws Throwable {
         data.setCountryCode(countryCode);
-        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(data);
+        BRCompanyDetailsRequest request = CompanyDetailsRequestBuilder
+                .getCompanyDetailsRequest(data);
 
         data.setOutgoingBrisMessage(companyDetailsRequest.createOutgoingBrisMessage(
                 request, data.getMessageId()));
@@ -162,7 +168,8 @@ public class CompanyDetailsRequestSteps {
     public void theRequestContainsAnInvalidBusinessRegisterId(String businessRegisterId)
             throws Throwable {
         data.setBusinessRegisterId(businessRegisterId);
-        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(data);
+        BRCompanyDetailsRequest request = CompanyDetailsRequestBuilder
+                .getCompanyDetailsRequest(data);
 
         data.setOutgoingBrisMessage(companyDetailsRequest.createOutgoingBrisMessage(
                 request, data.getMessageId()));
@@ -175,7 +182,8 @@ public class CompanyDetailsRequestSteps {
     public void theRequestIsNotCorrectForTheReceivingBusinessRegister() throws Throwable {
         data.setCountryCode("ES");
         data.setBusinessRegisterId("01005");
-        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(data);
+        BRCompanyDetailsRequest request = CompanyDetailsRequestBuilder
+                .getCompanyDetailsRequest(data);
 
         data.setOutgoingBrisMessage(companyDetailsRequest.createOutgoingBrisMessage(
                 request, data.getMessageId()));
@@ -241,7 +249,8 @@ public class CompanyDetailsRequestSteps {
     public void requestingTheCompanyDetailsForCompany(String companyNumber) throws Throwable {
         LOGGER.info("Testing against the cloned data for company {}", companyNumber);
         data.setCompanyNumber(companyNumber);
-        BRCompanyDetailsRequest request = RequestHelper.getCompanyDetailsRequest(data);
+        BRCompanyDetailsRequest request = CompanyDetailsRequestBuilder
+                .getCompanyDetailsRequest(data);
 
         data.setOutgoingBrisMessage(companyDetailsRequest.createOutgoingBrisMessage(
                 request, data.getMessageId()));

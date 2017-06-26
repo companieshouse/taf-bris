@@ -32,7 +32,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import uk.gov.companieshouse.taf.data.CrossBorderMergerNotificationData;
 
-public class CrossBorderMergerNotificationHelper {
+public class CrossBorderMergerNotificationBuilder {
 
     /**
      * Create new instance of BRCrossBorderMergerReceptionNotification.
@@ -50,7 +50,7 @@ public class CrossBorderMergerNotificationHelper {
         businessRegisterReferenceType.setBusinessRegisterCountry(headerCountry);
         businessRegisterReferenceType.setBusinessRegisterID(headerRegister);
 
-        MessageHeaderType header = RequestHelper.getMessageHeader(data.getCorrelationId(),
+        MessageHeaderType header = RequestBuilder.getMessageHeader(data.getCorrelationId(),
                 data.getMessageId(), data.getBusinessRegisterId(), data.getCountryCode());
         header.setBusinessRegisterReference(businessRegisterReferenceType);
 
