@@ -11,10 +11,9 @@ import eu.europa.ec.bris.v140.jaxb.br.merger.BRCrossBorderMergerReceptionNotific
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.companieshouse.taf.config.constants.BusinessRegisterConstants;
-import uk.gov.companieshouse.taf.domain.OutgoingBrisMessage;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
-import uk.gov.companieshouse.taf.util.NotificationHelper;
+import uk.gov.companieshouse.taf.util.CrossBorderMergerNotificationHelper;
 
 public class CrossBorderMergerReceptionSteps {
 
@@ -25,22 +24,21 @@ public class CrossBorderMergerReceptionSteps {
     private String defaultCompanyNumber;
 
     @Autowired
-    private SendBrisTestMessageService cbMergerNotification;
+    private SendBrisTestMessageService sendBrisTestMessageService;
 
     @Autowired
     private RetrieveBrisTestMessageService retrieveMessage;
-
-    private OutgoingBrisMessage outgoingBrisMessage;
 
     /**
      * Create a cross border merger.
      */
     @Given("^a valid cross border merger request is created$")
     public void crossBorderMergerRequestExists() throws Throwable {
-        BRCrossBorderMergerReceptionNotification notification = NotificationHelper
+        BRCrossBorderMergerReceptionNotification notification = CrossBorderMergerNotificationHelper
                 .getCrossBorderMergerNotification(data);
 
-        setCbmOutgoingMessage(notification);
+        data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
+                notification, data.getMessageId())));
     }
 
     /**
@@ -49,10 +47,11 @@ public class CrossBorderMergerReceptionSteps {
     @Given("^the notification does not have a valid merging country code$")
     public void theNotificationDoesNotHaveAValidMergingCountryCode() throws Throwable {
         data.setIssuingCountryCode("GG");
-        BRCrossBorderMergerReceptionNotification notification = NotificationHelper
+        BRCrossBorderMergerReceptionNotification notification = CrossBorderMergerNotificationHelper
                 .getCrossBorderMergerNotification(data);
 
-        setCbmOutgoingMessage(notification);
+        data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
+                notification, data.getMessageId())));
     }
 
     /**
@@ -62,15 +61,17 @@ public class CrossBorderMergerReceptionSteps {
     @Given("^the notification does not have a valid business register id$")
     public void theNotificationDoesNotHaveAValidBusinessRegisterId() throws Throwable {
         data.setIssuingBusinessRegId("12     04");
-        BRCrossBorderMergerReceptionNotification notification = NotificationHelper
+        BRCrossBorderMergerReceptionNotification notification = CrossBorderMergerNotificationHelper
                 .getCrossBorderMergerNotification(data);
 
-        setCbmOutgoingMessage(notification);
+        data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
+                notification, data.getMessageId())));
     }
 
     @When("^I make a cross border merger request$")
     public void makeACrossBorderMergerRequest() throws Throwable {
-        cbMergerNotification.sendOutgoingBrisMessage(outgoingBrisMessage, data.getMessageId());
+        sendBrisTestMessageService.sendOutgoingBrisMessage(data.getOutgoingBrisMessage(),
+                data.getMessageId());
     }
 
     /**
@@ -96,9 +97,4 @@ public class CrossBorderMergerReceptionSteps {
                 ack.getMessageHeader().getCorrelationID().getValue());
     }
 
-    private void setCbmOutgoingMessage(BRCrossBorderMergerReceptionNotification notification)
-            throws Exception {
-        data.setOutgoingBrisMessage((cbMergerNotification.createOutgoingBrisMessage(
-                notification, data.getMessageId())));
-    }
 }

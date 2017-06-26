@@ -32,7 +32,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import uk.gov.companieshouse.taf.stepsdef.RequestData;
 
-public class NotificationHelper {
+public class CrossBorderMergerNotificationHelper {
 
     /**
      * Create new instance of BRCrossBorderMergerReceptionNotification.
