@@ -26,7 +26,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import uk.gov.companieshouse.taf.domain.IncomingBrisMessage;
-import uk.gov.companieshouse.taf.stepsdef.RequestData;
+import uk.gov.companieshouse.taf.data.RequestData;
 
 /**
  * This class can be used to load the relevant test data for the test framework.

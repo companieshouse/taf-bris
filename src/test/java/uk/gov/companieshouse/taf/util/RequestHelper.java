@@ -14,7 +14,7 @@ import eu.europa.ec.bris.v140.jaxb.components.basic.MessageIDType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.PaymentReferenceType;
 
 import org.springframework.stereotype.Component;
-import uk.gov.companieshouse.taf.stepsdef.RequestData;
+import uk.gov.companieshouse.taf.data.RequestData;
 
 @Component
 public class RequestHelper {

@@ -26,19 +26,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import uk.gov.companieshouse.taf.data.CompanyDetailsRequestData;
 import uk.gov.companieshouse.taf.domain.ValidationError;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
-import uk.gov.companieshouse.taf.transformer.MessageTransformer;
 import uk.gov.companieshouse.taf.util.RequestHelper;
 
 
 public class CompanyDetailsRequestSteps {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MessageTransformer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDetailsRequestSteps.class);
 
     @Autowired
-    private RequestData data;
+    private CompanyDetailsRequestData data;
 
     @Autowired
     private SendBrisTestMessageService companyDetailsRequest;

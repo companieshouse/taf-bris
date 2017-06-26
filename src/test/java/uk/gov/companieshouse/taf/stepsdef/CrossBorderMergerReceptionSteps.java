@@ -11,6 +11,7 @@ import eu.europa.ec.bris.v140.jaxb.br.merger.BRCrossBorderMergerReceptionNotific
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.companieshouse.taf.config.constants.BusinessRegisterConstants;
+import uk.gov.companieshouse.taf.data.CrossBorderMergerNotificationData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
 import uk.gov.companieshouse.taf.util.CrossBorderMergerNotificationHelper;
@@ -18,7 +19,7 @@ import uk.gov.companieshouse.taf.util.CrossBorderMergerNotificationHelper;
 public class CrossBorderMergerReceptionSteps {
 
     @Autowired
-    private RequestData data;
+    private CrossBorderMergerNotificationData data;
 
     @Value("${default.company.number}")
     private String defaultCompanyNumber;

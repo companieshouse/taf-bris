@@ -30,7 +30,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import uk.gov.companieshouse.taf.stepsdef.RequestData;
+import uk.gov.companieshouse.taf.data.CrossBorderMergerNotificationData;
 
 public class CrossBorderMergerNotificationHelper {
 
@@ -38,7 +38,7 @@ public class CrossBorderMergerNotificationHelper {
      * Create new instance of BRCrossBorderMergerReceptionNotification.
      */
     public static BRCrossBorderMergerReceptionNotification getCrossBorderMergerNotification(
-            RequestData data) {
+            CrossBorderMergerNotificationData data) {
 
         // Set up the message header
         BusinessRegisterReferenceType businessRegisterReferenceType =
