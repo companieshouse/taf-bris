@@ -19,20 +19,28 @@ public class Hooks {
 
     @Value("${default.company.number}")
     private String defaultCompanyNumber;
+
     @Value("${plc.company.number}")
     private String plcCompanyNumber;
+
     @Value("${ltd.section30.company.number}")
     private String privateLimitedSharesSection30Exemption;
+
     @Value("${eeig.company.number}")
     private String eeig;
+
     @Value("${europeanPlcSe.company.number}")
     private String europeanPublicLimitedLiabilityCompanySe;
+
     @Value("${unregistered.company.number}")
     private String unregisteredCompany;
+
     @Value("${ltdGuarantNsc.company.number}")
     private String privateLimitedGuarantNsc;
+
     @Value("${ltdGuarantNscLtdExemption.company.number}")
     private String privateLimitedGuarantNscLimitedExemption;
+
     @Value("${overseas.company.number}")
     private String overseaCompany;
 
@@ -101,6 +109,7 @@ public class Hooks {
         companiesToLoad.add(unregisteredCompany);
         companiesToLoad.add(europeanPublicLimitedLiabilityCompanySe);
         companiesToLoad.add(eeig);
+        companiesToLoad.add(privateLimitedGuarantNsc);
         testDataHelper.setUpTestData(companiesToLoad);
     }
 
@@ -113,6 +122,7 @@ public class Hooks {
         companiesToRemove.add(unregisteredCompany);
         companiesToRemove.add(europeanPublicLimitedLiabilityCompanySe);
         companiesToRemove.add(eeig);
+        companiesToRemove.add(privateLimitedGuarantNsc);
         testDataHelper.tearDownTestData(companiesToRemove);
     }
 

@@ -68,9 +68,6 @@ public class CompanyDetailsRequestSteps {
     @Value("${overseas.company.number}")
     private String overseaCompany;
 
-    @Autowired
-    private CommonSteps commonSteps;
-
     /**
      * Create a request with an invalid company number.
      */
@@ -310,7 +307,8 @@ public class CompanyDetailsRequestSteps {
         data.setCompanyDetailsResponse(response);
 
         // And assert that the header details are correct
-        commonSteps.validateHeader(response.getMessageHeader());
+        CommonSteps.validateHeader(response.getMessageHeader(),
+                data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
     /**
@@ -327,7 +325,8 @@ public class CompanyDetailsRequestSteps {
                 response.getCompany().getCompanyLegalForm().getValue());
 
         // And assert that the header details are correct
-        commonSteps.validateHeader(response.getMessageHeader());
+        CommonSteps.validateHeader(response.getMessageHeader(),
+                data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
     /**
@@ -352,7 +351,8 @@ public class CompanyDetailsRequestSteps {
                 response.getCompany().getCompanyEUID().getValue());
 
         // And assert that the header details are correct
-        commonSteps.validateHeader(response.getMessageHeader());
+        CommonSteps.validateHeader(response.getMessageHeader(),
+                data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
     /**
@@ -361,7 +361,7 @@ public class CompanyDetailsRequestSteps {
      * @param companyNumber the company number to match in the response
      */
     @Then("^the response will contain the company details for ([^\"]*)$")
-    public void theResponseWillContainTheCompanyDetailsFor(String companyNumber) throws Throwable {
+    public void theResponseWillContainTheCompanyDetails(String companyNumber) throws Throwable {
         BRCompanyDetailsResponse response = retrieveMessage
                 .checkForResponseByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
@@ -373,7 +373,8 @@ public class CompanyDetailsRequestSteps {
                 response.getCompany().getCompanyRegistrationNumber().getValue());
 
         // And assert that the header details are correct
-        commonSteps.validateHeader(response.getMessageHeader());
+        CommonSteps.validateHeader(response.getMessageHeader(),
+                data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
     /**
@@ -420,8 +421,8 @@ public class CompanyDetailsRequestSteps {
                 checkResponseContainsExpectedLabel(explanatoryLabel, response));
 
         // And assert that the header details are correct
-        commonSteps.validateHeader(response.getMessageHeader());
-
+        CommonSteps.validateHeader(response.getMessageHeader(),
+                data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
     /**
@@ -447,7 +448,8 @@ public class CompanyDetailsRequestSteps {
                         .getCompanyItemExplanatoryLabel().getValue());
 
         // And assert that the header details are correct
-        commonSteps.validateHeader(response.getMessageHeader());
+        CommonSteps.validateHeader(response.getMessageHeader(),
+                data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
     /**
@@ -461,7 +463,10 @@ public class CompanyDetailsRequestSteps {
         assertNotNull(validationError);
 
         // And assert that the header details are correct
-        commonSteps.validateHeader(validationError.getMessageHeader());
+        CommonSteps.validateHeader(validationError.getMessageHeader(),
+                data.getCorrelationId(),
+                data.getBusinessRegisterId(),
+                data.getCountryCode());
     }
 
     private boolean checkResponseContainsExpectedLabel(String explanatoryLabel,

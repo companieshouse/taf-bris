@@ -56,18 +56,9 @@ public class BranchDisclosureReceptionSteps {
                 retrieveBrisTestMessageService.checkForResponseByCorrelationId(
                         data.getCorrelationId());
         assertNotNull(ack);
-        assertEquals("Business Register ID is not as expected",
-                BusinessRegisterConstants.EW_REGISTER_ID,
-                ack.getMessageHeader().getBusinessRegisterReference()
-                        .getBusinessRegisterID().getValue());
 
-        assertEquals("Business Register Country is not as expected",
-                BusinessRegisterConstants.UK_COUNTRY_CODE,
-                ack.getMessageHeader().getBusinessRegisterReference()
-                        .getBusinessRegisterCountry().getValue());
-
-        assertEquals("Correlation ID in header is not as expected",
-                data.getCorrelationId(),
-                ack.getMessageHeader().getCorrelationID().getValue());
+        // And assert that the header details are correct
+        CommonSteps.validateHeader(ack.getMessageHeader(), data.getCorrelationId(),
+                data.getBusinessRegisterId(), data.getCountryCode());
     }
 }

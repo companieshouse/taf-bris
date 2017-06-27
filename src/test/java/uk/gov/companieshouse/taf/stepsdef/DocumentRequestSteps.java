@@ -108,19 +108,12 @@ public class DocumentRequestSteps {
                 defaultCompanyNumber,
                 retrieveDocumentResponse.getCompanyRegistrationNumber().getValue());
 
-        assertEquals("Correlation ID in header is not as expected",
+
+        // And assert that the header details are correct
+        CommonSteps.validateHeader(retrieveDocumentResponse.getMessageHeader(),
                 data.getCorrelationId(),
-                retrieveDocumentResponse.getMessageHeader().getCorrelationID().getValue());
-
-        assertEquals("Business Register ID in header is not as expected",
-                BUSINESS_REGISTER_ID,
-                retrieveDocumentResponse.getMessageHeader().getBusinessRegisterReference()
-                        .getBusinessRegisterID().getValue());
-
-        assertEquals("Business Register Country in header is not as expected",
-                BUSINESS_REGISTER_COUNTRY,
-                retrieveDocumentResponse.getMessageHeader().getBusinessRegisterReference()
-                        .getBusinessRegisterCountry().getValue());
+                data.getBusinessRegisterId(),
+                data.getCountryCode());
     }
 
     /**

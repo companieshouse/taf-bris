@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-@Qualifier("CompanyDetailsRequest")
 public class CompanyDetailsRequestData extends RequestData {
 
     private BRCompanyDetailsResponse companyDetailsResponse;

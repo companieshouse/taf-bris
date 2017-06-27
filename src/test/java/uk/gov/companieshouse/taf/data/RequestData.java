@@ -13,7 +13,7 @@ import uk.gov.companieshouse.taf.domain.OutgoingBrisMessage;
  * that will be used across the majority of tests.
  */
 @Component
-public class RequestData {
+public abstract class RequestData {
 
     @Value("${default.company.number}")
     private String companyNumber;
