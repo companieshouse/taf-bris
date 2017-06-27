@@ -6,11 +6,9 @@ import javax.validation.constraints.Size;
 
 import org.bson.types.Binary;
 import org.joda.time.DateTime;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-
 
 /**
  * Domain object for incoming message in MongoDB

@@ -10,7 +10,6 @@ import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
-import uk.gov.companieshouse.taf.config.constants.ConfigConstants;
 import uk.gov.companieshouse.taf.config.constants.MongoConfig;
 
 /**
