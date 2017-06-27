@@ -25,7 +25,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-import uk.gov.companieshouse.taf.data.RequestData;
+import uk.gov.companieshouse.taf.data.CompanyDetailsRequestData;
 import uk.gov.companieshouse.taf.domain.IncomingBrisMessage;
 
 /**
@@ -61,7 +61,7 @@ public class TestDataHelper {
     private MongoTemplate companyFilingHistoryMongoTemplate;
 
     @Autowired
-    private RequestData requestData;
+    private CompanyDetailsRequestData requestData;
 
     /**
      * Set up the test data for the specified company.

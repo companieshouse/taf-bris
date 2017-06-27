@@ -1,8 +1,12 @@
 package uk.gov.companieshouse.taf.data;
 
 import eu.europa.ec.bris.v140.jaxb.br.merger.BRCrossBorderMergerReceptionNotification;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.taf.config.constants.BusinessRegisterConstants;
 
+@Component
+@Qualifier("CrossBorderMergerNotification")
 public class CrossBorderMergerNotificationData extends RequestData {
 
     private String issuingCountryCode = BusinessRegisterConstants.FRANCE_COUNTRY_CODE;

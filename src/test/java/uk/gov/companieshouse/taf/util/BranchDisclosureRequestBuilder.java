@@ -21,9 +21,9 @@ import eu.europa.ec.bris.v140.jaxb.components.basic.CountryType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.DateTimeType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.EffectiveDateType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.LegalFormCodeType;
-import eu.europa.ec.bris.v140.jaxb.components.basic.PostalCodeType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.ProceedingType;
 import uk.gov.companieshouse.taf.config.constants.BusinessRegisterConstants;
+import uk.gov.companieshouse.taf.data.RequestData;
 
 /**
  * Used to build a request object for Branch Disclosures with default values.
@@ -34,19 +34,15 @@ public class BranchDisclosureRequestBuilder extends RequestBuilder {
 
     /**
      * Create new instance of BRBranchDisclosureReceptionNotification.
-     * @param correlationId             the correlation id of the message header
-     * @param messageId                 the message id of the message header
-     * @param businessRegisterId        the business registration id e.g EW
-     * @param countryCode               the business country code e.g. UK
      */
     public static BRBranchDisclosureReceptionNotification getBranchDisclosureReceptionNotification(
-            String correlationId, String messageId, String businessRegisterId, String countryCode) {
+            RequestData data) {
 
         BRBranchDisclosureReceptionNotification notification = new
                 BRBranchDisclosureReceptionNotification();
 
-        notification.setMessageHeader(getMessageHeader(correlationId, messageId,
-                businessRegisterId, countryCode));
+        notification.setMessageHeader(getMessageHeader(data.getCorrelationId(), data.getMessageId(),
+                data.getBusinessRegisterId(), data.getCountryCode()));
 
         notification.setNotificationContext(setNotificationContextType());
         notification.setProceeding(setProceedingType(WINDING_UP_OPENING));

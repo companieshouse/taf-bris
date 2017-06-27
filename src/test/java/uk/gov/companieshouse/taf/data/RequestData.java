@@ -12,7 +12,6 @@ import uk.gov.companieshouse.taf.domain.OutgoingBrisMessage;
  * as a singleton and recreated after each scenario is executed.  Set defaults
  * that will be used across the majority of tests.
  */
-
 @Component
 public class RequestData {
 
