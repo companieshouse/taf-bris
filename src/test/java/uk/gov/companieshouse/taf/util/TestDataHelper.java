@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
@@ -39,29 +39,28 @@ public class TestDataHelper {
     private static final String COMPANY_PROFILE = "company_profile";
     private static final String COMPANY_FILING_HISTORY = "company_filing_history";
     private static final String TEST_DATA_FOLDER = "testdata";
+    private static final String BRIS_INCOMING_COLLECTION = "incoming_messages";
 
     @Value("${default.company.number}")
     private String defaultCompanyNumber;
 
     @Autowired
-    @Qualifier("BrisMongoDbTemplate")
-    private MongoTemplate brisMongoDbTemplate;
+    @Qualifier("brisMongoDbOperations")
+    private MongoOperations brisMongoDbOperations;
 
     @Autowired
-    private JAXBContext jaxbContext;
-
-    private static final String BRIS_INCOMING_COLLECTION = "incoming_messages";
-
-    @Autowired
-    @Qualifier("CompanyProfileMongoDbTemplate")
-    private MongoTemplate companyProfileMongoTemplate;
+    @Qualifier("CompanyProfileMongoDbOperations")
+    private MongoOperations companyProfileMongoTemplate;
 
     @Autowired
-    @Qualifier("CompanyFilingHistoryMongoDbTemplate")
-    private MongoTemplate companyFilingHistoryMongoTemplate;
+    @Qualifier("CompanyFilingHistoryMongoDbOperations")
+    private MongoOperations companyFilingHistoryMongoTemplate;
 
     @Autowired
     private RequestData requestData;
+
+    @Autowired
+    private JAXBContext jaxbContext;
 
     /**
      * Set up the test data for the specified company.
@@ -181,7 +180,7 @@ public class TestDataHelper {
         incomingBrisMessage.setMessage(xmlString);
 
         // Insert the message into the BRIS incoming collection
-        brisMongoDbTemplate.insert(incomingBrisMessage,
+        brisMongoDbOperations.insert(incomingBrisMessage,
                 BRIS_INCOMING_COLLECTION);
     }
 }

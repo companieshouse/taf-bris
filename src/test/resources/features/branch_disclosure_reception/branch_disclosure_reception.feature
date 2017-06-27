@@ -3,7 +3,7 @@ Feature: Branch Disclosure reception
 
   In order to inform regions of a branch disclosure
   As a customer of BRIS
-  I want to notify the regions of teh details of a branch disclosure
+  I want to notify the regions of the details of a branch disclosure
 
   Scenario: User makes a request to inform of a branch disclosure
     Given a branch disclosure request exists

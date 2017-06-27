@@ -7,16 +7,16 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
+import uk.gov.companieshouse.taf.config.constants.MongoConfig;
 
 /**
  * This Mongo configuration is used to load test data into Mongo from JSON files.
- * It therefore isn't necessary to load this data via a Spring Mongo repository but
- * can be loaded directly using the Mongo Template API
  */
 @Configuration
-public class ChsMongoConfig extends MongoConfig {
+public class ChsMongoConfig {
 
     private static final String COMPANY_PROFILE_DATABASE = "company_profile";
     private static final String COMPANY_FILING_HISTORY_DATABASE = "company_filing_history";
@@ -25,11 +25,11 @@ public class ChsMongoConfig extends MongoConfig {
     private Env env;
 
     /**
-     * Mongo config for Company Profile Template.
+     * Mongo config for Company Profile Mongo Operations.
      */
     @Bean
-    @Qualifier("CompanyProfileMongoDbTemplate")
-    public MongoTemplate templateCompanyProfile() throws UnknownHostException {
+    @Qualifier("CompanyProfileMongoDbOperations")
+    public MongoOperations mongoOperations() throws UnknownHostException {
         return new MongoTemplate(mongoCompanyProfileDbFactory());
     }
 
@@ -43,11 +43,11 @@ public class ChsMongoConfig extends MongoConfig {
     }
 
     /**
-     * Mongo config for Company Filing History Template.
+     * Mongo config for Company Filing History Mongo Operations.
      */
     @Bean
-    @Qualifier("CompanyFilingHistoryMongoDbTemplate")
-    public MongoTemplate templateCompanyFilingHistory() throws UnknownHostException {
+    @Qualifier("CompanyFilingHistoryMongoDbOperations")
+    public MongoOperations mongoOperationsCompanyFilingHistory() throws UnknownHostException {
         return new MongoTemplate(mongoCompanyFilingHistoryDbFactory());
     }
 

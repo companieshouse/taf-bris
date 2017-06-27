@@ -8,15 +8,17 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
+import uk.gov.companieshouse.taf.config.constants.MongoConfig;
 
 /**
  * This Mongo configuration is used to load data into the BRIS application incoming
  * collection in order to simulate certain failure scenarios.
  */
 @Configuration
-public class BrisMongoConfig extends MongoConfig {
+public class BrisMongoConfig {
 
     private static final String BRIS_MESSAGES_DATABASE = "bris_messages";
 
@@ -25,13 +27,14 @@ public class BrisMongoConfig extends MongoConfig {
 
     // Mongo config for BRIS Database
     @Bean
-    @Qualifier("BrisMongoDbTemplate")
-    public MongoTemplate templateBris() throws UnknownHostException {
+    @Qualifier("BrisMongoDbOperations")
+    public MongoOperations mongoOperationsBris() throws UnknownHostException {
         return new MongoTemplate(brisMongoDbFactory());
     }
 
     private MongoDbFactory brisMongoDbFactory() throws UnknownHostException {
-        return new SimpleMongoDbFactory(new MongoClientURI(env.config.getString(MONGO_URI)
-                + URI_SLASH + BRIS_MESSAGES_DATABASE));
+        return new SimpleMongoDbFactory(new MongoClientURI(
+                env.config.getString(MongoConfig.MONGO_URI)
+                + MongoConfig.URI_SLASH + BRIS_MESSAGES_DATABASE));
     }
 }
