@@ -11,7 +11,11 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-@ComponentScan
+
+/**
+ * Domain object for incoming message in MongoDB
+ * Collection specified using @Document annotation.
+ */
 @Document(collection = "incoming_messages")
 public class IncomingBrisMessage implements Serializable {
 

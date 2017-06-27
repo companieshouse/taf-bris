@@ -10,13 +10,14 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.StringBuilderWriter;
-import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.taf.config.Env;
 import uk.gov.companieshouse.taf.domain.OutgoingBrisMessage;
@@ -28,9 +29,7 @@ public class SendBrisTestMessageService {
     private static final Logger LOGGER = LoggerFactory.getLogger(SendBrisTestMessageService.class);
     private static final String PENDING_STATUS = "PENDING";
     private static final String OUTGOING_KAFKA_TOPIC = "bris.outgoing.kafka.topic";
-
-    @Autowired
-    private OutgoingBrisMessageService outgoingBrisMessageService;
+    private static final String BRIS_OUTGOING_TEST_COLLECTION = "outgoing_messages";
 
     @Autowired
     private Sender sender;
@@ -40,6 +39,10 @@ public class SendBrisTestMessageService {
 
     @Autowired
     private Env env;
+
+    @Autowired
+    @Qualifier("brisTestMongoDbOperations")
+    private MongoOperations brisTestMongoDbOperations;
 
     /**
      * Create the Request message to be sent to test Domibus.
@@ -80,8 +83,10 @@ public class SendBrisTestMessageService {
      */
     public void sendOutgoingBrisMessage(OutgoingBrisMessage outgoingBrisMessage,
                                         String messageId) {
-        // Save message to MongoDB
-        outgoingBrisMessageService.save(outgoingBrisMessage);
+
+        // Insert the message into the BRIS outgoing collection
+        brisTestMongoDbOperations.insert(outgoingBrisMessage,
+                BRIS_OUTGOING_TEST_COLLECTION);
 
         // And also send a message to Kafka
         sender.sendMessage(env.config.getString(OUTGOING_KAFKA_TOPIC), messageId);
