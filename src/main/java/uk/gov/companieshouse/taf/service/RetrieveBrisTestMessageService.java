@@ -32,9 +32,13 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import uk.gov.companieshouse.taf.domain.IncomingBrisMessage;
@@ -47,12 +51,14 @@ public class RetrieveBrisTestMessageService {
             RetrieveBrisTestMessageService.class);
     private static final String MESSAGE_WAIT_TIME = "message.wait.time";
     private static final String EXPECTED_PDF_DOC = "expected-document.pdf";
+    private static final String BRIS_INCOMING_TEST_COLLECTION = "incoming_messages";
 
     @Autowired
     private Environment env;
 
     @Autowired
-    private IncomingBrisMessageService incomingBrisMessageService;
+    @Qualifier("BrisTestMongoDbOperations")
+    private MongoOperations brisTestMongoDbOperations;
 
     /**
      * Check the mongo collection to retrieve the message by correlation id.
@@ -88,7 +94,10 @@ public class RetrieveBrisTestMessageService {
         // has been processed successfully
         while (incomingBrisMessage == null && counter <= messageWaitTime) {
             LOGGER.info("Iteration {}, Correlation Id {}", counter, correlationId);
-            incomingBrisMessage = incomingBrisMessageService.findOneByCorrelationId(correlationId);
+
+            incomingBrisMessage = brisTestMongoDbOperations.findOne(
+                    new Query(Criteria.where("correlation_id")
+                    .is(correlationId)), IncomingBrisMessage.class, BRIS_INCOMING_TEST_COLLECTION);
 
             if (incomingBrisMessage == null) {
                 counter++;
