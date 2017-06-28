@@ -33,9 +33,9 @@ public class RequestBuilder {
         Populate the message header for the request.
      */
     static MessageHeaderType getMessageHeader(String correlationId,
-                                                      String messageId,
-                                                      String businessRegisterId,
-                                                      String countryCode) {
+                                              String messageId,
+                                              String businessRegisterId,
+                                              String countryCode) {
         MessageHeaderType messageHeaderType = new MessageHeaderType();
         CorrelationIDType correlationIdType = new CorrelationIDType();
         correlationIdType.setValue(correlationId);
@@ -96,7 +96,7 @@ public class RequestBuilder {
     }
 
     static BusinessRegisterReferenceType businessRegReference(String countryCode,
-                                                                      String businessRegisterId) {
+                                                              String businessRegisterId) {
         BusinessRegisterReferenceType businessRegisterReference =
                 new BusinessRegisterReferenceType();
         businessRegisterReference.setBusinessRegisterCountry(getCountry(countryCode));
@@ -117,11 +117,11 @@ public class RequestBuilder {
     }
 
     static AddressType getAddress(String addressLine1,
-                                          String addressLine2,
-                                          String addressLine3,
-                                          String postCode,
-                                          String cityCode,
-                                          String countryCode) {
+                                  String addressLine2,
+                                  String addressLine3,
+                                  String postCode,
+                                  String cityCode,
+                                  String countryCode) {
 
         AddressType address = new AddressType();
         AddressLine1Type addressLine1Type = new AddressLine1Type();

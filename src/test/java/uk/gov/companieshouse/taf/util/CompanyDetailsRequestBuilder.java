@@ -1,7 +1,7 @@
 package uk.gov.companieshouse.taf.util;
 
 import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsRequest;
-import uk.gov.companieshouse.taf.stepsdef.RequestData;
+import uk.gov.companieshouse.taf.data.RequestData;
 
 /**
  * Used to build a request object for Company Details with default values.

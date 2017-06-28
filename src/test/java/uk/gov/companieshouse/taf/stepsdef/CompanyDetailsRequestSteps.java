@@ -10,10 +10,8 @@ import static org.springframework.util.CollectionUtils.isEmpty;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import eu.europa.ec.bris.v140.jaxb.br.aggregate.MessageHeaderType;
 import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsRequest;
 import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsResponse;
-import eu.europa.ec.bris.v140.jaxb.br.error.BRBusinessError;
 import eu.europa.ec.bris.v140.jaxb.components.aggregate.DocumentType;
 
 import java.util.List;
@@ -26,19 +24,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import uk.gov.companieshouse.taf.data.CompanyDetailsRequestData;
 import uk.gov.companieshouse.taf.domain.ValidationError;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
-import uk.gov.companieshouse.taf.transformer.MessageTransformer;
 import uk.gov.companieshouse.taf.util.CompanyDetailsRequestBuilder;
 
 
 public class CompanyDetailsRequestSteps {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MessageTransformer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDetailsRequestSteps.class);
 
     @Autowired
-    private RequestData data;
+    private CompanyDetailsRequestData data;
 
     @Autowired
     private SendBrisTestMessageService companyDetailsRequest;
@@ -309,7 +307,8 @@ public class CompanyDetailsRequestSteps {
         data.setCompanyDetailsResponse(response);
 
         // And assert that the header details are correct
-        validateHeader(response.getMessageHeader());
+        CommonSteps.validateHeader(response.getMessageHeader(),
+                data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
     /**
@@ -326,23 +325,8 @@ public class CompanyDetailsRequestSteps {
                 response.getCompany().getCompanyLegalForm().getValue());
 
         // And assert that the header details are correct
-        validateHeader(response.getMessageHeader());
-    }
-
-    /**
-     * Check the error message has been placed in the right collection.
-     */
-    @Then("^I should get a message with the error code ([^\"]*)$")
-    public void theCorrectErrorWillBeReturnedToTheEcp(String errorCode) throws Throwable {
-        BRBusinessError businessError = retrieveMessage
-                .checkForResponseByCorrelationId(data.getMessageId());
-        assertNotNull(businessError);
-
-        assertEquals("Expected Error Code:", errorCode,
-                businessError.getFaultError().get(0).getFaultErrorCode().getValue());
-
-        // And assert that the header details are correct
-        validateHeader(businessError.getMessageHeader());
+        CommonSteps.validateHeader(response.getMessageHeader(),
+                data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
     /**
@@ -367,7 +351,8 @@ public class CompanyDetailsRequestSteps {
                 response.getCompany().getCompanyEUID().getValue());
 
         // And assert that the header details are correct
-        validateHeader(response.getMessageHeader());
+        CommonSteps.validateHeader(response.getMessageHeader(),
+                data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
     /**
@@ -376,7 +361,7 @@ public class CompanyDetailsRequestSteps {
      * @param companyNumber the company number to match in the response
      */
     @Then("^the response will contain the company details for ([^\"]*)$")
-    public void theResponseWillContainTheCompanyDetailsFor(String companyNumber) throws Throwable {
+    public void theResponseWillContainTheCompanyDetails(String companyNumber) throws Throwable {
         BRCompanyDetailsResponse response = retrieveMessage
                 .checkForResponseByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
@@ -388,7 +373,8 @@ public class CompanyDetailsRequestSteps {
                 response.getCompany().getCompanyRegistrationNumber().getValue());
 
         // And assert that the header details are correct
-        validateHeader(response.getMessageHeader());
+        CommonSteps.validateHeader(response.getMessageHeader(),
+                data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
     /**
@@ -435,8 +421,8 @@ public class CompanyDetailsRequestSteps {
                 checkResponseContainsExpectedLabel(explanatoryLabel, response));
 
         // And assert that the header details are correct
-        validateHeader(response.getMessageHeader());
-
+        CommonSteps.validateHeader(response.getMessageHeader(),
+                data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
     /**
@@ -462,7 +448,8 @@ public class CompanyDetailsRequestSteps {
                         .getCompanyItemExplanatoryLabel().getValue());
 
         // And assert that the header details are correct
-        validateHeader(response.getMessageHeader());
+        CommonSteps.validateHeader(response.getMessageHeader(),
+                data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
     /**
@@ -476,7 +463,10 @@ public class CompanyDetailsRequestSteps {
         assertNotNull(validationError);
 
         // And assert that the header details are correct
-        validateHeader(validationError.getMessageHeader());
+        CommonSteps.validateHeader(validationError.getMessageHeader(),
+                data.getCorrelationId(),
+                data.getBusinessRegisterId(),
+                data.getCountryCode());
     }
 
     private boolean checkResponseContainsExpectedLabel(String explanatoryLabel,
@@ -490,23 +480,5 @@ public class CompanyDetailsRequestSteps {
             }
         }
         return false;
-    }
-
-    /*
-     Check that the message header is as expected.
-     */
-    private void validateHeader(MessageHeaderType messageHeader) {
-        assertEquals("Correlation ID in header is not as expected",
-                data.getMessageId(),
-                messageHeader.getCorrelationID().getValue());
-
-        assertEquals("Business Register ID in header is not as expected",
-                data.getBusinessRegisterId(),
-                messageHeader.getBusinessRegisterReference().getBusinessRegisterID().getValue());
-
-        assertEquals("Business Register Country in header is not as expected",
-                data.getCountryCode(),
-                messageHeader.getBusinessRegisterReference()
-                        .getBusinessRegisterCountry().getValue());
     }
 }

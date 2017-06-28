@@ -57,7 +57,7 @@ public class RetrieveBrisTestMessageService {
     private Environment env;
 
     @Autowired
-    @Qualifier("brisTestMongoDbOperations")
+    @Qualifier("BrisTestMongoDbOperations")
     private MongoOperations brisTestMongoDbOperations;
 
     /**

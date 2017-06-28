@@ -13,9 +13,9 @@ Feature: Cross border merger reception
   Scenario: User does not provide a valid merging country code
     Given the notification does not have a valid merging country code
     When I make a cross border merger request
-    Then I should get a message with the error code ERR_BR_5102
+    Then I should get a cross border merger error message with the error code ERR_BR_5102
 
   Scenario: User does not provide a valid merging business register id
     Given the notification does not have a valid business register id
     When I make a cross border merger request
-    Then I should get a message with the error code ERR_BR_5102
+    Then I should get a cross border merger error message with the error code ERR_BR_5102

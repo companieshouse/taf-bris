@@ -11,6 +11,7 @@ import eu.europa.ec.bris.v140.jaxb.br.merger.BRCrossBorderMergerReceptionNotific
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.companieshouse.taf.config.constants.BusinessRegisterConstants;
+import uk.gov.companieshouse.taf.data.CrossBorderMergerNotificationData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
 import uk.gov.companieshouse.taf.util.CrossBorderMergerNotificationRequestBuilder;
@@ -18,7 +19,7 @@ import uk.gov.companieshouse.taf.util.CrossBorderMergerNotificationRequestBuilde
 public class CrossBorderMergerReceptionSteps {
 
     @Autowired
-    private RequestData data;
+    private CrossBorderMergerNotificationData data;
 
     @Value("${default.company.number}")
     private String defaultCompanyNumber;
@@ -84,20 +85,12 @@ public class CrossBorderMergerReceptionSteps {
     public void shouldGetAnAcknowledgmentConfirmingReceiptOfTheMerger() throws Throwable {
         BRCrossBorderMergerReceptionNotificationAcknowledgement ack =
                 retrieveMessage.checkForResponseByCorrelationId(data.getCorrelationId());
+
         assertNotNull(ack);
-        assertEquals("Business Register ID is not as expected",
-                BusinessRegisterConstants.EW_REGISTER_ID,
-                ack.getMessageHeader().getBusinessRegisterReference()
-                        .getBusinessRegisterID().getValue());
 
-        assertEquals("Business Register Country is not as expected",
-                BusinessRegisterConstants.UK_COUNTRY_CODE,
-                ack.getMessageHeader().getBusinessRegisterReference()
-                        .getBusinessRegisterCountry().getValue());
+        // And assert that the header details are correct
+        CommonSteps.validateHeader(ack.getMessageHeader(), data.getCorrelationId(),
+                data.getBusinessRegisterId(), data.getCountryCode());
 
-        assertEquals("Correlation ID in header is not as expected",
-                data.getCorrelationId(),
-                ack.getMessageHeader().getCorrelationID().getValue());
     }
-
 }

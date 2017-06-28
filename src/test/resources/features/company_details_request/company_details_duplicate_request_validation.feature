@@ -10,4 +10,4 @@ Feature: Duplicate request validation of company details request
     Given a company details request exists
     And a new company details request is created using the same message id
     When I make a company details request
-    Then I should get a message with the error code ERR_BR_5103
+    Then I should get a company details error message with the error code ERR_BR_5103

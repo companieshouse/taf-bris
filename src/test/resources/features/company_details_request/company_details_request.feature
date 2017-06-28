@@ -24,4 +24,4 @@ Feature: Company details request feature
   Scenario: Inform ECP of non-existent company in register
     Given I am requesting details for a company that does not exist
     When I make a company details request
-    Then I should get a message with the error code ERR_BR_3001
+    Then I should get a company details error message with the error code ERR_BR_3001

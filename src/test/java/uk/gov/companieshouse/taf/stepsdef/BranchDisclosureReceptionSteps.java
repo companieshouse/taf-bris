@@ -10,6 +10,7 @@ import eu.europa.ec.bris.v140.jaxb.br.branch.disclosure.BRBranchDisclosureRecept
 import eu.europa.ec.bris.v140.jaxb.br.branch.disclosure.BRBranchDisclosureReceptionNotificationAcknowledgement;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.companieshouse.taf.config.constants.BusinessRegisterConstants;
+import uk.gov.companieshouse.taf.data.BranchDisclosureReceptionData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
 import uk.gov.companieshouse.taf.util.BranchDisclosureRequestBuilder;
@@ -17,7 +18,7 @@ import uk.gov.companieshouse.taf.util.BranchDisclosureRequestBuilder;
 public class BranchDisclosureReceptionSteps {
 
     @Autowired
-    private RequestData data;
+    private BranchDisclosureReceptionData data;
 
     @Autowired
     private SendBrisTestMessageService sendBrisTestMessageService;
@@ -31,12 +32,7 @@ public class BranchDisclosureReceptionSteps {
     @Given("^a branch disclosure request exists$")
     public void branchDisclosureRequestExists() throws Throwable {
         BRBranchDisclosureReceptionNotification notification =
-                BranchDisclosureRequestBuilder.getBranchDisclosureReceptionNotification(
-                        data.getCorrelationId(),
-                        data.getMessageId(),
-                        BusinessRegisterConstants.EW_REGISTER_ID,
-                        BusinessRegisterConstants.UK_COUNTRY_CODE
-                );
+                BranchDisclosureRequestBuilder.getBranchDisclosureReceptionNotification(data);
 
         data.setOutgoingBrisMessage(sendBrisTestMessageService.createOutgoingBrisMessage(
                 notification, data.getMessageId()));
@@ -60,18 +56,9 @@ public class BranchDisclosureReceptionSteps {
                 retrieveBrisTestMessageService.checkForResponseByCorrelationId(
                         data.getCorrelationId());
         assertNotNull(ack);
-        assertEquals("Business Register ID is not as expected",
-                BusinessRegisterConstants.EW_REGISTER_ID,
-                ack.getMessageHeader().getBusinessRegisterReference()
-                        .getBusinessRegisterID().getValue());
 
-        assertEquals("Business Register Country is not as expected",
-                BusinessRegisterConstants.UK_COUNTRY_CODE,
-                ack.getMessageHeader().getBusinessRegisterReference()
-                        .getBusinessRegisterCountry().getValue());
-
-        assertEquals("Correlation ID in header is not as expected",
-                data.getCorrelationId(),
-                ack.getMessageHeader().getCorrelationID().getValue());
+        // And assert that the header details are correct
+        CommonSteps.validateHeader(ack.getMessageHeader(), data.getCorrelationId(),
+                data.getBusinessRegisterId(), data.getCountryCode());
     }
 }

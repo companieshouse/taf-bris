@@ -41,7 +41,7 @@ public class SendBrisTestMessageService {
     private Env env;
 
     @Autowired
-    @Qualifier("brisTestMongoDbOperations")
+    @Qualifier("BrisTestMongoDbOperations")
     private MongoOperations brisTestMongoDbOperations;
 
     /**

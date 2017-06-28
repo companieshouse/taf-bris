@@ -25,8 +25,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import uk.gov.companieshouse.taf.data.CompanyDetailsRequestData;
 import uk.gov.companieshouse.taf.domain.IncomingBrisMessage;
-import uk.gov.companieshouse.taf.stepsdef.RequestData;
 
 /**
  * This class can be used to load the relevant test data for the test framework.
@@ -45,7 +45,7 @@ public class TestDataHelper {
     private String defaultCompanyNumber;
 
     @Autowired
-    @Qualifier("brisMongoDbOperations")
+    @Qualifier("BrisMongoDbOperations")
     private MongoOperations brisMongoDbOperations;
 
     @Autowired
@@ -57,7 +57,7 @@ public class TestDataHelper {
     private MongoOperations companyFilingHistoryMongoTemplate;
 
     @Autowired
-    private RequestData requestData;
+    private CompanyDetailsRequestData requestData;
 
     @Autowired
     private JAXBContext jaxbContext;

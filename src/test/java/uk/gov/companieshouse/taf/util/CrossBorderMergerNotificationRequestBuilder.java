@@ -17,7 +17,7 @@ import eu.europa.ec.bris.v140.jaxb.components.basic.EffectiveDateType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.LegalFormCodeType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.MergerType;
 import uk.gov.companieshouse.taf.config.constants.BusinessRegisterConstants;
-import uk.gov.companieshouse.taf.stepsdef.RequestData;
+import uk.gov.companieshouse.taf.data.CrossBorderMergerNotificationData;
 
 public class CrossBorderMergerNotificationRequestBuilder extends RequestBuilder {
 
@@ -25,7 +25,7 @@ public class CrossBorderMergerNotificationRequestBuilder extends RequestBuilder 
      * Create new instance of BRCrossBorderMergerReceptionNotification.
      */
     public static BRCrossBorderMergerReceptionNotification getCrossBorderMergerNotification(
-            RequestData data) {
+            CrossBorderMergerNotificationData data) {
 
         BRCrossBorderMergerReceptionNotification cbmNotification =
                 new BRCrossBorderMergerReceptionNotification();
