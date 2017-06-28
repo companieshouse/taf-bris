@@ -1,16 +1,15 @@
 package uk.gov.companieshouse.taf.stepsdef;
 
 import static junit.framework.TestCase.assertNotNull;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import eu.europa.ec.bris.v140.jaxb.br.merger.BRCrossBorderMergerReceptionNotification;
 import eu.europa.ec.bris.v140.jaxb.br.merger.BRCrossBorderMergerReceptionNotificationAcknowledgement;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import uk.gov.companieshouse.taf.config.constants.BusinessRegisterConstants;
 import uk.gov.companieshouse.taf.data.CrossBorderMergerNotificationData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
@@ -37,7 +36,7 @@ public class CrossBorderMergerReceptionSteps {
     public void crossBorderMergerRequestExists() throws Throwable {
         BRCrossBorderMergerReceptionNotification notification =
                 CrossBorderMergerNotificationRequestBuilder
-                .getCrossBorderMergerNotification(data);
+                        .getCrossBorderMergerNotification(data);
 
         data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
                 notification, data.getMessageId())));
@@ -51,7 +50,7 @@ public class CrossBorderMergerReceptionSteps {
         data.setIssuingCountryCode("GG");
         BRCrossBorderMergerReceptionNotification notification =
                 CrossBorderMergerNotificationRequestBuilder
-                .getCrossBorderMergerNotification(data);
+                        .getCrossBorderMergerNotification(data);
 
         data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
                 notification, data.getMessageId())));
@@ -66,7 +65,35 @@ public class CrossBorderMergerReceptionSteps {
         data.setIssuingBusinessRegId("12     04");
         BRCrossBorderMergerReceptionNotification notification =
                 CrossBorderMergerNotificationRequestBuilder
-                .getCrossBorderMergerNotification(data);
+                        .getCrossBorderMergerNotification(data);
+
+        data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
+                notification, data.getMessageId())));
+    }
+
+    /**
+     * Create a cross border merger notification with an invalid legal form code.
+     */
+    @Given("^the notification does not have a valid legal form code$")
+    public void theNotificationDoesNotHaveALegalFormCode() throws Throwable {
+        data.setLegalFormCode(RandomStringUtils.randomAlphabetic(8));
+        BRCrossBorderMergerReceptionNotification notification =
+                CrossBorderMergerNotificationRequestBuilder
+                        .getCrossBorderMergerNotification(data);
+
+        data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
+                notification, data.getMessageId())));
+    }
+
+    /**
+     * Create a cross border merger notification with an invalid issuing country code.
+     */
+    @Given("^the notification has an invalid issuing country code$")
+    public void theNotificationHasAnInvalidIssuingCountryCode() throws Throwable {
+        data.setIssuingCountryCode(RandomStringUtils.randomAlphabetic(3));
+        BRCrossBorderMergerReceptionNotification notification =
+                CrossBorderMergerNotificationRequestBuilder
+                        .getCrossBorderMergerNotification(data);
 
         data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
                 notification, data.getMessageId())));

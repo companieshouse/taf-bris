@@ -19,3 +19,13 @@ Feature: Cross border merger reception
     Given the notification does not have a valid business register id
     When I make a cross border merger request
     Then I should get a cross border merger error message with the error code ERR_BR_5102
+
+  Scenario: User provides an invalid legal form code
+    Given the notification does not have a valid legal form code
+    When I make a cross border merger request
+    Then I should get a cross border merger error message with the error code ERR_BR_5102
+
+  Scenario: User provides an invalid issuing country code
+    Given the notification has an invalid issuing country code
+    When I make a cross border merger request
+    Then I should get a cross border merger error message with the error code ERR_BR_5102

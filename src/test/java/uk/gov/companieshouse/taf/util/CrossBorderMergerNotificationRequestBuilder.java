@@ -1,7 +1,5 @@
 package uk.gov.companieshouse.taf.util;
 
-import static uk.gov.companieshouse.taf.config.constants.BusinessRegisterConstants.PRIVATE_LIMITED_CODE;
-
 import eu.europa.ec.bris.v140.jaxb.br.merger.BRCrossBorderMergerReceptionNotification;
 import eu.europa.ec.bris.v140.jaxb.components.aggregate.AddressType;
 import eu.europa.ec.bris.v140.jaxb.components.aggregate.BusinessRegisterType;
@@ -31,9 +29,7 @@ public class CrossBorderMergerNotificationRequestBuilder extends RequestBuilder 
                 new BRCrossBorderMergerReceptionNotification();
 
         // Set up the message header
-        cbmNotification.setMessageHeader(getMessageHeader(
-                data.getCorrelationId(), data.getMessageId(),
-                data.getBusinessRegisterId(), data.getCountryCode()));
+        cbmNotification.setMessageHeader(getMessageHeader(data));
 
         //Create issuing organisation details
         CountryType issuingCountry = new CountryType();
@@ -55,23 +51,23 @@ public class CrossBorderMergerNotificationRequestBuilder extends RequestBuilder 
 
         // Create recipient organisation details
         CountryType recipientCountry = new CountryType();
-        recipientCountry.setValue(BusinessRegisterConstants.UK_COUNTRY_CODE);
+        recipientCountry.setValue(data.getCountryCode());
 
         BusinessRegisterIDType recipientRegister = new BusinessRegisterIDType();
-        recipientRegister.setValue(BusinessRegisterConstants.EW_REGISTER_ID);
+        recipientRegister.setValue(data.getBusinessRegisterId());
 
         BusinessRegisterType recipientOrganisation = new BusinessRegisterType();
         recipientOrganisation.setBusinessRegisterCountry(recipientCountry);
         recipientOrganisation.setBusinessRegisterID(recipientRegister);
         BusinessRegisterNameType recipientBusinessRegisterNameType = new BusinessRegisterNameType();
-        recipientBusinessRegisterNameType.setValue(BusinessRegisterConstants.UK_REGISTER);
+        recipientBusinessRegisterNameType.setValue(data.getRecipientBusinessRegisterName());
         recipientOrganisation.setBusinessRegisterName(recipientBusinessRegisterNameType);
 
         // Create merging company details.  Note that we are deliberately using 99990000
         // here as that test data gets loaded for each test
         CompanyEUIDType mergingEuid = new CompanyEUIDType();
-        mergingEuid.setValue(BusinessRegisterConstants.UK_COUNTRY_CODE
-                + BusinessRegisterConstants.EW_REGISTER_ID + ".99990000");
+        mergingEuid.setValue(data.getCountryCode() + data.getBusinessRegisterId() + "."
+                + data.getCompanyNumber());
         NotificationCompanyType mergingCompany = new NotificationCompanyType();
         mergingCompany.setCompanyEUID(mergingEuid);
 
@@ -91,7 +87,7 @@ public class CrossBorderMergerNotificationRequestBuilder extends RequestBuilder 
         mergingCompany.setBusinessRegisterName(mergingCompanyBusinessRegisterName);
 
         LegalFormCodeType legalFormCodeType = new LegalFormCodeType();
-        legalFormCodeType.setValue(PRIVATE_LIMITED_CODE);
+        legalFormCodeType.setValue(data.getLegalFormCode());
         mergingCompany.setCompanyLegalForm(legalFormCodeType);
 
         CompanyNameType mergingCompanyName = new CompanyNameType();
