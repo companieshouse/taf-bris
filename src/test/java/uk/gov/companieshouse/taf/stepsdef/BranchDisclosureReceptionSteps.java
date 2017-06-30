@@ -1,7 +1,6 @@
 package uk.gov.companieshouse.taf.stepsdef;
 
 import static junit.framework.TestCase.assertNotNull;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -9,11 +8,10 @@ import cucumber.api.java.en.When;
 import eu.europa.ec.bris.v140.jaxb.br.branch.disclosure.BRBranchDisclosureReceptionNotification;
 import eu.europa.ec.bris.v140.jaxb.br.branch.disclosure.BRBranchDisclosureReceptionNotificationAcknowledgement;
 import org.springframework.beans.factory.annotation.Autowired;
-import uk.gov.companieshouse.taf.config.constants.BusinessRegisterConstants;
 import uk.gov.companieshouse.taf.data.BranchDisclosureReceptionData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
-import uk.gov.companieshouse.taf.util.BranchDisclosureRequestBuilder;
+import uk.gov.companieshouse.taf.builders.BranchDisclosureRequestBuilder;
 
 public class BranchDisclosureReceptionSteps {
 

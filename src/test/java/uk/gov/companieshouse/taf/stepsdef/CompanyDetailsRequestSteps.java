@@ -28,7 +28,7 @@ import uk.gov.companieshouse.taf.data.CompanyDetailsRequestData;
 import uk.gov.companieshouse.taf.domain.ValidationError;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
-import uk.gov.companieshouse.taf.util.CompanyDetailsRequestBuilder;
+import uk.gov.companieshouse.taf.builders.CompanyDetailsRequestBuilder;
 
 
 public class CompanyDetailsRequestSteps {

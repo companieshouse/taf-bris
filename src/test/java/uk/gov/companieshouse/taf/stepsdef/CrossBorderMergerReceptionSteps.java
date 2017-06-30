@@ -1,7 +1,6 @@
 package uk.gov.companieshouse.taf.stepsdef;
 
 import static junit.framework.TestCase.assertNotNull;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -10,11 +9,10 @@ import eu.europa.ec.bris.v140.jaxb.br.merger.BRCrossBorderMergerReceptionNotific
 import eu.europa.ec.bris.v140.jaxb.br.merger.BRCrossBorderMergerReceptionNotificationAcknowledgement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import uk.gov.companieshouse.taf.config.constants.BusinessRegisterConstants;
 import uk.gov.companieshouse.taf.data.CrossBorderMergerNotificationData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
-import uk.gov.companieshouse.taf.util.CrossBorderMergerNotificationRequestBuilder;
+import uk.gov.companieshouse.taf.builders.CrossBorderMergerNotificationRequestBuilder;
 
 public class CrossBorderMergerReceptionSteps {
 

@@ -1,4 +1,4 @@
-package uk.gov.companieshouse.taf.util;
+package uk.gov.companieshouse.taf.builders;
 
 import static uk.gov.companieshouse.taf.config.constants.BusinessRegisterConstants.PRIVATE_LIMITED_CODE;
 
