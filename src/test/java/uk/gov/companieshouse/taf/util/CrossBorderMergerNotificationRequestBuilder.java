@@ -72,10 +72,10 @@ public class CrossBorderMergerNotificationRequestBuilder extends RequestBuilder 
         mergingCompany.setCompanyEUID(mergingEuid);
 
         // Set the address for the merging company
-        AddressType mergingCompanyAddressType = getAddress("Merging Company Address line 1",
+        AddressType mergingCompanyAddressType = getAddress("Merging Company Address line 2",
                 "Merging Company Address line 2",
                 "Merging Company Address line 3",
-                "Merging Company Post Code",
+                BusinessRegisterConstants.TEST_POST_CODE,
                 "Merging Company Post City",
                 BusinessRegisterConstants.UK_COUNTRY_CODE);
 
@@ -111,7 +111,7 @@ public class CrossBorderMergerNotificationRequestBuilder extends RequestBuilder 
         AddressType resultingAddress = getAddress("Resulting Company Address line 1",
                 "Resulting Company Address line 2",
                 "Resulting Company Address line 3",
-                "Resulting Company Post Code",
+                BusinessRegisterConstants.TEST_POST_CODE,
                 "Resulting Company City",
                 data.getIssuingCountryCode());
 

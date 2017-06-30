@@ -17,7 +17,7 @@ public class Hooks {
     @Autowired
     private RequestBuilder requestBuilder;
 
-    @Value("${default.company.number}")
+    @Value("${ltd.company.number}")
     private String ltdCompanyNumber;
 
     @Value("${plc.company.number}")

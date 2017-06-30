@@ -134,16 +134,18 @@ public class RequestBuilder {
         addressLine3Type.setValue(addressLine3);
         address.setAddressLine3(addressLine3Type);
 
-        CountryType countryType = new CountryType();
-        countryType.setValue(countryCode);
-
-        address.setCountry(countryType);
-
         PostalCodeType postalCode = new PostalCodeType();
         postalCode.setValue(postCode);
+        address.setPostalCode(postalCode);
 
         CityType city = new CityType();
         city.setValue(cityCode);
+        address.setCity(city);
+
+        CountryType countryType = new CountryType();
+        countryType.setValue(countryCode);
+        address.setCountry(countryType);
+
         return address;
     }
 
