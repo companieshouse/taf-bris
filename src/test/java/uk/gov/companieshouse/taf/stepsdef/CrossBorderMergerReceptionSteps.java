@@ -11,6 +11,7 @@ import eu.europa.ec.bris.v140.jaxb.components.basic.BusinessRegisterIDType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.CompanyEUIDType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.CountryType;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.companieshouse.taf.data.CrossBorderMergerNotificationData;
@@ -31,6 +32,9 @@ public class CrossBorderMergerReceptionSteps {
 
     @Autowired
     private RetrieveBrisTestMessageService retrieveMessage;
+
+    private static final String EUID_COUNTRY = "country";
+
 
     /**
      * Create a cross border merger.
@@ -105,6 +109,8 @@ public class CrossBorderMergerReceptionSteps {
     /**
      * Create a cross border merger notification with an invalid company EUID.
      * Valid e.g. UKEW.00006400
+     *
+     * @param euidElement part of the EUID to be set.
      */
     @Given("^the notification does not have a valid (country|business register id)"
             + " in company EUID$")
@@ -115,7 +121,7 @@ public class CrossBorderMergerReceptionSteps {
 
         CompanyEUIDType companyEuidType = new CompanyEUIDType();
 
-        if ("country".equalsIgnoreCase(euidElement)) {
+        if (StringUtils.equalsAnyIgnoreCase(EUID_COUNTRY, euidElement)) {
             companyEuidType.setValue("ULEW.99990000");
         } else {
             companyEuidType.setValue("UKRR.99990000");
@@ -129,6 +135,10 @@ public class CrossBorderMergerReceptionSteps {
 
     /**
      * Create a cross border merger notification with an invalid company EUID.
+     * Sets the business register id to an invalid entry. Valid UK entries include;
+     * EW
+     * SC
+     * NI
      */
     @Given("^the notification does not have a valid company EUID$")
     public void theNotificationDoesNotHaveAValidCompanyEuid() throws Throwable {
@@ -182,7 +192,7 @@ public class CrossBorderMergerReceptionSteps {
                 CrossBorderMergerNotificationRequestBuilder
                         .getCrossBorderMergerNotification(data);
 
-        // Address items have a minimal value of 1
+        // Address items have a minimal length of 1
         // Setting to space to ensure we throw expected error
         notification.getResultingCompany().getCompanyRegisteredOffice()
                 .getAddressLine1().setValue(" ");
