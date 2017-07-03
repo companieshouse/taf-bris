@@ -24,11 +24,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import uk.gov.companieshouse.taf.builders.CompanyDetailsRequestBuilder;
 import uk.gov.companieshouse.taf.data.CompanyDetailsRequestData;
 import uk.gov.companieshouse.taf.domain.ValidationError;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
-import uk.gov.companieshouse.taf.builders.CompanyDetailsRequestBuilder;
 
 
 public class CompanyDetailsRequestSteps {

@@ -5,49 +5,45 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UpdateLED implements ParameterMapper {
+public class UpdateLed implements ParameterMapper {
 
     private static final String UPDATE_TYPE = "update_type";
-    private static final String MESSAGE_ID ="message_id";
-    
-    private static final String TEST_DATA ="test_data"; 
+    private static final String MESSAGE_ID = "message_id";
+    private static final String TEST_DATA = "test_data";
     
     @JsonProperty(UPDATE_TYPE)
     private String updateType;
     
-     //Not passed in JSON object, but set during foreign registry id validation
-     //@JsonProperty(MESSAGE_ID)
-     private String messageId = "JB1111";
+    //Not passed in JSON object, but set during foreign registry id validation
+    private String messageId;
     
     @JsonProperty(TEST_DATA)
     private TestData testData;
 
     /**
-     * Constructor
-     * @param updateType
-     * @param testCaseId
-     * @param testConditionId
-     * @param testExecutionId
-     * @param testPackageId
-     * @param testSessionId
+     * Constructor for LED object.
+     * @param updateType the type of LED update.
+     * @param testCaseId test case id.
+     * @param testConditionId test condition id.
+     * @param testExecutionId test execution id.
+     * @param testPackageId test package id.
+     * @param testSessionId test session id.
      */
-    public UpdateLED(String updateType, String testCaseId, String testConditionId, String testExecutionId,
+    public UpdateLed(String updateType, String testCaseId, String testConditionId,
+                     String testExecutionId,
                      String testPackageId, String testSessionId) {
         this.updateType = updateType;
         if (testCaseId != null && !testCaseId.isEmpty()) {
-            this.testData = new TestData(testCaseId, testConditionId, testExecutionId,  testPackageId,  testSessionId);
+            this.testData = new TestData(testCaseId, testConditionId,
+                    testExecutionId,  testPackageId,  testSessionId);
         }
     }
 
     /**
-     * No args constructor
+     * No args constructor.
      */
-    public UpdateLED() {
+    public UpdateLed() {
         super();
-    }
-
-    public String getUpdateType() {
-        return updateType;
     }
 
     public void setUpdateType(String updateType) {
@@ -62,17 +58,9 @@ public class UpdateLED implements ParameterMapper {
         this.messageId = messageId;
     }
     
-    public TestData getTestData() {
-        return testData;
-    }
-
-    public void setTestData(TestData testData) {
-        this.testData = testData;
-    }
-
     @Override
     public Map<String, String> getParameters() {
-        Map<String, String> paramMap = new HashMap<String, String>();
+        Map<String, String> paramMap = new HashMap<>();
         paramMap.put(UPDATE_TYPE, updateType);
         paramMap.put(MESSAGE_ID, messageId);
         if (testData != null) {
@@ -88,7 +76,7 @@ public class UpdateLED implements ParameterMapper {
     
     @Override
     public String toString() {
-        return UPDATE_TYPE + " : " + updateType + ", " +
-                MESSAGE_ID + " : " + messageId;
+        return UPDATE_TYPE + " : " + updateType + ", "
+                + MESSAGE_ID + " : " + messageId;
     }
 }

@@ -23,6 +23,11 @@ public class NotificationResponse {
         this.responseMessage = responseMessage;
     }
 
+    /**
+     * Constructor for Notification Response.
+     * @param responseMessage the message to send back to the REST client
+     * @param messageId the id of the message
+     */
     public NotificationResponse(String responseMessage,
                                 String messageId) {
         super();
