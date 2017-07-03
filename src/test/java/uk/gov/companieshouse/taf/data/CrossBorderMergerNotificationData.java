@@ -12,6 +12,8 @@ public class CrossBorderMergerNotificationData extends RequestData {
     private String issuingCountryCode = BusinessRegisterConstants.FRANCE_COUNTRY_CODE;
     private String issuingBusinessRegId = BusinessRegisterConstants.FR_BUSINESS_REGISTER_ID;
     private String issuingCompanyNumber = BusinessRegisterConstants.DUMMY_COMPANY_NUMBER;
+    private String recipientBusinessRegisterName = BusinessRegisterConstants.UK_REGISTER;
+    private String legalFormCode = BusinessRegisterConstants.PRIVATE_LIMITED_CODE;
     private BRCrossBorderMergerReceptionNotification brCrossBorderMergerReceptionNotification;
 
 
@@ -48,5 +50,21 @@ public class CrossBorderMergerNotificationData extends RequestData {
     public void setBrCrossBorderMergerReceptionNotification(
             BRCrossBorderMergerReceptionNotification brCrossBorderMergerReceptionNotification) {
         this.brCrossBorderMergerReceptionNotification = brCrossBorderMergerReceptionNotification;
+    }
+
+    public String getRecipientBusinessRegisterName() {
+        return recipientBusinessRegisterName;
+    }
+
+    public void setRecipientBusinessRegisterName(String recipientBusinessRegisterName) {
+        this.recipientBusinessRegisterName = recipientBusinessRegisterName;
+    }
+
+    public String getLegalFormCode() {
+        return legalFormCode;
+    }
+
+    public void setLegalFormCode(String legalFormCode) {
+        this.legalFormCode = legalFormCode;
     }
 }

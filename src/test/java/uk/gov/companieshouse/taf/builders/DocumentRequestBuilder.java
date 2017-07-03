@@ -19,8 +19,7 @@ public class DocumentRequestBuilder extends RequestBuilder {
             DocumentRequestData data) {
 
         BRRetrieveDocumentRequest request = new BRRetrieveDocumentRequest();
-        request.setMessageHeader(getMessageHeader(data.getCorrelationId(), data.getMessageId(),
-                data.getBusinessRegisterId(), data.getCountryCode()));
+        request.setMessageHeader(getMessageHeader(data));
         request.setBusinessRegisterReference(businessRegReference(data.getCountryCode(),
                 data.getBusinessRegisterId()));
         PaymentReferenceType paymentReference = new PaymentReferenceType();

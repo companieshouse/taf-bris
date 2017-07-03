@@ -37,8 +37,7 @@ public class BranchDisclosureRequestBuilder extends RequestBuilder {
         BRBranchDisclosureReceptionNotification notification = new
                 BRBranchDisclosureReceptionNotification();
 
-        notification.setMessageHeader(getMessageHeader(data.getCorrelationId(), data.getMessageId(),
-                data.getBusinessRegisterId(), data.getCountryCode()));
+        notification.setMessageHeader(getMessageHeader(data));
 
         notification.setNotificationContext(setNotificationContextType());
         notification.setProceeding(setProceedingType(WINDING_UP_OPENING));

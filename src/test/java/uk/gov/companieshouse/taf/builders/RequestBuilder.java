@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.taf.config.constants.BusinessRegisterConstants;
+import uk.gov.companieshouse.taf.data.RequestData;
 
 @Component
 public class RequestBuilder {
@@ -32,16 +33,13 @@ public class RequestBuilder {
     /*
         Populate the message header for the request.
      */
-    static MessageHeaderType getMessageHeader(String correlationId,
-                                              String messageId,
-                                              String businessRegisterId,
-                                              String countryCode) {
+    static MessageHeaderType getMessageHeader(RequestData data) {
         MessageHeaderType messageHeaderType = new MessageHeaderType();
         CorrelationIDType correlationIdType = new CorrelationIDType();
-        correlationIdType.setValue(correlationId);
+        correlationIdType.setValue(data.getCorrelationId());
         messageHeaderType.setCorrelationID(correlationIdType);
         MessageIDType messageIdType = new MessageIDType();
-        messageIdType.setValue(messageId);
+        messageIdType.setValue(data.getMessageId());
         messageHeaderType.setMessageID(messageIdType);
 
         // BusinessRegisterType
@@ -51,11 +49,11 @@ public class RequestBuilder {
         BusinessRegisterIDType businessRegisterIdType = new BusinessRegisterIDType();
 
         //BusinessRegisterID
-        businessRegisterIdType.setValue(businessRegisterId);
+        businessRegisterIdType.setValue(data.getBusinessRegisterId());
 
         //BusinessRegisterCountry Country
         CountryType countryType = new CountryType();
-        countryType.setValue(countryCode);
+        countryType.setValue(data.getCountryCode());
 
         BusinessRegisterReferenceType businessRegisterReferenceType
                 = new BusinessRegisterReferenceType();
@@ -136,16 +134,18 @@ public class RequestBuilder {
         addressLine3Type.setValue(addressLine3);
         address.setAddressLine3(addressLine3Type);
 
-        CountryType countryType = new CountryType();
-        countryType.setValue(countryCode);
-
-        address.setCountry(countryType);
-
         PostalCodeType postalCode = new PostalCodeType();
         postalCode.setValue(postCode);
+        address.setPostalCode(postalCode);
 
         CityType city = new CityType();
         city.setValue(cityCode);
+        address.setCity(city);
+
+        CountryType countryType = new CountryType();
+        countryType.setValue(countryCode);
+        address.setCountry(countryType);
+
         return address;
     }
 
