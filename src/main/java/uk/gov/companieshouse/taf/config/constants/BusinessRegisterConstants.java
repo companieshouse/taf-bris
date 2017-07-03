@@ -9,4 +9,5 @@ public class BusinessRegisterConstants {
     public static final String FR_BUSINESS_REGISTER_ID = "1104";
     public static final String PRIVATE_LIMITED_CODE = "LF_UK_001";
     public static final String DUMMY_COMPANY_NUMBER = "123456";
+    public static final String TEST_POST_CODE = "CF14 3UZ";
 }

@@ -15,7 +15,7 @@ import uk.gov.companieshouse.taf.domain.OutgoingBrisMessage;
 @Component
 public abstract class RequestData {
 
-    @Value("${default.company.number}")
+    @Value("${ltd.company.number}")
     private String companyNumber;
 
     private String messageId = UUID.randomUUID().toString();

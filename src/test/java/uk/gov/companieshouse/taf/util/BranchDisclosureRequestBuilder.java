@@ -8,12 +8,8 @@ import eu.europa.ec.bris.v140.jaxb.components.aggregate.CompanyAlternateIdentifi
 import eu.europa.ec.bris.v140.jaxb.components.aggregate.LegislationReferencesType;
 import eu.europa.ec.bris.v140.jaxb.components.aggregate.NotificationCompanyType;
 import eu.europa.ec.bris.v140.jaxb.components.aggregate.NotificationContextType;
-import eu.europa.ec.bris.v140.jaxb.components.basic.AddressLine1Type;
-import eu.europa.ec.bris.v140.jaxb.components.basic.AddressLine2Type;
-import eu.europa.ec.bris.v140.jaxb.components.basic.AddressLine3Type;
 import eu.europa.ec.bris.v140.jaxb.components.basic.BusinessRegisterIDType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.BusinessRegisterNameType;
-import eu.europa.ec.bris.v140.jaxb.components.basic.CityType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.CompanyAlternateIDType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.CompanyEUIDType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.CompanyNameType;
@@ -41,8 +37,7 @@ public class BranchDisclosureRequestBuilder extends RequestBuilder {
         BRBranchDisclosureReceptionNotification notification = new
                 BRBranchDisclosureReceptionNotification();
 
-        notification.setMessageHeader(getMessageHeader(data.getCorrelationId(), data.getMessageId(),
-                data.getBusinessRegisterId(), data.getCountryCode()));
+        notification.setMessageHeader(getMessageHeader(data));
 
         notification.setNotificationContext(setNotificationContextType());
         notification.setProceeding(setProceedingType(WINDING_UP_OPENING));

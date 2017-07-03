@@ -1,16 +1,19 @@
 package uk.gov.companieshouse.taf.stepsdef;
 
 import static junit.framework.TestCase.assertNotNull;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import eu.europa.ec.bris.v140.jaxb.br.merger.BRCrossBorderMergerReceptionNotification;
 import eu.europa.ec.bris.v140.jaxb.br.merger.BRCrossBorderMergerReceptionNotificationAcknowledgement;
+import eu.europa.ec.bris.v140.jaxb.components.basic.BusinessRegisterIDType;
+import eu.europa.ec.bris.v140.jaxb.components.basic.CompanyEUIDType;
+import eu.europa.ec.bris.v140.jaxb.components.basic.CountryType;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import uk.gov.companieshouse.taf.config.constants.BusinessRegisterConstants;
 import uk.gov.companieshouse.taf.data.CrossBorderMergerNotificationData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
@@ -30,6 +33,9 @@ public class CrossBorderMergerReceptionSteps {
     @Autowired
     private RetrieveBrisTestMessageService retrieveMessage;
 
+    private static final String EUID_COUNTRY = "country";
+
+
     /**
      * Create a cross border merger.
      */
@@ -37,7 +43,7 @@ public class CrossBorderMergerReceptionSteps {
     public void crossBorderMergerRequestExists() throws Throwable {
         BRCrossBorderMergerReceptionNotification notification =
                 CrossBorderMergerNotificationRequestBuilder
-                .getCrossBorderMergerNotification(data);
+                        .getCrossBorderMergerNotification(data);
 
         data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
                 notification, data.getMessageId())));
@@ -51,7 +57,7 @@ public class CrossBorderMergerReceptionSteps {
         data.setIssuingCountryCode("GG");
         BRCrossBorderMergerReceptionNotification notification =
                 CrossBorderMergerNotificationRequestBuilder
-                .getCrossBorderMergerNotification(data);
+                        .getCrossBorderMergerNotification(data);
 
         data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
                 notification, data.getMessageId())));
@@ -66,7 +72,157 @@ public class CrossBorderMergerReceptionSteps {
         data.setIssuingBusinessRegId("12     04");
         BRCrossBorderMergerReceptionNotification notification =
                 CrossBorderMergerNotificationRequestBuilder
-                .getCrossBorderMergerNotification(data);
+                        .getCrossBorderMergerNotification(data);
+
+        data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
+                notification, data.getMessageId())));
+    }
+
+    /**
+     * Create a cross border merger notification with an invalid legal form code.
+     */
+    @Given("^the notification does not have a valid legal form code$")
+    public void theNotificationDoesNotHaveALegalFormCode() throws Throwable {
+        data.setLegalFormCode("LF_UK_999");
+        BRCrossBorderMergerReceptionNotification notification =
+                CrossBorderMergerNotificationRequestBuilder
+                        .getCrossBorderMergerNotification(data);
+
+        data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
+                notification, data.getMessageId())));
+    }
+
+    /**
+     * Create a cross border merger notification with an invalid issuing country code.
+     */
+    @Given("^the notification has an invalid issuing country code$")
+    public void theNotificationHasAnInvalidIssuingCountryCode() throws Throwable {
+        data.setIssuingCountryCode(RandomStringUtils.randomAlphabetic(3));
+        BRCrossBorderMergerReceptionNotification notification =
+                CrossBorderMergerNotificationRequestBuilder
+                        .getCrossBorderMergerNotification(data);
+
+        data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
+                notification, data.getMessageId())));
+    }
+
+    /**
+     * Create a cross border merger notification with an invalid company EUID.
+     * Valid e.g. UKEW.00006400
+     *
+     * @param euidElement part of the EUID to be set.
+     */
+    @Given("^the notification does not have a valid (country|business register id)"
+            + " in company EUID$")
+    public void theNotificationDoesNotHaveAValidCompanyEuid(String euidElement) throws Throwable {
+        BRCrossBorderMergerReceptionNotification notification =
+                CrossBorderMergerNotificationRequestBuilder
+                        .getCrossBorderMergerNotification(data);
+
+        CompanyEUIDType companyEuidType = new CompanyEUIDType();
+
+        if (StringUtils.equalsAnyIgnoreCase(EUID_COUNTRY, euidElement)) {
+            companyEuidType.setValue("ULEW.99990000");
+        } else {
+            companyEuidType.setValue("UKRR.99990000");
+        }
+
+        notification.getResultingCompany().setCompanyEUID(companyEuidType);
+
+        data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
+                notification, data.getMessageId())));
+    }
+
+    /**
+     * Create a cross border merger notification with an invalid company EUID.
+     * Sets the business register id to an invalid entry. Valid UK entries include;
+     * EW
+     * SC
+     * NI
+     */
+    @Given("^the notification does not have a valid company EUID$")
+    public void theNotificationDoesNotHaveAValidCompanyEuid() throws Throwable {
+        BRCrossBorderMergerReceptionNotification notification =
+                CrossBorderMergerNotificationRequestBuilder
+                        .getCrossBorderMergerNotification(data);
+
+        // Set valid country code
+        CountryType countryType = new CountryType();
+        countryType.setValue("UK");
+        notification.getNotificationContext().getIssuingOrganisation()
+                .setBusinessRegisterCountry(countryType);
+
+        // Set invalid business register id. EW/SC/NI are valid
+        BusinessRegisterIDType businessRegisterIdType = new BusinessRegisterIDType();
+        businessRegisterIdType.setValue("AB");
+        notification.getNotificationContext().getIssuingOrganisation()
+                .setBusinessRegisterID(businessRegisterIdType);
+
+        CompanyEUIDType companyEuidType = new CompanyEUIDType();
+        companyEuidType.setValue("UKAB.99990000");
+        notification.getResultingCompany().setCompanyEUID(companyEuidType);
+
+        data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
+                notification, data.getMessageId())));
+    }
+
+    /**
+     * Create a cross border merger notification with a merging company EUID that
+     * does not match the recipient organisation.
+     */
+    @Given("^the notification has an EUID that is not for the recipient organisation$")
+    public void theNotificationHasAnEuidThatIsNotForTheRecipientOrganisation() throws Throwable {
+        BRCrossBorderMergerReceptionNotification notification =
+                CrossBorderMergerNotificationRequestBuilder
+                        .getCrossBorderMergerNotification(data);
+
+        notification.getMergingCompany().get(0).getCompanyEUID().setValue("UKAA.99990000");
+
+        data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
+                notification, data.getMessageId())));
+    }
+
+    /**
+     * Create a cross border merger notification with an invalid address.
+     * Address MUST have at least country field completed.
+     */
+    @Given("^the notification does not have a resulting company registered office$")
+    public void theNotificationDoesNotHaveAResultingCompanyRegisteredOffice() throws Throwable {
+        BRCrossBorderMergerReceptionNotification notification =
+                CrossBorderMergerNotificationRequestBuilder
+                        .getCrossBorderMergerNotification(data);
+
+        // Address items have a minimal length of 1
+        // Setting to space to ensure we throw expected error
+        notification.getResultingCompany().getCompanyRegisteredOffice()
+                .getAddressLine1().setValue(" ");
+        notification.getResultingCompany().getCompanyRegisteredOffice()
+                .getAddressLine2().setValue(" ");
+        notification.getResultingCompany().getCompanyRegisteredOffice()
+                .getAddressLine3().setValue(" ");
+        notification.getResultingCompany().getCompanyRegisteredOffice()
+                .getCity().setValue(" ");
+        notification.getResultingCompany().getCompanyRegisteredOffice()
+                .getPostalCode().setValue(" ");
+
+        data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
+                notification, data.getMessageId())));
+    }
+
+    /**
+     * Create a cross border merger notification with a business id that does not match the
+     * recipient business register id.
+     */
+    @Given("^the notification has a business register that does not match business register"
+            + " in the message$")
+    public void theNotificationHasABusinessRegisterThatDoesNotMatchBusinessRegisterInTheMessage()
+            throws Throwable {
+        BRCrossBorderMergerReceptionNotification notification =
+                CrossBorderMergerNotificationRequestBuilder
+                        .getCrossBorderMergerNotification(data);
+
+        notification.getRecipientOrganisation().getBusinessRegisterID().setValue("NI");
+        notification.getMergingCompany().get(0).getCompanyEUID().setValue("UKNI.99990000");
 
         data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
                 notification, data.getMessageId())));

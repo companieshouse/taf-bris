@@ -11,7 +11,6 @@ import uk.gov.companieshouse.taf.data.BranchDisclosureReceptionData;
 import uk.gov.companieshouse.taf.data.CompanyDetailsRequestData;
 import uk.gov.companieshouse.taf.data.CrossBorderMergerNotificationData;
 import uk.gov.companieshouse.taf.data.DocumentRequestData;
-import uk.gov.companieshouse.taf.data.RequestData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 
 public class CommonSteps {

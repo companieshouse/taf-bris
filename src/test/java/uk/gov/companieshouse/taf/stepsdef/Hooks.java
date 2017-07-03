@@ -17,8 +17,8 @@ public class Hooks {
     @Autowired
     private RequestBuilder requestBuilder;
 
-    @Value("${default.company.number}")
-    private String defaultCompanyNumber;
+    @Value("${ltd.company.number}")
+    private String ltdCompanyNumber;
 
     @Value("${plc.company.number}")
     private String plcCompanyNumber;
@@ -51,7 +51,7 @@ public class Hooks {
     @Before
     public void setUpDataForAllScenarios() {
         List<String> companiesToLoad = new ArrayList<>();
-        companiesToLoad.add(defaultCompanyNumber);
+        companiesToLoad.add(ltdCompanyNumber);
         testDataHelper.setUpTestData(companiesToLoad);
     }
 
@@ -62,7 +62,7 @@ public class Hooks {
     @After
     public void tearDownDataForAllScenarios() {
         List<String> companiesToRemove = new ArrayList<>();
-        companiesToRemove.add(defaultCompanyNumber);
+        companiesToRemove.add(ltdCompanyNumber);
         testDataHelper.tearDownTestData(companiesToRemove);
     }
 

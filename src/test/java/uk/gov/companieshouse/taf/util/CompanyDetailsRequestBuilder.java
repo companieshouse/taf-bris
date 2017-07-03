@@ -13,10 +13,7 @@ public class CompanyDetailsRequestBuilder extends RequestBuilder {
     public static BRCompanyDetailsRequest getCompanyDetailsRequest(RequestData requestData) {
 
         BRCompanyDetailsRequest request = new BRCompanyDetailsRequest();
-        request.setMessageHeader(getMessageHeader(requestData.getCorrelationId(),
-                requestData.getMessageId(),
-                requestData.getBusinessRegisterId(),
-                requestData.getCountryCode()));
+        request.setMessageHeader(getMessageHeader(requestData));
         request.setBusinessRegisterReference(businessRegReference(
                 requestData.getCountryCode(),
                 requestData.getBusinessRegisterId()));
