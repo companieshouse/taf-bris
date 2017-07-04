@@ -1,4 +1,4 @@
-package uk.gov.companieshouse.taf.util;
+package uk.gov.companieshouse.taf.builders;
 
 import eu.europa.ec.bris.v140.jaxb.br.merger.BRCrossBorderMergerReceptionNotification;
 import eu.europa.ec.bris.v140.jaxb.components.aggregate.AddressType;

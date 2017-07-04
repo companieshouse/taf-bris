@@ -15,10 +15,10 @@ import java.util.Arrays;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import uk.gov.companieshouse.taf.builders.DocumentRequestBuilder;
 import uk.gov.companieshouse.taf.data.DocumentRequestData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
-import uk.gov.companieshouse.taf.util.DocumentRequestBuilder;
 
 public class DocumentRequestSteps {
     private static final String BUSINESS_REGISTER_ID = "EW";

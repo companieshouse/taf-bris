@@ -8,10 +8,10 @@ import cucumber.api.java.en.When;
 import eu.europa.ec.bris.v140.jaxb.br.branch.disclosure.BRBranchDisclosureReceptionNotification;
 import eu.europa.ec.bris.v140.jaxb.br.branch.disclosure.BRBranchDisclosureReceptionNotificationAcknowledgement;
 import org.springframework.beans.factory.annotation.Autowired;
+import uk.gov.companieshouse.taf.builders.BranchDisclosureRequestBuilder;
 import uk.gov.companieshouse.taf.data.BranchDisclosureReceptionData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
-import uk.gov.companieshouse.taf.util.BranchDisclosureRequestBuilder;
 
 public class BranchDisclosureReceptionSteps {
 
