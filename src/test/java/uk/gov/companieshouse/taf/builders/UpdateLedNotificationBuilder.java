@@ -11,9 +11,9 @@ public class UpdateLedNotificationBuilder {
      * Create an LED update object.
      * @return an Update LED
      */
-    public static UpdateLed createDefaultUpdateLed() {
+    public static UpdateLed createDefaultUpdateLed(String updateType) {
         UpdateLed updateLed = new UpdateLed();
-        updateLed.setUpdateType("UPDATE");
+        updateLed.setUpdateType(updateType);
         return updateLed;
     }
 }
