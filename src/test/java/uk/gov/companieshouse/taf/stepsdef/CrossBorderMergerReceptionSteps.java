@@ -12,6 +12,7 @@ import eu.europa.ec.bris.v140.jaxb.components.basic.CompanyEUIDType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.CountryType;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.companieshouse.taf.builders.CrossBorderMergerNotificationRequestBuilder;
@@ -34,7 +35,6 @@ public class CrossBorderMergerReceptionSteps {
     private RetrieveBrisTestMessageService retrieveMessage;
 
     private static final String EUID_COUNTRY = "country";
-
 
     /**
      * Create a cross border merger.
@@ -97,7 +97,11 @@ public class CrossBorderMergerReceptionSteps {
      */
     @Given("^the notification has an invalid issuing country code$")
     public void theNotificationHasAnInvalidIssuingCountryCode() throws Throwable {
-        data.setIssuingCountryCode(RandomStringUtils.randomAlphabetic(3));
+
+        RandomStringGenerator generator = new RandomStringGenerator.Builder()
+                .withinRange('A', 'Z').build();
+        data.setIssuingCountryCode(generator.generate(3));
+
         BRCrossBorderMergerReceptionNotification notification =
                 CrossBorderMergerNotificationRequestBuilder
                         .getCrossBorderMergerNotification(data);
