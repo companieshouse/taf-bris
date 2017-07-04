@@ -3,8 +3,6 @@ package uk.gov.companieshouse.taf.util;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +20,6 @@ import uk.gov.companieshouse.taf.data.UpdateLedData;
 public class NotificationApiHelper {
 
     private static final String BRIS_NOTIFICATION_API_URL = "bris.notification.api.url";
-    private static final Logger LOGGER = LoggerFactory.getLogger(NotificationApiHelper.class);
 
     @Autowired
     private RestTemplate restTemplate;
