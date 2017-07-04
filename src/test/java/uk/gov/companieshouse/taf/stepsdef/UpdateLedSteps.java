@@ -12,8 +12,6 @@ import eu.europa.ec.bris.v140.jaxb.br.led.BRUpdateLEDRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.companieshouse.taf.builders.UpdateLedNotificationBuilder;
 import uk.gov.companieshouse.taf.data.UpdateLedData;
@@ -65,7 +63,7 @@ public class UpdateLedSteps {
 
         assertTrue(StringUtils.equals("Successfully created BRUpdateLEDRequest for company "
                         + data.getCompanyNumber(),
-                (String) json.get(RESPONSE_MESSAGE)));
+                (String)json.get(RESPONSE_MESSAGE)));
 
         // Use the message id retrieved from the REST API so that it can be used
         // later to find the message in MongoDB

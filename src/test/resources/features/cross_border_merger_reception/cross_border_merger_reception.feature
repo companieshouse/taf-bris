@@ -35,7 +35,7 @@ Feature: Cross border merger reception
     When I make a cross border merger request
     Then I should get a cross border merger error message with the error code ERR_BR_0502
 
-  Scenario: User does not supply either a merging company registered office
+  Scenario: User does not supply a merging company registered office
     Given the notification does not have a merging company registered office
     When I make a cross border merger request
     Then I should get a cross border merger error message with the error code ERR_BR_0102
