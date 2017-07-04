@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
-import uk.gov.companieshouse.taf.config.constants.MongoConfig;
+import uk.gov.companieshouse.taf.config.constants.MongoConstants;
 
 /**
  * This Mongo configuration is used to load data into the BRIS application incoming
@@ -34,7 +34,7 @@ public class BrisMongoConfig {
 
     private MongoDbFactory brisMongoDbFactory() throws UnknownHostException {
         return new SimpleMongoDbFactory(new MongoClientURI(
-                env.config.getString(MongoConfig.MONGO_URI)
-                + MongoConfig.URI_SLASH + BRIS_MESSAGES_DATABASE));
+                env.config.getString(MongoConstants.MONGO_URI)
+                + MongoConstants.URI_SLASH + BRIS_MESSAGES_DATABASE));
     }
 }

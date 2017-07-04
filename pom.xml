@@ -11,6 +11,7 @@
         <spring.version>4.3.8.RELEASE</spring.version>
         <mongodb.version>3.4.2</mongodb.version>
         <spring.data.mongo.version>1.10.1.RELEASE</spring.data.mongo.version>
+        <spring.web.version>4.3.9.RELEASE</spring.web.version>
         <validation.api.version>1.1.0.Final</validation.api.version>
         <json.simple.version>1.1.1</json.simple.version>
         <cucumber.version>1.2.5</cucumber.version>
@@ -24,6 +25,11 @@
         <maven.build.timestamp.format>yyyy-MM-dd-HHmm</maven.build.timestamp.format>
         <repo.basedir>${project.basedir}/repo</repo.basedir>
         <skipITs>false</skipITs>
+        <common.version>4.0.0-SNAPSHOT</common.version>
+        <httpclient.version>4.5.3</httpclient.version>
+        <jackson-databind.version>2.8.8.1</jackson-databind.version>
+        <bris-br-jaxb.version>1.4.0-rc4</bris-br-jaxb.version>
+        <domibus-bris-jaxb.version>0</domibus-bris-jaxb.version>
     </properties>
 
     <build>
@@ -171,19 +177,27 @@
         <dependency>
             <groupId>uk.gov.ch.taf</groupId>
             <artifactId>common</artifactId>
-            <version>4.0.0-SNAPSHOT</version>
+            <version>${common.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.web.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${httpclient.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.8.8.1</version>
+            <version>${jackson-databind.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -263,13 +277,13 @@
         <dependency>
             <groupId>eu.europa.ec.digit.bris.domibus-plugin</groupId>
             <artifactId>domibus-bris-jaxb</artifactId>
-            <version>1.0.5</version>
+            <version>1.${domibus-bris-jaxb.version}.5</version>
         </dependency>
 
         <dependency>
             <groupId>eu.europa.ec.digit.bris.messages-app</groupId>
             <artifactId>bris-br-jaxb</artifactId>
-            <version>1.4.0-rc4</version>
+            <version>${bris-br-jaxb.version}</version>
         </dependency>
     </dependencies>
 

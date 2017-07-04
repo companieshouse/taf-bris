@@ -1,4 +1,4 @@
-package uk.gov.companieshouse.taf.util;
+package uk.gov.companieshouse.taf.builders;
 
 import eu.europa.ec.bris.v140.jaxb.br.branch.disclosure.BRBranchDisclosureReceptionNotification;
 

@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
-import uk.gov.companieshouse.taf.config.constants.MongoConfig;
+import uk.gov.companieshouse.taf.config.constants.MongoConstants;
 
 /**
  * This Mongo configuration is used to load test data into Mongo from JSON files.
@@ -38,8 +38,8 @@ public class ChsMongoConfig {
      */
     private MongoDbFactory mongoCompanyProfileDbFactory() throws UnknownHostException {
         return new SimpleMongoDbFactory(new MongoClientURI(
-                env.config.getString(MongoConfig.MONGO_URI)
-                + MongoConfig.URI_SLASH + COMPANY_PROFILE_DATABASE));
+                env.config.getString(MongoConstants.MONGO_URI)
+                + MongoConstants.URI_SLASH + COMPANY_PROFILE_DATABASE));
     }
 
     /**
@@ -56,7 +56,7 @@ public class ChsMongoConfig {
      */
     private MongoDbFactory mongoCompanyFilingHistoryDbFactory() throws UnknownHostException {
         return new SimpleMongoDbFactory(new MongoClientURI(
-                env.config.getString(MongoConfig.MONGO_URI)
-                + MongoConfig.URI_SLASH + COMPANY_FILING_HISTORY_DATABASE));
+                env.config.getString(MongoConstants.MONGO_URI)
+                + MongoConstants.URI_SLASH + COMPANY_FILING_HISTORY_DATABASE));
     }
 }
