@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import uk.gov.companieshouse.taf.util.RequestBuilder;
+import uk.gov.companieshouse.taf.builders.RequestBuilder;
 import uk.gov.companieshouse.taf.util.TestDataHelper;
 
 public class Hooks {
