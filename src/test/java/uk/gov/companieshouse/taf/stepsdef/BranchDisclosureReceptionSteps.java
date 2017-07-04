@@ -37,6 +37,57 @@ public class BranchDisclosureReceptionSteps {
     }
 
     /**
+     * Create a Branch Disclosure Reception Notification that has a company EUID that does not
+     * match the details of the disclosing company.
+     * EUID = Country code + Business register . Company number
+     */
+    @Given("^the notification business register does not match the disclosure company$")
+    public void theNotificationBusinessRegisterDoesNotMatchTheDisclosureCompany() throws Throwable {
+        BRBranchDisclosureReceptionNotification notification =
+                BranchDisclosureRequestBuilder.getBranchDisclosureReceptionNotification(data);
+
+        notification.getDisclosureCompany().getCompanyEUID().setValue("UKAA.99990000");
+
+        data.setOutgoingBrisMessage(sendBrisTestMessageService.createOutgoingBrisMessage(
+                notification, data.getMessageId()));
+    }
+
+    /**
+     * Create a Branch Disclosure Reception Notification with branch EUID set to a company that
+     * does not match the recipient company.
+     */
+    @Given("^the notification has a recipient business register that does not match the branch"
+            + " business register$")
+    public void notificationHasARecipientBusinessRegisterThatDoesNotMatchTheBranchBusinessRegister()
+            throws Throwable {
+        BRBranchDisclosureReceptionNotification notification =
+                BranchDisclosureRequestBuilder.getBranchDisclosureReceptionNotification(data);
+
+        notification.getBranchEUIDs().getBranchEUID().get(0).setValue("ES1005.123456");
+
+        data.setOutgoingBrisMessage(sendBrisTestMessageService.createOutgoingBrisMessage(
+                notification, data.getMessageId()));
+    }
+
+    /**
+     * Create a Branch Disclosure Reception Notification with the recipient organisation details
+     * different to those in the message header.
+     */
+    @Given("^the notification business register is the same as the recipient business register$")
+    public void theNotificationBusinessRegisterIsTheSameAsTheRecipientBusinessRegister()
+            throws Throwable {
+        BRBranchDisclosureReceptionNotification notification =
+                BranchDisclosureRequestBuilder.getBranchDisclosureReceptionNotification(data);
+
+        notification.getRecipientOrganisation().getBusinessRegisterCountry().setValue("ES");
+        notification.getRecipientOrganisation().getBusinessRegisterID().setValue("1005");
+        notification.getBranchEUIDs().getBranchEUID().get(0).setValue("ES1005.123456");
+
+        data.setOutgoingBrisMessage(sendBrisTestMessageService.createOutgoingBrisMessage(
+                notification, data.getMessageId()));
+    }
+
+    /**
      * Send the Branch Disclosure Reception Notification to BRIS.
      */
     @When("^I make a branch disclosure request$")

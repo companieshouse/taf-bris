@@ -23,7 +23,6 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import uk.gov.companieshouse.taf.config.constants.BusinessRegisterConstants;
 import uk.gov.companieshouse.taf.data.RequestData;
 
 @Component
@@ -44,7 +43,7 @@ public class RequestBuilder {
 
         // BusinessRegisterType
         BusinessRegisterNameType businessRegisterNameType = new BusinessRegisterNameType();
-        businessRegisterNameType.setValue(BusinessRegisterConstants.UK_REGISTER);
+        businessRegisterNameType.setValue(data.getRegisterName());
 
         BusinessRegisterIDType businessRegisterIdType = new BusinessRegisterIDType();
 
