@@ -53,8 +53,8 @@ public class BranchDisclosureReceptionSteps {
     }
 
     /**
-     * Create a Branch Disclosure Reception Notification with branch EUID set to a company that
-     * does not match the recipient company.
+     * Create a Branch Disclosure Reception Notification with branch business register
+     * set to a company that does not match the recipient company.
      */
     @Given("^the notification has a recipient business register that does not match the branch"
             + " business register$")
@@ -63,25 +63,7 @@ public class BranchDisclosureReceptionSteps {
         BRBranchDisclosureReceptionNotification notification =
                 BranchDisclosureRequestBuilder.getBranchDisclosureReceptionNotification(data);
 
-        notification.getBranchEUIDs().getBranchEUID().get(0).setValue("ES1005.123456");
-
-        data.setOutgoingBrisMessage(sendBrisTestMessageService.createOutgoingBrisMessage(
-                notification, data.getMessageId()));
-    }
-
-    /**
-     * Create a Branch Disclosure Reception Notification with the recipient organisation details
-     * different to those in the message header.
-     */
-    @Given("^the notification business register is the same as the recipient business register$")
-    public void theNotificationBusinessRegisterIsTheSameAsTheRecipientBusinessRegister()
-            throws Throwable {
-        BRBranchDisclosureReceptionNotification notification =
-                BranchDisclosureRequestBuilder.getBranchDisclosureReceptionNotification(data);
-
-        notification.getRecipientOrganisation().getBusinessRegisterCountry().setValue("ES");
-        notification.getRecipientOrganisation().getBusinessRegisterID().setValue("1005");
-        notification.getBranchEUIDs().getBranchEUID().get(0).setValue("ES1005.123456");
+        notification.getRecipientOrganisation().getBusinessRegisterID().setValue("ES");
 
         data.setOutgoingBrisMessage(sendBrisTestMessageService.createOutgoingBrisMessage(
                 notification, data.getMessageId()));
