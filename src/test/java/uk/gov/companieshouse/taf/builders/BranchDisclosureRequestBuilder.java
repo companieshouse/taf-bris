@@ -3,6 +3,7 @@ package uk.gov.companieshouse.taf.builders;
 import eu.europa.ec.bris.v140.jaxb.br.branch.disclosure.BRBranchDisclosureReceptionNotification;
 
 import eu.europa.ec.bris.v140.jaxb.components.aggregate.AddressType;
+import eu.europa.ec.bris.v140.jaxb.components.aggregate.BranchEUIDsType;
 import eu.europa.ec.bris.v140.jaxb.components.aggregate.BusinessRegisterType;
 import eu.europa.ec.bris.v140.jaxb.components.aggregate.CompanyAlternateIdentifiersType;
 import eu.europa.ec.bris.v140.jaxb.components.aggregate.LegislationReferencesType;
@@ -18,47 +19,55 @@ import eu.europa.ec.bris.v140.jaxb.components.basic.DateTimeType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.EffectiveDateType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.LegalFormCodeType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.ProceedingType;
-import uk.gov.companieshouse.taf.config.constants.BusinessRegisterConstants;
-import uk.gov.companieshouse.taf.data.RequestData;
+import uk.gov.companieshouse.taf.data.BranchDisclosureReceptionData;
 
 /**
  * Used to build a request object for Branch Disclosures with default values.
  */
 public class BranchDisclosureRequestBuilder extends RequestBuilder {
 
-    private static final String WINDING_UP_OPENING = "WINDING_UP_OPENING";
-
     /**
      * Create new instance of BRBranchDisclosureReceptionNotification.
      */
     public static BRBranchDisclosureReceptionNotification getBranchDisclosureReceptionNotification(
-            RequestData data) {
+            BranchDisclosureReceptionData data) {
 
         BRBranchDisclosureReceptionNotification notification = new
                 BRBranchDisclosureReceptionNotification();
 
         notification.setMessageHeader(getMessageHeader(data));
 
-        notification.setNotificationContext(setNotificationContextType());
-        notification.setProceeding(setProceedingType(WINDING_UP_OPENING));
-        notification.setDisclosureCompany(setNotificationCompanyType());
-        notification.setRecipientOrganisation(setBusinessRegisterType());
+        notification.setNotificationContext(setNotificationContextType(data));
+        notification.setProceeding(setProceedingType(data));
+        notification.setDisclosureCompany(setNotificationCompanyType(data));
+        notification.setRecipientOrganisation(setBusinessRegisterType(data));
+        notification.setBranchEUIDs(setBranchEuidType(data));
 
         return notification;
     }
 
-    private static BusinessRegisterType setBusinessRegisterType() {
+    private static BranchEUIDsType setBranchEuidType(BranchDisclosureReceptionData data) {
+        CompanyEUIDType companyEuidType = new CompanyEUIDType();
+        companyEuidType.setValue(data.getCountryCode() + data.getBusinessRegisterId()
+                + "." + data.getCompanyNumber());
+        BranchEUIDsType branchEuidsType = new BranchEUIDsType();
+        branchEuidsType.getBranchEUID().add(companyEuidType);
+        return branchEuidsType;
+    }
+
+    private static BusinessRegisterType setBusinessRegisterType(
+            BranchDisclosureReceptionData data) {
         BusinessRegisterIDType businessRegisterIdType = new BusinessRegisterIDType();
 
         // BusinessRegisterID
-        businessRegisterIdType.setValue(BusinessRegisterConstants.EW_REGISTER_ID);
+        businessRegisterIdType.setValue(data.getBusinessRegisterId());
 
         BusinessRegisterType businessRegisterType = new BusinessRegisterType();
         BusinessRegisterNameType businessRegisterNameType = new BusinessRegisterNameType();
-        businessRegisterNameType.setValue(BusinessRegisterConstants.UK_REGISTER);
+        businessRegisterNameType.setValue(data.getRegisterName());
 
         // BusinessRegisterCountry Country
-        CountryType countryType = getCountry(BusinessRegisterConstants.UK_COUNTRY_CODE);
+        CountryType countryType = getCountry(data.getCountryCode());
 
         businessRegisterType.setBusinessRegisterCountry(countryType);
         businessRegisterType.setBusinessRegisterID(businessRegisterIdType);
@@ -67,9 +76,10 @@ public class BranchDisclosureRequestBuilder extends RequestBuilder {
         return businessRegisterType;
     }
 
-    private static NotificationCompanyType setNotificationCompanyType() {
+    private static NotificationCompanyType setNotificationCompanyType(
+            BranchDisclosureReceptionData data) {
         BusinessRegisterNameType businessRegisterNameType = new BusinessRegisterNameType();
-        businessRegisterNameType.setValue(BusinessRegisterConstants.EW_REGISTER_ID);
+        businessRegisterNameType.setValue(data.getIssuingRegister());
 
         CompanyAlternateIDType companyAlternateIdType = new CompanyAlternateIDType();
         companyAlternateIdType.setValue("34EDED");
@@ -79,10 +89,11 @@ public class BranchDisclosureRequestBuilder extends RequestBuilder {
         companyAlternateIdentifiersType.getCompanyAlternateID().add(companyAlternateIdType);
 
         CompanyEUIDType companyEuidType = new CompanyEUIDType();
-        companyEuidType.setValue("UKEW.2010012341-Z<");
+        companyEuidType.setValue(data.getIssuingCountryCode() + data.getIssuingBusinessRegId()
+                + "." + data.getIssuingCompanyNumber());
 
         LegalFormCodeType legalFormCodeType = new LegalFormCodeType();
-        legalFormCodeType.setValue("LF-NL-001");
+        legalFormCodeType.setValue(data.getLegalFormCode());
 
         CompanyNameType companyNameType = new CompanyNameType();
         companyNameType.setValue("CompanyName");
@@ -93,7 +104,7 @@ public class BranchDisclosureRequestBuilder extends RequestBuilder {
                 "Middx",
                 "HA27SY",
                 "HARROW",
-                BusinessRegisterConstants.UK_COUNTRY_CODE);
+                data.getIssuingCountryCode());
 
         NotificationCompanyType notificationCompanyType = new NotificationCompanyType();
         notificationCompanyType.setBusinessRegisterName(businessRegisterNameType);
@@ -106,7 +117,8 @@ public class BranchDisclosureRequestBuilder extends RequestBuilder {
         return notificationCompanyType;
     }
 
-    private static NotificationContextType setNotificationContextType() {
+    private static NotificationContextType setNotificationContextType(
+            BranchDisclosureReceptionData data) {
 
         EffectiveDateType effectiveDate = new EffectiveDateType();
 
@@ -117,13 +129,13 @@ public class BranchDisclosureRequestBuilder extends RequestBuilder {
         BusinessRegisterIDType businessRegisterIdType = new BusinessRegisterIDType();
 
         // BusinessRegisterID
-        businessRegisterIdType.setValue(BusinessRegisterConstants.EW_REGISTER_ID);
+        businessRegisterIdType.setValue(data.getIssuingBusinessRegId());
 
         BusinessRegisterNameType businessRegisterNameType = new BusinessRegisterNameType();
-        businessRegisterNameType.setValue(BusinessRegisterConstants.UK_REGISTER);
+        businessRegisterNameType.setValue(data.getIssuingRegister());
 
         // BusinessRegisterCountry Country
-        CountryType countryType = getCountry(BusinessRegisterConstants.UK_COUNTRY_CODE);
+        CountryType countryType = getCountry(data.getIssuingCountryCode());
 
         LegislationReferencesType legislationReferencesType = new LegislationReferencesType();
         legislationReferencesType.getLegislationReference();
@@ -142,9 +154,9 @@ public class BranchDisclosureRequestBuilder extends RequestBuilder {
         return notificationContextType;
     }
 
-    private static ProceedingType setProceedingType(String proceedingTypeValue) {
+    private static ProceedingType setProceedingType(BranchDisclosureReceptionData data) {
         ProceedingType proceedingType = new ProceedingType();
-        proceedingType.setValue(proceedingTypeValue);
+        proceedingType.setValue(data.getProceedingType());
         return proceedingType;
     }
 }

@@ -22,6 +22,7 @@ public abstract class RequestData {
     private String correlationId = messageId;
     private String businessRegisterId = BusinessRegisterConstants.EW_REGISTER_ID;
     private String countryCode = BusinessRegisterConstants.UK_COUNTRY_CODE;
+    private String registerName = BusinessRegisterConstants.UK_REGISTER;
     private OutgoingBrisMessage outgoingBrisMessage;
 
     public String getMessageId() {
@@ -72,4 +73,11 @@ public abstract class RequestData {
         this.correlationId = correlationId;
     }
 
+    public String getRegisterName() {
+        return registerName;
+    }
+
+    public void setRegisterName(String registerName) {
+        this.registerName = registerName;
+    }
 }
