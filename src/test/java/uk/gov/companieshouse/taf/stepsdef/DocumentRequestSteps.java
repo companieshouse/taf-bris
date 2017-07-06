@@ -12,13 +12,13 @@ import eu.europa.ec.bris.v140.jaxb.br.company.document.BRRetrieveDocumentRespons
 
 import java.util.Arrays;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.companieshouse.taf.builders.DocumentRequestBuilder;
 import uk.gov.companieshouse.taf.data.DocumentRequestData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
+import uk.gov.companieshouse.taf.util.RandomStringUtil;
 
 public class DocumentRequestSteps {
     private static final String BUSINESS_REGISTER_ID = "EW";
@@ -56,7 +56,7 @@ public class DocumentRequestSteps {
      */
     @Given("^the request contains a document id that does not exist$")
     public void theRequestContainsADocumentIdThatDoesNotExist() throws Throwable {
-        data.setDocumentId(RandomStringUtils.randomAlphanumeric(8));
+        data.setDocumentId(RandomStringUtil.generateRandomAlphaNumeric(8));
         BRRetrieveDocumentRequest retrieveDocumentRequest = DocumentRequestBuilder
                 .getRetrieveDocumentRequest(data);
 
@@ -69,7 +69,7 @@ public class DocumentRequestSteps {
      */
     @Given("^the request contains an invalid document id$")
     public void theRequestContainsAnInvalidDocumentId() throws Throwable {
-        data.setDocumentId(RandomStringUtils.randomAlphanumeric(65));
+        data.setDocumentId(RandomStringUtil.generateRandomAlphaNumeric(65));
         BRRetrieveDocumentRequest retrieveDocumentRequest = DocumentRequestBuilder
                 .getRetrieveDocumentRequest(data);
 

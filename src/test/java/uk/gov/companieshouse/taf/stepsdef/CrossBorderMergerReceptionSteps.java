@@ -7,10 +7,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import eu.europa.ec.bris.v140.jaxb.br.merger.BRCrossBorderMergerReceptionNotification;
 import eu.europa.ec.bris.v140.jaxb.br.merger.BRCrossBorderMergerReceptionNotificationAcknowledgement;
-import eu.europa.ec.bris.v140.jaxb.components.basic.BusinessRegisterIDType;
 import eu.europa.ec.bris.v140.jaxb.components.basic.CompanyEUIDType;
-import eu.europa.ec.bris.v140.jaxb.components.basic.CountryType;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,20 +148,15 @@ public class CrossBorderMergerReceptionSteps {
                         .getCrossBorderMergerNotification(data);
 
         // Set valid country code
-        CountryType countryType = new CountryType();
-        countryType.setValue("UK");
         notification.getNotificationContext().getIssuingOrganisation()
-                .setBusinessRegisterCountry(countryType);
+                .getBusinessRegisterCountry().setValue("UK");
 
         // Set invalid business register id. EW/SC/NI are valid
-        BusinessRegisterIDType businessRegisterIdType = new BusinessRegisterIDType();
-        businessRegisterIdType.setValue("AB");
         notification.getNotificationContext().getIssuingOrganisation()
-                .setBusinessRegisterID(businessRegisterIdType);
+                .getBusinessRegisterID().setValue("AB");
 
-        CompanyEUIDType companyEuidType = new CompanyEUIDType();
-        companyEuidType.setValue("UKAB.99990000");
-        notification.getResultingCompany().setCompanyEUID(companyEuidType);
+        // Set the EUID with the above details making it invalid
+        notification.getResultingCompany().getCompanyEUID().setValue("UKAB.99990000");
 
         data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
                 notification, data.getMessageId())));

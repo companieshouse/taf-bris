@@ -3,7 +3,6 @@ package uk.gov.companieshouse.taf.stepsdef;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertNull;
 import static junit.framework.TestCase.assertTrue;
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
@@ -16,9 +15,8 @@ import eu.europa.ec.bris.v140.jaxb.components.aggregate.DocumentType;
 
 import java.util.List;
 
-import org.apache.commons.lang3.RandomStringUtils;
-
 import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +27,7 @@ import uk.gov.companieshouse.taf.data.CompanyDetailsRequestData;
 import uk.gov.companieshouse.taf.domain.ValidationError;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
-
+import uk.gov.companieshouse.taf.util.RandomStringUtil;
 
 public class CompanyDetailsRequestSteps {
 
@@ -120,7 +118,7 @@ public class CompanyDetailsRequestSteps {
      */
     @Given("^the request contains an invalid correlation id$")
     public void theRequestContainsAnInvalidCorrelationId() throws Throwable {
-        String invalidId = RandomStringUtils.randomAlphanumeric(65);
+        String invalidId = RandomStringUtil.generateRandomAlphaNumeric(65);
 
         data.setMessageId(invalidId);
         data.setCorrelationId(invalidId);
@@ -136,7 +134,7 @@ public class CompanyDetailsRequestSteps {
      */
     @Given("^the request contains a correlation id that does not match the message id$")
     public void theRequestContainsACorrelationIdThatDoesNotMatchTheMessageId() throws Throwable {
-        String messageId = randomAlphanumeric(8);
+        String messageId = RandomStringUtil.generateRandomNumeric(15);
         data.setMessageId(messageId);
 
         BRCompanyDetailsRequest request = CompanyDetailsRequestBuilder
