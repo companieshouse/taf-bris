@@ -8,6 +8,8 @@ import uk.gov.companieshouse.taf.domain.UpdateLed;
 @Qualifier("UpdateLedData")
 public class UpdateLedData extends RequestData {
 
+    private UpdateLed updateLedJsonRequest;
+
     public UpdateLed getUpdateLedJsonRequest() {
         return updateLedJsonRequest;
     }
@@ -15,6 +17,4 @@ public class UpdateLedData extends RequestData {
     public void setUpdateLedJsonRequest(UpdateLed updateLedJsonRequest) {
         this.updateLedJsonRequest = updateLedJsonRequest;
     }
-
-    private UpdateLed updateLedJsonRequest;
 }
