@@ -11,6 +11,7 @@ import eu.europa.ec.bris.v140.jaxb.br.subscription.BRManageSubscriptionRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import uk.gov.companieshouse.taf.builders.ManageSubscriptionNotificationBuilder;
 import uk.gov.companieshouse.taf.data.ManageSubscriptionData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
@@ -89,17 +90,18 @@ public class ManageSubscriptionNotificationSteps {
             throw new RuntimeException("Exception thrown searching for message " + ex.getMessage());
         }
         assertNotNull(request);
-        assertNotNull(request.getAction());
+        assertNotNull(!CollectionUtils.isEmpty(request.getAction()));
 
         assertTrue(StringUtils.equals(request.getAction().get(0).getManageSubscriptionCode()
                 .getValue(), data.getSubscriptionType()));
 
         String companyEuid = request.getAction().get(0).getCompanyEUID().getValue();
-        assertTrue(StringUtils.contains(companyEuid.substring(0, 2),
+
+        assertTrue(StringUtils.equalsIgnoreCase(companyEuid.substring(0, 2),
                 data.getForeignCountryCode()));
 
-        assertTrue(StringUtils.contains(companyEuid.substring(2, companyEuid.indexOf(".")),
-                data.getForeignRegisterId()));
+        assertTrue(StringUtils.equalsIgnoreCase(companyEuid.substring(
+                2, companyEuid.indexOf(".")), data.getForeignRegisterId()));
 
         // And assert that the header details are correct
         CommonSteps.validateHeader(request.getMessageHeader(),
@@ -119,7 +121,7 @@ public class ManageSubscriptionNotificationSteps {
             throw new RuntimeException("Exception thrown searching for message " + ex.getMessage());
         }
         assertNotNull(request);
-        assertNotNull(request.getAction());
+        assertNotNull(!CollectionUtils.isEmpty(request.getAction()));
 
         assertTrue(StringUtils.equals(request.getAction().get(0).getManageSubscriptionCode()
                 .getValue(), REMOVE_SUBSCRIPTION_TYPE));
