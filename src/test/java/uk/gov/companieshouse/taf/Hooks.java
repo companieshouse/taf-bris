@@ -1,4 +1,4 @@
-package uk.gov.companieshouse.taf.stepsdef;
+package uk.gov.companieshouse.taf;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;

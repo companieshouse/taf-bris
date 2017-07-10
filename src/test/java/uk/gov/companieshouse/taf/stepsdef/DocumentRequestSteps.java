@@ -11,8 +11,9 @@ import eu.europa.ec.bris.v140.jaxb.br.company.document.BRRetrieveDocumentRequest
 import eu.europa.ec.bris.v140.jaxb.br.company.document.BRRetrieveDocumentResponse;
 
 import java.util.Arrays;
+import java.util.UUID;
 
-import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.companieshouse.taf.builders.DocumentRequestBuilder;
@@ -56,7 +57,8 @@ public class DocumentRequestSteps {
      */
     @Given("^the request contains a document id that does not exist$")
     public void theRequestContainsADocumentIdThatDoesNotExist() throws Throwable {
-        data.setDocumentId(RandomStringUtils.randomAlphanumeric(8));
+        String randomRequest = UUID.randomUUID().toString().replace("-", "");
+        data.setDocumentId(randomRequest);
         BRRetrieveDocumentRequest retrieveDocumentRequest = DocumentRequestBuilder
                 .getRetrieveDocumentRequest(data);
 
@@ -69,7 +71,11 @@ public class DocumentRequestSteps {
      */
     @Given("^the request contains an invalid document id$")
     public void theRequestContainsAnInvalidDocumentId() throws Throwable {
-        data.setDocumentId(RandomStringUtils.randomAlphanumeric(65));
+        RandomStringGenerator generator = new RandomStringGenerator.Builder()
+                .withinRange('A', 'Z').build();
+        String invalidCorrelationId = generator.generate(65);
+
+        data.setDocumentId(invalidCorrelationId);
         BRRetrieveDocumentRequest retrieveDocumentRequest = DocumentRequestBuilder
                 .getRetrieveDocumentRequest(data);
 
