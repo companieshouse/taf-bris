@@ -94,7 +94,6 @@ public class CrossBorderMergerReceptionSteps {
      */
     @Given("^the notification has an invalid issuing country code$")
     public void theNotificationHasAnInvalidIssuingCountryCode() throws Throwable {
-
         RandomStringGenerator generator = new RandomStringGenerator.Builder()
                 .withinRange('A', 'Z').build();
         data.setIssuingCountryCode(generator.generate(3));

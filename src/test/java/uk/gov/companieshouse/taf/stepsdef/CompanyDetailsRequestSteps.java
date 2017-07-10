@@ -14,9 +14,11 @@ import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsResponse;
 import eu.europa.ec.bris.v140.jaxb.components.aggregate.DocumentType;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.apache.commons.text.RandomStringGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,6 @@ import uk.gov.companieshouse.taf.data.CompanyDetailsRequestData;
 import uk.gov.companieshouse.taf.domain.ValidationError;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
-import uk.gov.companieshouse.taf.util.RandomStringUtil;
 
 public class CompanyDetailsRequestSteps {
 
@@ -118,7 +119,9 @@ public class CompanyDetailsRequestSteps {
      */
     @Given("^the request contains an invalid correlation id$")
     public void theRequestContainsAnInvalidCorrelationId() throws Throwable {
-        String invalidId = RandomStringUtil.generateRandomAlphaNumeric(65);
+        RandomStringGenerator generator = new RandomStringGenerator.Builder()
+                .withinRange('A', 'Z').build();
+        String invalidId = generator.generate(65);
 
         data.setMessageId(invalidId);
         data.setCorrelationId(invalidId);
@@ -134,7 +137,7 @@ public class CompanyDetailsRequestSteps {
      */
     @Given("^the request contains a correlation id that does not match the message id$")
     public void theRequestContainsACorrelationIdThatDoesNotMatchTheMessageId() throws Throwable {
-        String messageId = RandomStringUtil.generateRandomNumeric(15);
+        String messageId = UUID.randomUUID().toString();
         data.setMessageId(messageId);
 
         BRCompanyDetailsRequest request = CompanyDetailsRequestBuilder
