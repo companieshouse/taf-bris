@@ -91,6 +91,7 @@ public class ManageSubscriptionNotificationSteps {
         }
         assertNotNull(request);
         assertNotNull(!CollectionUtils.isEmpty(request.getAction()));
+        assertNotNull(request.getAction().get(0).getManageSubscriptionCode());
 
         assertTrue(StringUtils.equals(request.getAction().get(0).getManageSubscriptionCode()
                 .getValue(), data.getSubscriptionType()));
