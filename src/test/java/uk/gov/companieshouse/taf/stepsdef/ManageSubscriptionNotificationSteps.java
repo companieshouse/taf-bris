@@ -35,7 +35,7 @@ public class ManageSubscriptionNotificationSteps {
     /**
      * Create a valid manage subscription notification.
      */
-    @Given("^a valid manage subscription exists$")
+    @Given("^a valid manage subscription notification exists$")
     public void validManageSubscriptionExists() throws Throwable {
         data.setManageSubscription(ManageSubscriptionNotificationBuilder
                 .createDefaultManageSubscription(data));
@@ -89,15 +89,17 @@ public class ManageSubscriptionNotificationSteps {
             throw new RuntimeException("Exception thrown searching for message " + ex.getMessage());
         }
         assertNotNull(request);
+        assertNotNull(request.getAction());
 
         assertTrue(StringUtils.equals(request.getAction().get(0).getManageSubscriptionCode()
                 .getValue(), data.getSubscriptionType()));
 
-        assertTrue(StringUtils.contains(request.getAction().get(0).getCompanyEUID().getValue(),
+        String companyEuid = request.getAction().get(0).getCompanyEUID().getValue();
+        assertTrue(StringUtils.contains(companyEuid.substring(0, 2),
                 data.getForeignCountryCode()));
 
-        assertTrue(StringUtils.contains(request.getAction().get(0).getCompanyEUID().getValue(),
-                data.getForeignCountryCode()));
+        assertTrue(StringUtils.contains(companyEuid.substring(2, companyEuid.indexOf(".")),
+                data.getForeignRegisterId()));
 
         // And assert that the header details are correct
         CommonSteps.validateHeader(request.getMessageHeader(),
@@ -105,10 +107,10 @@ public class ManageSubscriptionNotificationSteps {
     }
 
     /**
-     * Confirms the manage subscription notification is set to unsubscribe form the company.
+     * Confirms the manage subscription notification is set to unsubscribe from the company.
      */
-    @Then("^the notification will be set to remove the subscription$")
-    public void theNotificationWillBeSetToRemoveTheSubscription() throws Throwable {
+    @Then("^the notification will be sent to remove the subscription$")
+    public void theNotificationWillBeSentToRemoveTheSubscription() throws Throwable {
         BRManageSubscriptionRequest request;
         try {
             request = retrieveMessageService
@@ -117,6 +119,7 @@ public class ManageSubscriptionNotificationSteps {
             throw new RuntimeException("Exception thrown searching for message " + ex.getMessage());
         }
         assertNotNull(request);
+        assertNotNull(request.getAction());
 
         assertTrue(StringUtils.equals(request.getAction().get(0).getManageSubscriptionCode()
                 .getValue(), REMOVE_SUBSCRIPTION_TYPE));
