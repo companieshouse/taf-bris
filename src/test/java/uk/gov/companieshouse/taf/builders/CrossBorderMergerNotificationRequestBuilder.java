@@ -19,6 +19,8 @@ import uk.gov.companieshouse.taf.data.CrossBorderMergerNotificationData;
 
 public class CrossBorderMergerNotificationRequestBuilder extends RequestBuilder {
 
+    private static CrossBorderMergerNotificationData crossBorderMergerNotifcation;
+
     /**
      * Create new instance of BRCrossBorderMergerReceptionNotification.
      */
@@ -145,5 +147,11 @@ public class CrossBorderMergerNotificationRequestBuilder extends RequestBuilder 
         cbmNotification.setMerger(merger);
 
         return cbmNotification;
+    }
+
+    public static void setCrossBorderMergerNotification(CrossBorderMergerNotificationData
+                                                                crossBorderMergerNotification) {
+        CrossBorderMergerNotificationRequestBuilder.crossBorderMergerNotifcation
+                = crossBorderMergerNotification;
     }
 }

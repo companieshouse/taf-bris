@@ -1,0 +1,103 @@
+package uk.gov.companieshouse.taf.stepsdef;
+
+import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+import eu.europa.ec.bris.v140.jaxb.br.merger.BRCrossBorderMergerSubmissionNotification;
+import org.apache.commons.lang3.StringUtils;
+import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
+import uk.gov.companieshouse.taf.builders.CrossBorderMergerBuilder;
+import uk.gov.companieshouse.taf.data.MergingCompanyData;
+import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
+import uk.gov.companieshouse.taf.util.NotificationApiHelper;
+
+public class CrossBorderMergerNotificationSteps {
+
+    private static final String CROSS_BORDER_MERGER_CONTEXT = "cross-border-merger";
+    private static final String RESPONSE_MESSAGE = "response_message";
+    private static final String MESSAGE_ID = "message_id";
+
+    @Autowired
+    private MergingCompanyData data;
+
+    @Autowired
+    private NotificationApiHelper notificationApiHelper;
+
+    @Autowired
+    private RetrieveBrisTestMessageService retrieveMessageService;
+
+    @Given("^a valid cross border merger notification exists$")
+    public void validCrossBorderMergerNotificationExists() throws Throwable {
+        data.setCrossBorderMergerJsonRequest(CrossBorderMergerBuilder
+                .createDefaultCrossBorderMerger(data));
+    }
+
+    /**
+     * Submits the Cross Border Merger Notification.
+     */
+    @When("^I make a cross border merger notification request$")
+    public void makeACrossBorderMergerNotificationRequest() throws Throwable {
+        ObjectMapper mapper = new ObjectMapper();
+
+        // Map the JSON for the LED into a String to be used for REST call
+        String requestBody = mapper.writeValueAsString(data.getCrossBorderMergerJsonRequest());
+
+        // Call the Notification REST API for Update LED
+        JSONObject json = notificationApiHelper.callNotificationRestApi(requestBody,
+                CROSS_BORDER_MERGER_CONTEXT);
+
+        assertTrue(StringUtils.equals("Successfully created "
+                        + "BRCrossBorderMergerSubmissionNotification for company "
+                        + data.getCompanyNumber(),
+                (String) json.get(RESPONSE_MESSAGE)));
+
+        // Use the message id retrieved from the REST API so that it can be used
+        // later to find the message in MongoDB
+        String messageId = (String) json.get(MESSAGE_ID);
+        data.setCorrelationId(messageId);
+        data.setMessageId(messageId);
+    }
+
+    /**
+     * Checks the Cross Border Merger Notification contains the correct details.
+     */
+    @Then("^I should have sent a cross border merger notification to the ECP$")
+    public void shouldHaveSentACrossBorderMergerNotificationToTheEcp() throws Throwable {
+        BRCrossBorderMergerSubmissionNotification request;
+        try {
+            request = retrieveMessageService
+                    .checkForResponseByCorrelationId(data.getCorrelationId());
+        } catch (Exception ex) {
+            throw new RuntimeException("Exception thrown searching for message " + ex.getMessage());
+        }
+        assertNotNull(request);
+
+        // Check notification is for the correct merger type
+        assertTrue(StringUtils.equals(request.getMerger().getValue(), data.getMergerType()));
+
+        // Check notification has a merging company
+        assertNotNull(!CollectionUtils.isEmpty(request.getMergingCompany()));
+
+        String companyEuid = request.getMergingCompany().get(0).getCompanyEUID().getValue();
+
+        // Check details of merging company
+        assertTrue(StringUtils.equals(companyEuid.substring(0, 2),
+                data.getForeignCountryCode()));
+
+        assertTrue(StringUtils.equals(companyEuid.substring(2, companyEuid.indexOf(".")),
+                data.getForeignRegisterId()));
+
+        assertTrue(StringUtils.equals(companyEuid.substring(companyEuid.indexOf(".") + 1),
+                data.getForeignCompanyNumber()));
+
+        // And assert that the header details are correct
+        CommonSteps.validateHeader(request.getMessageHeader(),
+                data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
+    }
+}
