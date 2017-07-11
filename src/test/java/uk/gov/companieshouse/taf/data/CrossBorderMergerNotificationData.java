@@ -7,7 +7,7 @@ import uk.gov.companieshouse.taf.config.constants.BusinessRegisterConstants;
 import uk.gov.companieshouse.taf.domain.CrossBorderMerger;
 
 @Component
-@Qualifier("CrossBorderMerger")
+@Qualifier("CrossBorderMergerNotification")
 public class CrossBorderMergerNotificationData extends RequestData {
 
     private String issuingCountryCode = BusinessRegisterConstants.FRANCE_COUNTRY_CODE;
