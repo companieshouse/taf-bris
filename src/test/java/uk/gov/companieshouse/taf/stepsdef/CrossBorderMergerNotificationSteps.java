@@ -8,6 +8,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import eu.europa.ec.bris.v140.jaxb.br.merger.BRCrossBorderMergerSubmissionNotification;
+import eu.europa.ec.bris.v140.jaxb.components.aggregate.NotificationCompanyType;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +33,26 @@ public class CrossBorderMergerNotificationSteps {
     @Autowired
     private RetrieveBrisTestMessageService retrieveMessageService;
 
-    @Given("^a valid cross border merger notification exists$")
-    public void validCrossBorderMergerNotificationExists() throws Throwable {
+    /**
+     * Create Cross Border Merger Notification based on merger type.
+     *
+     * @param mergerType the type of notification to be created. Options include;
+     *                   <p>Acquisition</p>
+     *                   <p>Formation of a new company</p>
+     *                   <p>Owned company</p>
+     */
+    @Given("^a valid ([^\"]*) cross border merger notification exists$")
+    public void validCrossBorderMergerNotificationExists(String mergerType) throws Throwable {
+        data.setMergerType(mergerType);
         data.setCrossBorderMergerJsonRequest(CrossBorderMergerBuilder
-                .createDefaultCrossBorderMerger(data));
+                .createDefaultCrossBorderMerger(data, 1));
+    }
+
+    @Given("^a cross border merger notification contains (\\d+) merging companies$")
+    public void crossBorderMergerNotificationContainsMergingCompanies(int numberOfCompanies)
+            throws Throwable {
+        data.setCrossBorderMergerJsonRequest(CrossBorderMergerBuilder
+                .createDefaultCrossBorderMerger(data, numberOfCompanies));
     }
 
     /**
@@ -84,17 +101,20 @@ public class CrossBorderMergerNotificationSteps {
         // Check notification has a merging company
         assertNotNull(!CollectionUtils.isEmpty(request.getMergingCompany()));
 
-        String companyEuid = request.getMergingCompany().get(0).getCompanyEUID().getValue();
+        for (NotificationCompanyType mergingCompany : request.getMergingCompany()) {
+            String companyEuid = mergingCompany.getCompanyEUID().getValue();
 
-        // Check details of merging company
-        assertTrue(StringUtils.equals(companyEuid.substring(0, 2),
-                data.getForeignCountryCode()));
+            // Check details of merging company
+            assertTrue(StringUtils.equals(companyEuid.substring(0, 2),
+                    data.getForeignCountryCode()));
 
-        assertTrue(StringUtils.equals(companyEuid.substring(2, companyEuid.indexOf(".")),
-                data.getForeignRegisterId()));
+            assertTrue(StringUtils.equals(companyEuid.substring(2, companyEuid.indexOf(".")),
+                    data.getForeignRegisterId()));
 
-        assertTrue(StringUtils.equals(companyEuid.substring(companyEuid.indexOf(".") + 1),
-                data.getForeignCompanyNumber()));
+            assertTrue(StringUtils.equals(companyEuid.substring(companyEuid.indexOf(".") + 1),
+                    data.getForeignCompanyNumber()));
+        }
+
 
         // And assert that the header details are correct
         CommonSteps.validateHeader(request.getMessageHeader(),

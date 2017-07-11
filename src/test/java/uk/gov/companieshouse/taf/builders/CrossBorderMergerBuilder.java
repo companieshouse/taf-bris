@@ -14,29 +14,14 @@ public class CrossBorderMergerBuilder {
      * Create Cross Border Merger Notification.
      */
     public static CrossBorderMerger createDefaultCrossBorderMerger(
-            MergingCompanyData mergingCompanyData) {
+            MergingCompanyData mergingCompanyData, int numberOfMergingCompanies) {
         CrossBorderMerger crossBorderMerger = new CrossBorderMerger();
         crossBorderMerger.setEffectiveDate(new Date());
         crossBorderMerger.setMergerType(mergingCompanyData.getMergerType());
 
         // Set merging company data
-        MergingCompany mergingCompany = new MergingCompany();
-        mergingCompany.setForeignRegisterId(mergingCompanyData.getForeignRegisterId());
-        mergingCompany.setForeignCountryCode(mergingCompanyData.getForeignCountryCode());
-        mergingCompany.setForeignCompanyNumber(mergingCompanyData.getForeignCompanyNumber());
-        mergingCompany.setForeignCompanyName(mergingCompanyData.getForeignCompanyName());
-        mergingCompany.setForeignLegalFormCode(mergingCompanyData.getForeignLegalForm());
-        mergingCompany.setForeignRegisterName(mergingCompanyData.getForeignRegisterName());
-
-        // Set Address
-        mergingCompany.setAddressLine1(mergingCompanyData.getAddressLine1());
-        mergingCompany.setAddressLine2(mergingCompanyData.getAddressLine2());
-        mergingCompany.setAddressLine3(mergingCompanyData.getAddressLine3());
-        mergingCompany.setCity(mergingCompanyData.getCity());
-        mergingCompany.setPostalCode(mergingCompanyData.getPostalCode());
-
-        List<MergingCompany> mergingCompanies = new ArrayList<>();
-        mergingCompanies.add(mergingCompany);
+        List<MergingCompany> mergingCompanies = getMergingCompanies(mergingCompanyData,
+                numberOfMergingCompanies);
 
         // Set merging company
         crossBorderMerger.setMergingCompanies(mergingCompanies);
@@ -47,5 +32,33 @@ public class CrossBorderMergerBuilder {
         crossBorderMerger.setRecipientForeignRegisterName(
                 mergingCompanyData.getForeignRegisterName());
         return crossBorderMerger;
+    }
+
+    private static List<MergingCompany> getMergingCompanies(MergingCompanyData mergingCompanyData,
+                                                            int numberOfCompanies) {
+        List<MergingCompany> mergingCompanies = new ArrayList<>();
+
+        for (int i = 0; i < numberOfCompanies; i++) {
+            MergingCompany mergingCompany = new MergingCompany();
+
+            mergingCompany.setForeignRegisterId(mergingCompanyData.getForeignRegisterId());
+            mergingCompany.setForeignCountryCode(mergingCompanyData.getForeignCountryCode());
+            mergingCompany.setForeignCompanyNumber(mergingCompanyData.getForeignCompanyNumber());
+            mergingCompany.setForeignCompanyName(mergingCompanyData.getForeignCompanyName()
+                    + " " + i);
+            mergingCompany.setForeignLegalFormCode(mergingCompanyData.getForeignLegalForm());
+            mergingCompany.setForeignRegisterName(mergingCompanyData.getForeignRegisterName());
+
+            // Set Address
+            mergingCompany.setAddressLine1(mergingCompanyData.getAddressLine1());
+            mergingCompany.setAddressLine2(mergingCompanyData.getAddressLine2());
+            mergingCompany.setAddressLine3(mergingCompanyData.getAddressLine3());
+            mergingCompany.setCity(mergingCompanyData.getCity());
+            mergingCompany.setPostalCode(mergingCompanyData.getPostalCode());
+
+            mergingCompanies.add(mergingCompany);
+        }
+
+        return mergingCompanies;
     }
 }
