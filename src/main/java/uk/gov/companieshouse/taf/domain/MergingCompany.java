@@ -16,13 +16,6 @@ public class MergingCompany {
     private static final String CITY = "city";
     private static final String POSTAL_CODE = "postal_code";
 
-    /**
-     * Constructor.
-     */
-    public MergingCompany() {
-        super();
-    }
-
     @JsonProperty(FOREIGN_REGISTER_ID)
     private String foreignRegisterId;
 

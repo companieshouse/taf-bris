@@ -89,11 +89,14 @@ public class CrossBorderMergerNotificationSteps {
         BRCrossBorderMergerSubmissionNotification request;
         try {
             request = retrieveMessageService
-                    .checkForResponseByCorrelationId(data.getCorrelationId());
+                    .checkForMessageByCorrelationId(data.getCorrelationId());
         } catch (Exception ex) {
             throw new RuntimeException("Exception thrown searching for message " + ex.getMessage());
         }
         assertNotNull(request);
+
+        // Check the request contains a merger
+        assertNotNull(request.getMerger());
 
         // Check notification is for the correct merger type
         assertTrue(StringUtils.equals(request.getMerger().getValue(), data.getMergerType()));

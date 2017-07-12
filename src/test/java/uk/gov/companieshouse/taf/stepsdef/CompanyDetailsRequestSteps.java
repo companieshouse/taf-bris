@@ -302,7 +302,7 @@ public class CompanyDetailsRequestSteps {
     @Then("^the correct company details will be returned to the ECP$")
     public void theCorrectCompanyDetailsWillBeReturnedToTheEcp() throws Throwable {
         BRCompanyDetailsResponse response = retrieveMessage
-                .checkForResponseByCorrelationId(data.getCorrelationId());
+                .checkForMessageByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
 
         data.setCompanyDetailsResponse(response);
@@ -336,7 +336,7 @@ public class CompanyDetailsRequestSteps {
     @Then("^no response will be created$")
     public void noResponseWillBeCreated() throws Throwable {
         BRCompanyDetailsResponse response = retrieveMessage
-                .checkForResponseByCorrelationId(data.getCorrelationId());
+                .checkForMessageByCorrelationId(data.getCorrelationId());
         assertNull(response);
     }
 
@@ -364,7 +364,7 @@ public class CompanyDetailsRequestSteps {
     @Then("^the response will contain the company details for ([^\"]*)$")
     public void theResponseWillContainTheCompanyDetails(String companyNumber) throws Throwable {
         BRCompanyDetailsResponse response = retrieveMessage
-                .checkForResponseByCorrelationId(data.getCorrelationId());
+                .checkForMessageByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
 
         data.setCompanyDetailsResponse(response);
@@ -415,7 +415,7 @@ public class CompanyDetailsRequestSteps {
     public void theResponseWillContainTheExplanatoryLabel(String explanatoryLabel)
             throws Throwable {
         BRCompanyDetailsResponse response = retrieveMessage
-                .checkForResponseByCorrelationId(data.getCorrelationId());
+                .checkForMessageByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
 
         assertTrue("The label does not match.",
@@ -432,7 +432,7 @@ public class CompanyDetailsRequestSteps {
     @Then("^the response will not include the details of the restricted document$")
     public void theResponseWillNotIncludeTheDetailsOfTheRestrictedDocument() throws Throwable {
         BRCompanyDetailsResponse response = retrieveMessage
-                .checkForResponseByCorrelationId(data.getCorrelationId());
+                .checkForMessageByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
 
         // Ensure the response contains documents
@@ -459,7 +459,7 @@ public class CompanyDetailsRequestSteps {
     @Then("^I should receive a validation error$")
     public void shouldReceiveAValidationError() throws Throwable {
         ValidationError validationError = retrieveMessage
-                .checkForResponseByCorrelationId(data.getCorrelationId());
+                .checkForMessageByCorrelationId(data.getCorrelationId());
 
         assertNotNull(validationError);
 

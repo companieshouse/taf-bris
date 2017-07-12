@@ -230,7 +230,7 @@ public class CrossBorderMergerReceptionSteps {
     @Then("^I should get an acknowledgment confirming receipt of the merger$")
     public void shouldGetAnAcknowledgmentConfirmingReceiptOfTheMerger() throws Throwable {
         BRCrossBorderMergerReceptionNotificationAcknowledgement ack =
-                retrieveMessage.checkForResponseByCorrelationId(data.getCorrelationId());
+                retrieveMessage.checkForMessageByCorrelationId(data.getCorrelationId());
 
         assertNotNull(ack);
 
