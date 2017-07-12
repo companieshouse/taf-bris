@@ -50,9 +50,9 @@ public class CrossBorderMergerBuilder {
             mergingCompany.setForeignRegisterName(mergingCompanyData.getForeignRegisterName());
 
             // Set Address
-            mergingCompany.setAddressLine1(mergingCompanyData.getAddressLine1());
-            mergingCompany.setAddressLine2(mergingCompanyData.getAddressLine2());
-            mergingCompany.setAddressLine3(mergingCompanyData.getAddressLine3());
+            mergingCompany.setAddressLine1(mergingCompanyData.getAddressLine1() + i);
+            mergingCompany.setAddressLine2(mergingCompanyData.getAddressLine2() + i);
+            mergingCompany.setAddressLine3(mergingCompanyData.getAddressLine3() + i);
             mergingCompany.setCity(mergingCompanyData.getCity());
             mergingCompany.setPostalCode(mergingCompanyData.getPostalCode());
 

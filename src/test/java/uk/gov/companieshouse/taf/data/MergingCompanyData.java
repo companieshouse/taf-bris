@@ -13,9 +13,9 @@ public class MergingCompanyData extends CrossBorderMergerNotificationData {
     private String foreignCompanyName = "Foreign Company";
     private String foreignLegalForm = "LF_AT_001";
     private String foreignRegisterName = "Foreign Register";
-    private String addressLine1 = "Foreign Address line 1";
-    private String addressLine2 = "Foreign Address line 2";
-    private String addressLine3 = "Address line 3";
+    private String addressLine1 = "Foreign Address line 1.";
+    private String addressLine2 = "Foreign Address line 2.";
+    private String addressLine3 = "Foreign Address line 3.";
     private String city = "Foreign City";
     private String postalCode = "FA 123";
 
