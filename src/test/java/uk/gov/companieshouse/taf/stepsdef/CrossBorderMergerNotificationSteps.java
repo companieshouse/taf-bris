@@ -1,6 +1,7 @@
 package uk.gov.companieshouse.taf.stepsdef;
 
 import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -62,10 +63,11 @@ public class CrossBorderMergerNotificationSteps {
     public void makeACrossBorderMergerNotificationRequest() throws Throwable {
         ObjectMapper mapper = new ObjectMapper();
 
-        // Map the JSON for the LED into a String to be used for REST call
+        // Map the JSON for the Cross Border Merger Notification
+        // into a String to be used for REST call
         String requestBody = mapper.writeValueAsString(data.getCrossBorderMergerJsonRequest());
 
-        // Call the Notification REST API for Update LED
+        // Call the Notification REST API for Cross Border Merger Notification
         JSONObject json = notificationApiHelper.callNotificationRestApi(requestBody,
                 CROSS_BORDER_MERGER_CONTEXT);
 
@@ -104,7 +106,8 @@ public class CrossBorderMergerNotificationSteps {
         // Check notification has a merging company
         assertNotNull(!CollectionUtils.isEmpty(request.getMergingCompany()));
 
-        for (NotificationCompanyType mergingCompany : request.getMergingCompany()) {
+        for (int i = 0; i < request.getMergingCompany().size(); i++) {
+            NotificationCompanyType mergingCompany = request.getMergingCompany().get(i);
             String companyEuid = mergingCompany.getCompanyEUID().getValue();
 
             // Check details of merging company
@@ -116,6 +119,26 @@ public class CrossBorderMergerNotificationSteps {
 
             assertTrue(StringUtils.equals(companyEuid.substring(companyEuid.indexOf(".") + 1),
                     data.getForeignCompanyNumber()));
+
+            // Check the address details
+            assertEquals("Address line 1 does not match", mergingCompany
+                            .getCompanyRegisteredOffice().getAddressLine1().getValue(),
+                    data.getAddressLine1() + i);
+
+            assertEquals("Address line 2 does not match", mergingCompany
+                            .getCompanyRegisteredOffice().getAddressLine2().getValue(),
+                    data.getAddressLine2() + i);
+
+            assertEquals("Address line 3 does not match", mergingCompany
+                            .getCompanyRegisteredOffice().getAddressLine3().getValue(),
+                    data.getAddressLine3() + i);
+
+            assertEquals("City does not match", mergingCompany
+                    .getCompanyRegisteredOffice().getCity().getValue(), data.getCity());
+
+            assertEquals("Postal code does not match", mergingCompany
+                            .getCompanyRegisteredOffice().getPostalCode().getValue(),
+                    data.getPostalCode());
         }
 
 
