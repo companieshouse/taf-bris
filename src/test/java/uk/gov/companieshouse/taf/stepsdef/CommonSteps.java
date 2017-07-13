@@ -59,7 +59,7 @@ public class CommonSteps {
 
         // and now locate the message in MongoDB and validate it
         BRBusinessError businessError = retrieveMessage
-                .checkForResponseByCorrelationId(messageId);
+                .checkForMessageByCorrelationId(messageId);
         assertNotNull(businessError);
 
         assertEquals("Expected Error Code:", errorCode,

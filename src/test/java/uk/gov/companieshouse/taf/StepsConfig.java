@@ -7,5 +7,5 @@ import uk.gov.companieshouse.taf.config.AppConfig;
 
 @ContextConfiguration(classes = {AppConfig.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-public class StepsConfig implements En{
+public class StepsConfig implements En {
 }

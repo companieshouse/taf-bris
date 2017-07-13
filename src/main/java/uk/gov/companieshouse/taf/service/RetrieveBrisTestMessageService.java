@@ -65,7 +65,7 @@ public class RetrieveBrisTestMessageService {
      * @param correlationId the message id to be retrieved
      * @return T the object retrieved from MongoDB
      */
-    public <T> T checkForResponseByCorrelationId(String correlationId) throws Exception {
+    public <T> T checkForMessageByCorrelationId(String correlationId) throws Exception {
         IncomingBrisMessage incomingBrisMessage = getIncomingBrisMessageFromMongo(correlationId);
 
         // If we have a message after iteration, then set it on the response

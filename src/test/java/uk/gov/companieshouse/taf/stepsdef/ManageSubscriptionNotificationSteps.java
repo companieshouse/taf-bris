@@ -85,7 +85,7 @@ public class ManageSubscriptionNotificationSteps {
         BRManageSubscriptionRequest request;
         try {
             request = retrieveMessageService
-                    .checkForResponseByCorrelationId(data.getCorrelationId());
+                    .checkForMessageByCorrelationId(data.getCorrelationId());
         } catch (Exception ex) {
             throw new RuntimeException("Exception thrown searching for message " + ex.getMessage());
         }
@@ -117,7 +117,7 @@ public class ManageSubscriptionNotificationSteps {
         BRManageSubscriptionRequest request;
         try {
             request = retrieveMessageService
-                    .checkForResponseByCorrelationId(data.getCorrelationId());
+                    .checkForMessageByCorrelationId(data.getCorrelationId());
         } catch (Exception ex) {
             throw new RuntimeException("Exception thrown searching for message " + ex.getMessage());
         }

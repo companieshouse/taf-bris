@@ -96,7 +96,7 @@ public class DocumentRequestSteps {
     @Then("^the response should contain a document with the id (.*)$")
     public void theResponseShouldContainADocumentWithTheId(String documentId) throws Throwable {
         BRRetrieveDocumentResponse retrieveDocumentResponse =
-                retrieveMessage.checkForResponseByCorrelationId(data.getCorrelationId());
+                retrieveMessage.checkForMessageByCorrelationId(data.getCorrelationId());
         assertNotNull(retrieveDocumentResponse);
         assertEquals("Expected Document ID:", documentId,
                 retrieveDocumentResponse.getDocumentID().getValue());

@@ -11,6 +11,7 @@ import eu.europa.ec.bris.v140.jaxb.components.basic.CompanyEUIDType;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.companieshouse.taf.builders.CrossBorderMergerNotificationRequestBuilder;
 import uk.gov.companieshouse.taf.data.CrossBorderMergerNotificationData;
@@ -20,6 +21,7 @@ import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
 public class CrossBorderMergerReceptionSteps {
 
     @Autowired
+    @Qualifier("CrossBorderMergerNotification")
     private CrossBorderMergerNotificationData data;
 
     @Value("${default.company.number}")
@@ -228,7 +230,7 @@ public class CrossBorderMergerReceptionSteps {
     @Then("^I should get an acknowledgment confirming receipt of the merger$")
     public void shouldGetAnAcknowledgmentConfirmingReceiptOfTheMerger() throws Throwable {
         BRCrossBorderMergerReceptionNotificationAcknowledgement ack =
-                retrieveMessage.checkForResponseByCorrelationId(data.getCorrelationId());
+                retrieveMessage.checkForMessageByCorrelationId(data.getCorrelationId());
 
         assertNotNull(ack);
 

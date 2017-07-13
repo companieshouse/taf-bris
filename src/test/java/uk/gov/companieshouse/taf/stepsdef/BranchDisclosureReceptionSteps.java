@@ -84,7 +84,7 @@ public class BranchDisclosureReceptionSteps {
     @Then("^I should get an acknowledgment confirming receipt of the branch disclosure$")
     public void shouldGetAnAcknowledgmentConfirmingReceiptOfTheBranchDisclosure() throws Throwable {
         BRBranchDisclosureReceptionNotificationAcknowledgement ack =
-                retrieveBrisTestMessageService.checkForResponseByCorrelationId(
+                retrieveBrisTestMessageService.checkForMessageByCorrelationId(
                         data.getCorrelationId());
         assertNotNull(ack);
 
