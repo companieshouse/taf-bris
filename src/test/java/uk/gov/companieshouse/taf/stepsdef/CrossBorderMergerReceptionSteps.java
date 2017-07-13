@@ -180,26 +180,6 @@ public class CrossBorderMergerReceptionSteps {
     }
 
     /**
-     * Create a cross border merger notification with an invalid address.
-     * Address MUST have at least country field completed.
-     */
-    @Given("^the notification does not have a merging company registered office$")
-    public void theNotificationDoesNotHaveACompanyRegisteredOffice() throws Throwable {
-        BRCrossBorderMergerReceptionNotification notification =
-                CrossBorderMergerNotificationRequestBuilder
-                        .getCrossBorderMergerNotification(data);
-
-        // Address lines have a minimal length of 1 so setting address
-        // line 1 so that it passes schema validation but fails business validation
-        // address parts should not be empty
-        notification.getMergingCompany().get(0).getCompanyRegisteredOffice()
-                .getAddressLine1().setValue(" ");
-
-        data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
-                notification, data.getMessageId())));
-    }
-
-    /**
      * Create a cross border merger notification with a business id that does not match the
      * recipient business register id.
      */
