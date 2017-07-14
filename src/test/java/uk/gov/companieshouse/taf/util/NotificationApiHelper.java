@@ -3,6 +3,8 @@ package uk.gov.companieshouse.taf.util;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +22,7 @@ import uk.gov.companieshouse.taf.data.UpdateLedData;
 public class NotificationApiHelper {
 
     private static final String BRIS_NOTIFICATION_API_URL = "bris.notification.api.url";
+    private static final Logger logger = LoggerFactory.getLogger(NotificationApiHelper.class);
 
     @Autowired
     private RestTemplate restTemplate;
@@ -35,15 +38,18 @@ public class NotificationApiHelper {
 
     /**
      * Method to call a REST service on the BRIS Notification API.
-     * @param requestBody the request body to be sent to the REST API.
+     *
+     * @param requestBody    the request body to be sent to the REST API.
      * @param brisUrlContext the URL context to execute the required function.
      * @return the response from the REST API call.
      */
     public JSONObject callNotificationRestApi(String requestBody,
-                                               String brisUrlContext) {
+                                              String brisUrlContext) {
         HttpEntity entity = new HttpEntity<>(requestBody, headers);
         String url = env.config.getString(BRIS_NOTIFICATION_API_URL) + brisUrlContext + "/"
                 + data.getCompanyNumber();
+
+        logger.info("Url: {}", url);
 
         ResponseEntity<String> result = restTemplate.exchange(url,
                 HttpMethod.POST, entity, String.class);
