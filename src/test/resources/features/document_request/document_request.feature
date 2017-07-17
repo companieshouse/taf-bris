@@ -5,8 +5,9 @@ Feature: Document request feature
   As a customer of BRIS
   I want to request document data from a central location
 
+  NOTE: This document must be available in the aws environment bucket
+
   @wip
-    # This document must be available in the aws environment bucket
   Scenario: User is able to retrieve a document
     Given the request contains a valid document id of bbu6A7RoFKI1AmpVMVE2cG6pikNH2lCigB2GVuJ66Zc
     When I make a document details request
