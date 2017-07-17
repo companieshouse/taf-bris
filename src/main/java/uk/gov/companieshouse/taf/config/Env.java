@@ -2,11 +2,13 @@ package uk.gov.companieshouse.taf.config;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
@@ -20,9 +22,9 @@ import uk.gov.companieshouse.taf.config.constants.ConfigConstants;
  * over any environment
  */
 public class Env {
-    public static final String DEFAULT_RUN_PROFILE = "default";
+    private static final String DEFAULT_RUN_PROFILE = "default";
     private final Logger log = LoggerFactory.getLogger(this.getClass().getName());
-    public static final Env INSTANCE;
+    static final Env INSTANCE;
     private String env;
     public Config config;
 
@@ -33,13 +35,14 @@ public class Env {
     /**
      * This method constructs the relevant config based on a JVM argument.  This is required to
      * run the test suite over other environments.
+     *
      * @param env The environment under test
      */
     public Env(String env) {
         Optional<String> param = Optional.ofNullable(env);
         if (param.isPresent()) {
             this.env = env;
-            log.info("Using environment profile " + env);
+            log.info("Using environment profile {}", env);
 
         } else {
             this.env = DEFAULT_RUN_PROFILE;
@@ -65,27 +68,27 @@ public class Env {
                 new File(ConfigConstants.PROJECT_DIR),
                 new RegexFileFilter(filename), TrueFileFilter.INSTANCE))).stream()
                 .filter((Object f) -> {
-                    File file = (File)f;
+                    File file = (File) f;
                     return !(file.getAbsolutePath().contains(ConfigConstants.TARGET_DIR));
                 })) {
             files = new ArrayList<>();
             streamFiles.forEach(files::add);
         }
 
-        if (files.size() == 0) {
+        if (files.isEmpty()) {
             throw new Error("Config file with name [" + filename + "] could not be "
                     + "found in your classpath.");
         } else {
             if (files.size() > 1) {
-                this.log.warn("More than one file found for this environment with name ["
-                        + filename + "]");
+                this.log.warn("More than one file found for this environment with name {}",
+                        filename);
             }
 
-            if (!((File)files.get(0)).isFile()) {
-                throw new Error("The file [" + ((File)files.get(0)).getAbsolutePath() + "] "
+            if (!files.get(0).isFile()) {
+                throw new Error("The file [" + files.get(0).getAbsolutePath() + "] "
                         + "is not a normal file.");
             } else {
-                return (File)files.get(0);
+                return files.get(0);
             }
         }
     }

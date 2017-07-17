@@ -6,4 +6,8 @@ package uk.gov.companieshouse.taf.config.constants;
 public class MongoConstants {
     public static final String URI_SLASH = "/";
     public static final String MONGO_URI = "mongodb.instance";
+
+    private MongoConstants() {
+        // Private constructor
+    }
 }
