@@ -152,6 +152,32 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            <plugin>
+                <groupId>io.magentys</groupId>
+                <artifactId>donut-maven-plugin</artifactId>
+                <version>0.0.4</version>
+                <executions>
+                    <execution>
+                        <id>execution</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirectory>${project.build.directory}/cucumber-reports</sourceDirectory>
+                            <outputDirectory>${project.build.directory}/donut/</outputDirectory>
+                            <timestamp>${maven.build.timestamp}</timestamp>
+                            <template>default</template>
+                            <prefix>bris</prefix>
+                            <!--<prefix>${project.name}</prefix>-->
+                            <projectName>${project.name}</projectName>
+                            <projectVersion>${project.version}</projectVersion>
+                            <countSkippedAsFailure>true</countSkippedAsFailure>
+                            <skip>${skipITs}</skip>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
 
         <pluginManagement>
