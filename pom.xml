@@ -31,6 +31,7 @@
         <bris-br-jaxb.version>1.4.0-rc4</bris-br-jaxb.version>
         <domibus-bris-jaxb.version>0</domibus-bris-jaxb.version>
         <commons-text.version>1.1</commons-text.version>
+        <donut-maven-plugin.version>0.0.4</donut-maven-plugin.version>
     </properties>
 
     <build>
@@ -155,7 +156,7 @@
             <plugin>
                 <groupId>io.magentys</groupId>
                 <artifactId>donut-maven-plugin</artifactId>
-                <version>0.0.4</version>
+                <version>${donut-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>execution</id>
