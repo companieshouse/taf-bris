@@ -98,7 +98,8 @@ public class RetrieveBrisTestMessageService {
 
             incomingBrisMessage = brisTestMongoDbOperations.findOne(
                     new Query(Criteria.where("correlation_id")
-                            .is(correlationId)), IncomingBrisMessage.class, BRIS_INCOMING_TEST_COLLECTION);
+                            .is(correlationId)), IncomingBrisMessage.class,
+                    BRIS_INCOMING_TEST_COLLECTION);
 
             if (incomingBrisMessage == null) {
                 counter++;
