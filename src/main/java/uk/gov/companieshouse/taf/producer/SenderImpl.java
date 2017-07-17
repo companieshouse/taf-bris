@@ -100,10 +100,9 @@ public class SenderImpl implements Sender {
                     DeliveryBody.class,
                     SubmissionBody.class,
                     SubmissionHeader.class);
-            
+
         } catch (JAXBException exception) {
             LOGGER.error(exception.getMessage());
-            exception.printStackTrace();
         }
 
         return context;

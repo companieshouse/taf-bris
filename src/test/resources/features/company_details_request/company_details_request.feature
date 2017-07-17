@@ -11,7 +11,8 @@ Feature: Company details request feature
   * EUID - European Union Identification Number (Unique Identifier)
 
   NOTE:
-  This test project uses cloned company data and company number that appear here are purely fictional.
+  This test project uses cloned company data and company number(s) that appear here are purely fictional.
+  EUID is made up of Country code, Business Register ID and Company Number e.g. UKEW.00006400
 
   Scenario: Correct company details are returned in response
     Given I am requesting the company details for company 99990000

@@ -62,6 +62,7 @@ public class RetrieveBrisTestMessageService {
 
     /**
      * Check the mongo collection to retrieve the message by correlation id.
+     *
      * @param correlationId the message id to be retrieved
      * @return T the object retrieved from MongoDB
      */
@@ -70,11 +71,11 @@ public class RetrieveBrisTestMessageService {
 
         // If we have a message after iteration, then set it on the response
         if (incomingBrisMessage != null) {
-            LOGGER.info("Message found in MongoDB : " + incomingBrisMessage.toString());
+            LOGGER.info("Message found in MongoDB : {}", incomingBrisMessage.toString());
             JAXBContext jaxbContext = getJaxbContext();
             StringReader reader = new StringReader(incomingBrisMessage.getMessage());
             Object obj = jaxbContext.createUnmarshaller().unmarshal(reader);
-            return (T)obj;
+            return (T) obj;
         }
 
         return null;
@@ -97,7 +98,7 @@ public class RetrieveBrisTestMessageService {
 
             incomingBrisMessage = brisTestMongoDbOperations.findOne(
                     new Query(Criteria.where("correlation_id")
-                    .is(correlationId)), IncomingBrisMessage.class, BRIS_INCOMING_TEST_COLLECTION);
+                            .is(correlationId)), IncomingBrisMessage.class, BRIS_INCOMING_TEST_COLLECTION);
 
             if (incomingBrisMessage == null) {
                 counter++;
@@ -112,12 +113,12 @@ public class RetrieveBrisTestMessageService {
     }
 
     /**
-       Get the Document from the Document Details response using the correlation id.
+     * Get the Document from the Document Details response using the correlation id.
      */
     public byte[] getActualPdfDocument(String correlationId) {
         IncomingBrisMessage incomingBrisMessage = getIncomingBrisMessageFromMongo(correlationId);
 
-        if (incomingBrisMessage.getData() == null) {
+        if (null == incomingBrisMessage.getData()) {
             throw new RuntimeException("No binary object retrieved for the document."
                     + " Check that the TEST_MODE flag is set to 1 on the components.");
         }
@@ -125,7 +126,7 @@ public class RetrieveBrisTestMessageService {
     }
 
     /**
-     Get the expected Document from the file system.
+     * Get the expected Document from the file system.
      */
     public byte[] getExpectedPdfDocument() {
         try {

@@ -13,4 +13,8 @@ public class BusinessRegisterConstants {
     public static final String FRANCE_REGISTER = "France Register";
     public static final String LEGAL_FORM_CODE = "LF-FR-001";
 
+    private BusinessRegisterConstants() {
+        // Private constructor
+    }
+
 }

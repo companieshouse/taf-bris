@@ -2,7 +2,7 @@
 Feature: Branch disclosure notification
 
   In order to inform the ECP of a branch disclosure
-  As a companies house user
+  As a Companies House user
   I want to notify the ECP of the changes to a companies status
 
   Scenario Outline: User makes a valid branch disclosure notification
