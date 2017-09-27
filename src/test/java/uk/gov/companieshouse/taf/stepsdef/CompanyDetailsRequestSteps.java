@@ -49,9 +49,6 @@ public class CompanyDetailsRequestSteps {
     @Value("${ltd.section30.company.number}")
     private String privateLimitedSharesSection30Exemption;
 
-    @Value("${eeig.company.number}")
-    private String eeig;
-
     @Value("${europeanPlcSe.company.number}")
     private String europeanPublicLimitedLiabilityCompanySe;
 
@@ -201,10 +198,6 @@ public class CompanyDetailsRequestSteps {
                 // Load Private Limited by shares company
                 requestingTheCompanyDetailsForCompany(privateLimitedSharesSection30Exemption);
                 break;
-            case "eeig":
-                // Load EEIG company
-                requestingTheCompanyDetailsForCompany(eeig);
-                break;
             case "european-public-limited-liability-company-se":
                 // Load European Public Limited-Liability Company
                 requestingTheCompanyDetailsForCompany(europeanPublicLimitedLiabilityCompanySe);
@@ -266,9 +259,6 @@ public class CompanyDetailsRequestSteps {
         switch (formType) {
             case "288a":
                 requestingTheCompanyDetailsForCompany(unregisteredCompany);
-                break;
-            case "EEIG-ADD":
-                requestingTheCompanyDetailsForCompany(eeig);
                 break;
             case "288b":
                 requestingTheCompanyDetailsForCompany(privateLimitedGuarantNsc);
