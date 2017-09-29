@@ -26,9 +26,6 @@ public class Hooks {
     @Value("${ltd.section30.company.number}")
     private String privateLimitedSharesSection30Exemption;
 
-    @Value("${eeig.company.number}")
-    private String eeig;
-
     @Value("${europeanPlcSe.company.number}")
     private String europeanPublicLimitedLiabilityCompanySe;
 
@@ -74,7 +71,6 @@ public class Hooks {
         List<String> companiesToLoad = new ArrayList<>();
         companiesToLoad.add(plcCompanyNumber);
         companiesToLoad.add(privateLimitedSharesSection30Exemption);
-        companiesToLoad.add(eeig);
         companiesToLoad.add(europeanPublicLimitedLiabilityCompanySe);
         companiesToLoad.add(unregisteredCompany);
         companiesToLoad.add(privateLimitedGuarantNsc);
@@ -91,7 +87,6 @@ public class Hooks {
         List<String> companiesToRemove = new ArrayList<>();
         companiesToRemove.add(plcCompanyNumber);
         companiesToRemove.add(privateLimitedSharesSection30Exemption);
-        companiesToRemove.add(eeig);
         companiesToRemove.add(europeanPublicLimitedLiabilityCompanySe);
         companiesToRemove.add(unregisteredCompany);
         companiesToRemove.add(privateLimitedGuarantNsc);
@@ -108,7 +103,6 @@ public class Hooks {
         List<String> companiesToLoad = new ArrayList<>();
         companiesToLoad.add(unregisteredCompany);
         companiesToLoad.add(europeanPublicLimitedLiabilityCompanySe);
-        companiesToLoad.add(eeig);
         companiesToLoad.add(privateLimitedGuarantNsc);
         testDataHelper.setUpTestData(companiesToLoad);
     }
@@ -121,7 +115,6 @@ public class Hooks {
         List<String> companiesToRemove = new ArrayList<>();
         companiesToRemove.add(unregisteredCompany);
         companiesToRemove.add(europeanPublicLimitedLiabilityCompanySe);
-        companiesToRemove.add(eeig);
         companiesToRemove.add(privateLimitedGuarantNsc);
         testDataHelper.tearDownTestData(companiesToRemove);
     }

@@ -10,7 +10,6 @@ Feature: This feature demonstrates the various company types that can be searche
 
   Legal form codes;
   LF_UK_001 - Private Limited by Shares/(Section 30 Exemption)
-  LF_UK_002 - European Economic Interest Grouping (EEIG)
   LF_UK_003 - European Public Limited-Liability Company (SE)
   LF_UK_004 - Private Limited
   LF_UK_005 - Public Limited Company
@@ -28,7 +27,6 @@ Feature: This feature demonstrates the various company types that can be searche
     Examples:
       | company_type                                  | legal_entity_code |
       | private-limited-shares-section-30-exemption   | LF_UK_001         |
-      | eeig                                          | LF_UK_002         |
       | european-public-limited-liability-company-se  | LF_UK_003         |
       | ltd                                           | LF_UK_004         |
       | plc                                           | LF_UK_005         |
