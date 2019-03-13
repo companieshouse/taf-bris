@@ -31,7 +31,7 @@
         <maven.build.timestamp.format>yyyy-MM-dd-HHmm</maven.build.timestamp.format>
         <repo.basedir>${project.basedir}/repo</repo.basedir>
         <skipITs>false</skipITs>
-        <common.version>6.12.0-SNAPSHOT</common.version>
+        <common.version>4.0.0-SNAPSHOT</common.version>
         <httpclient.version>4.5.3</httpclient.version>
         <jackson-databind.version>2.8.8.1</jackson-databind.version>
         <bris-br-jaxb.version>1.4.0-rc4</bris-br-jaxb.version>
