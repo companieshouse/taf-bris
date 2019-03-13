@@ -330,10 +330,6 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-        <!--<repository>
-           <id>ch-artifactory</id>
-           <url>${artifactoryBaseUrl}/${artifactoryResolveRepo}</url>
-        </repository>-->
         <repository>
             <id>ch-jenkins-2k8-release</id>
             <url>http://ch-jenkins-2k8:8081/artifactory/libs-release-local</url>
@@ -364,26 +360,6 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-        <!--<repository>
-            <id>repository-aws-repo1</id>
-            <url>http://repository.aws.chdev.org:8081/artifactory/repo1</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>repository-aws-repo1-cache</id>
-            <url>http://repository.aws.chdev.org:8081/artifactory/repo1-cache</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>-->
         <repository>
             <id>cefdigital-releases</id>
             <url>https://ec.europa.eu/cefdigital/artifact/content/repositories/public/</url>
