@@ -15,4 +15,3 @@ Feature: This feature is to ensure that we correctly map to legacy forms in the 
       | form     | explanatory_label |
       | 288a     | EL_UK_008         |
       | 288b     | EL_UK_039         |
-      | EEIG-ADD | EL_UK_004         |
