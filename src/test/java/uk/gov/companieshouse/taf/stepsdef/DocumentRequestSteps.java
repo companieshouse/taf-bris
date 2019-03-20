@@ -7,12 +7,12 @@ import static org.springframework.test.util.AssertionErrors.assertEquals;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import eu.europa.ec.bris.v140.jaxb.br.company.document.BRRetrieveDocumentRequest;
-import eu.europa.ec.bris.v140.jaxb.br.company.document.BRRetrieveDocumentResponse;
 
 import java.util.Arrays;
 import java.util.UUID;
 
+import eu.europa.ec.bris.jaxb.br.document.retrieval.request.v1_4.BRRetrieveDocumentRequest;
+import eu.europa.ec.bris.jaxb.br.document.retrieval.response.v1_4.BRRetrieveDocumentResponse;
 import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

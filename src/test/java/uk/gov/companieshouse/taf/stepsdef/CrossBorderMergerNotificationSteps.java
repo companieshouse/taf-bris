@@ -8,8 +8,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import eu.europa.ec.bris.v140.jaxb.br.merger.BRCrossBorderMergerSubmissionNotification;
-import eu.europa.ec.bris.v140.jaxb.components.aggregate.NotificationCompanyType;
+import eu.europa.ec.bris.jaxb.br.crossborder.merger.notification.submission.request.v1_4.BRCrossBorderMergerSubmissionNotification;
+import eu.europa.ec.bris.jaxb.components.aggregate.v1_4.NotificationCompanyType;
+import eu.europa.ec.digit.message.container.jaxb.v1_0.MessageContainer;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,6 +90,7 @@ public class CrossBorderMergerNotificationSteps {
     @Then("^I should have sent a cross border merger notification to the ECP$")
     public void shouldHaveSentACrossBorderMergerNotificationToTheEcp() throws Throwable {
         BRCrossBorderMergerSubmissionNotification request;
+        
         try {
             request = retrieveMessageService
                     .checkForMessageByCorrelationId(data.getCorrelationId());
