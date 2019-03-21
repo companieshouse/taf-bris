@@ -1,8 +1,8 @@
 package uk.gov.companieshouse.taf.builders;
 
-import eu.europa.ec.bris.v140.jaxb.br.company.document.BRRetrieveDocumentRequest;
-import eu.europa.ec.bris.v140.jaxb.components.basic.DocumentIDType;
-import eu.europa.ec.bris.v140.jaxb.components.basic.PaymentReferenceType;
+import eu.europa.ec.bris.jaxb.br.document.retrieval.request.v1_4.BRRetrieveDocumentRequest;
+import eu.europa.ec.bris.jaxb.components.basic.v1_4.DocumentIDType;
+import eu.europa.ec.bris.jaxb.components.basic.v1_4.PaymentReferenceType;
 import uk.gov.companieshouse.taf.data.DocumentRequestData;
 
 /**

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import eu.europa.ec.bris.v140.jaxb.br.subscription.BRManageSubscriptionRequest;
+import eu.europa.ec.bris.jaxb.br.subscription.request.v1_4.BRManageSubscriptionRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

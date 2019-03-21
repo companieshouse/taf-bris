@@ -1,6 +1,7 @@
 package uk.gov.companieshouse.taf.data;
 
-import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsResponse;
+
+import eu.europa.ec.bris.jaxb.br.company.details.response.v1_4.BRCompanyDetailsResponse;
 import org.springframework.stereotype.Component;
 
 @Component

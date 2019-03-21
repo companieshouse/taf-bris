@@ -1,25 +1,26 @@
 package uk.gov.companieshouse.taf.builders;
 
-import eu.europa.ec.bris.v140.jaxb.br.aggregate.MessageHeaderType;
-import eu.europa.ec.bris.v140.jaxb.components.aggregate.AddressType;
-import eu.europa.ec.bris.v140.jaxb.components.aggregate.BusinessRegisterReferenceType;
-import eu.europa.ec.bris.v140.jaxb.components.basic.AddressLine1Type;
-import eu.europa.ec.bris.v140.jaxb.components.basic.AddressLine2Type;
-import eu.europa.ec.bris.v140.jaxb.components.basic.AddressLine3Type;
-import eu.europa.ec.bris.v140.jaxb.components.basic.BusinessRegisterIDType;
-import eu.europa.ec.bris.v140.jaxb.components.basic.BusinessRegisterNameType;
-import eu.europa.ec.bris.v140.jaxb.components.basic.CityType;
-import eu.europa.ec.bris.v140.jaxb.components.basic.CompanyRegistrationNumberType;
-import eu.europa.ec.bris.v140.jaxb.components.basic.CorrelationIDType;
-import eu.europa.ec.bris.v140.jaxb.components.basic.CountryType;
-import eu.europa.ec.bris.v140.jaxb.components.basic.MessageIDType;
-import eu.europa.ec.bris.v140.jaxb.components.basic.PostalCodeType;
+
 
 import java.util.GregorianCalendar;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import eu.europa.ec.bris.jaxb.br.components.aggregate.v1_4.MessageHeaderType;
+import eu.europa.ec.bris.jaxb.components.aggregate.v1_4.AddressType;
+import eu.europa.ec.bris.jaxb.components.aggregate.v1_4.BusinessRegisterReferenceType;
+import eu.europa.ec.bris.jaxb.components.basic.v1_4.AddressLine1Type;
+import eu.europa.ec.bris.jaxb.components.basic.v1_4.AddressLine2Type;
+import eu.europa.ec.bris.jaxb.components.basic.v1_4.AddressLine3Type;
+import eu.europa.ec.bris.jaxb.components.basic.v1_4.BusinessRegisterIDType;
+import eu.europa.ec.bris.jaxb.components.basic.v1_4.BusinessRegisterNameType;
+import eu.europa.ec.bris.jaxb.components.basic.v1_4.CityType;
+import eu.europa.ec.bris.jaxb.components.basic.v1_4.CompanyRegistrationNumberType;
+import eu.europa.ec.bris.jaxb.components.basic.v1_4.CorrelationIDType;
+import eu.europa.ec.bris.jaxb.components.basic.v1_4.CountryType;
+import eu.europa.ec.bris.jaxb.components.basic.v1_4.MessageIDType;
+import eu.europa.ec.bris.jaxb.components.basic.v1_4.PostalCodeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

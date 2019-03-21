@@ -1,6 +1,5 @@
 package uk.gov.companieshouse.taf.util;
 
-import eu.europa.ec.bris.v140.jaxb.br.company.detail.BRCompanyDetailsRequest;
 
 import java.io.File;
 import java.io.FileReader;
@@ -11,6 +10,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import eu.europa.ec.bris.jaxb.br.company.details.request.v1_4.BRCompanyDetailsRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

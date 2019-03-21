@@ -4,8 +4,8 @@ import static junit.framework.TestCase.assertNotNull;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 import cucumber.api.java.en.Then;
-import eu.europa.ec.bris.v140.jaxb.br.aggregate.MessageHeaderType;
-import eu.europa.ec.bris.v140.jaxb.br.error.BRBusinessError;
+import eu.europa.ec.bris.jaxb.br.components.aggregate.v1_4.MessageHeaderType;
+import eu.europa.ec.bris.jaxb.br.error.v1_4.BRBusinessError;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.companieshouse.taf.data.BranchDisclosureReceptionData;
 import uk.gov.companieshouse.taf.data.CompanyDetailsRequestData;
@@ -67,12 +67,12 @@ public class CommonSteps {
     }
 
     /**
-        Check that the message header is as expected.
+     Check that the message header is as expected.
      */
     static void validateHeader(MessageHeaderType messageHeader,
-                                      String correlationId,
-                                      String businessRegisterId,
-                                      String countryCode) {
+            String correlationId,
+            String businessRegisterId,
+            String countryCode) {
         assertEquals("Correlation ID in header is not as expected",
                 correlationId,
                 messageHeader.getCorrelationID().getValue());

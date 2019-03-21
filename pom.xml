@@ -34,7 +34,7 @@
         <common.version>4.0.0-SNAPSHOT</common.version>
         <httpclient.version>4.5.3</httpclient.version>
         <jackson-databind.version>2.8.8.1</jackson-databind.version>
-        <bris-br-jaxb.version>1.4.0-rc4</bris-br-jaxb.version>
+        <bris-br-jaxb.version>2.0.0-RC6</bris-br-jaxb.version>
         <domibus-bris-jaxb.version>0</domibus-bris-jaxb.version>
         <commons-text.version>1.3</commons-text.version>
         <commons-io.version>2.6</commons-io.version>

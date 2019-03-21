@@ -1,6 +1,6 @@
 package uk.gov.companieshouse.taf.data;
 
-import eu.europa.ec.bris.v140.jaxb.br.merger.BRCrossBorderMergerReceptionNotification;
+import eu.europa.ec.bris.jaxb.br.crossborder.merger.notification.reception.request.v1_4.BRCrossBorderMergerReceptionNotification;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.taf.config.constants.BusinessRegisterConstants;
