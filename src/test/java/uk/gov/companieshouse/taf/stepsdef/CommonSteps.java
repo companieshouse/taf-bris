@@ -6,7 +6,6 @@ import static org.springframework.test.util.AssertionErrors.assertEquals;
 import cucumber.api.java.en.Then;
 import eu.europa.ec.bris.jaxb.br.components.aggregate.v1_4.MessageHeaderType;
 import eu.europa.ec.bris.jaxb.br.error.v1_4.BRBusinessError;
-import eu.europa.ec.digit.message.container.jaxb.v1_0.ContainerHeader;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.companieshouse.taf.data.BranchDisclosureReceptionData;
 import uk.gov.companieshouse.taf.data.CompanyDetailsRequestData;
@@ -86,24 +85,5 @@ public class CommonSteps {
                 countryCode,
                 messageHeader.getBusinessRegisterReference()
                         .getBusinessRegisterCountry().getValue());
-    }
-
-    /**
-        Check that the message header is as expected.
-     */
-    static void validateHeader(ContainerHeader messageHeader,
-                                      String correlationId,
-                                      String businessRegisterId,
-                                      String countryCode) {
-        assertEquals("Correlation ID in header is not as expected",
-                correlationId,
-                messageHeader.getMessageInfo().getCorrelationID());
-        assertEquals("Business Register ID in header is not as expected",
-                businessRegisterId,
-                messageHeader.getAddressInfo().getSender().getCode());
-
-        assertEquals("Business Register Country in header is not as expected",
-                countryCode,
-                messageHeader.getAddressInfo().getSender().getCountryCode());
     }
 }

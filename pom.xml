@@ -302,12 +302,6 @@
             <artifactId>bris-br-jaxb</artifactId>
             <version>${bris-br-jaxb.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>eu.europa.ec.digit.message-container</groupId>
-            <artifactId>message-container-jaxb</artifactId>
-            <version>1.0.1-RC1</version>
-        </dependency>
     </dependencies>
 
     <repositories>

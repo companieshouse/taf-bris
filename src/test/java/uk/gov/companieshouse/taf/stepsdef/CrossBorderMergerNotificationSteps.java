@@ -10,7 +10,6 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import eu.europa.ec.bris.jaxb.br.crossborder.merger.notification.submission.request.v1_4.BRCrossBorderMergerSubmissionNotification;
 import eu.europa.ec.bris.jaxb.components.aggregate.v1_4.NotificationCompanyType;
-import eu.europa.ec.digit.message.container.jaxb.v1_0.MessageContainer;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

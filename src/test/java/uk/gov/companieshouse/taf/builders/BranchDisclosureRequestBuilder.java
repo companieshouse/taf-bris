@@ -2,8 +2,23 @@ package uk.gov.companieshouse.taf.builders;
 
 
 import eu.europa.ec.bris.jaxb.br.branch.disclosure.notification.reception.request.v1_4.BRBranchDisclosureReceptionNotification;
-import eu.europa.ec.bris.jaxb.components.aggregate.v1_4.*;
-import eu.europa.ec.bris.jaxb.components.basic.v1_4.*;
+import eu.europa.ec.bris.jaxb.components.aggregate.v1_4.AddressType;
+import eu.europa.ec.bris.jaxb.components.aggregate.v1_4.BranchEUIDsType;
+import eu.europa.ec.bris.jaxb.components.aggregate.v1_4.BusinessRegisterType;
+import eu.europa.ec.bris.jaxb.components.aggregate.v1_4.CompanyAlternateIdentifiersType;
+import eu.europa.ec.bris.jaxb.components.aggregate.v1_4.LegislationReferencesType;
+import eu.europa.ec.bris.jaxb.components.aggregate.v1_4.NotificationCompanyType;
+import eu.europa.ec.bris.jaxb.components.aggregate.v1_4.NotificationContextType;
+import eu.europa.ec.bris.jaxb.components.basic.v1_4.BusinessRegisterIDType;
+import eu.europa.ec.bris.jaxb.components.basic.v1_4.BusinessRegisterNameType;
+import eu.europa.ec.bris.jaxb.components.basic.v1_4.CompanyAlternateIDType;
+import eu.europa.ec.bris.jaxb.components.basic.v1_4.CompanyEUIDType;
+import eu.europa.ec.bris.jaxb.components.basic.v1_4.CompanyNameType;
+import eu.europa.ec.bris.jaxb.components.basic.v1_4.CountryType;
+import eu.europa.ec.bris.jaxb.components.basic.v1_4.DateTimeType;
+import eu.europa.ec.bris.jaxb.components.basic.v1_4.EffectiveDateType;
+import eu.europa.ec.bris.jaxb.components.basic.v1_4.LegalFormCodeType;
+import eu.europa.ec.bris.jaxb.components.basic.v1_4.ProceedingType;
 import uk.gov.companieshouse.taf.data.BranchDisclosureReceptionData;
 
 /**
