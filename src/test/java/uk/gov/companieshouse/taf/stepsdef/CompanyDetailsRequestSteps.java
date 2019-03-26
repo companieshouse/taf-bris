@@ -14,8 +14,9 @@ import java.util.List;
 import java.util.UUID;
 
 import eu.europa.ec.bris.jaxb.br.company.details.request.v1_4.BRCompanyDetailsRequest;
-import eu.europa.ec.bris.jaxb.br.company.details.response.v1_4.BRCompanyDetailsResponse;
+import eu.europa.ec.bris.jaxb.br.company.details.response.v2_0.BRCompanyDetailsResponse;
 import eu.europa.ec.bris.jaxb.components.aggregate.v1_4.DocumentType;
+import eu.europa.ec.digit.message.container.jaxb.v1_0.MessageContainer;
 import org.apache.commons.lang3.StringUtils;
 
 import org.apache.commons.text.RandomStringGenerator;
@@ -290,14 +291,14 @@ public class CompanyDetailsRequestSteps {
      */
     @Then("^the correct company details will be returned to the ECP$")
     public void theCorrectCompanyDetailsWillBeReturnedToTheEcp() throws Throwable {
-        BRCompanyDetailsResponse response = retrieveMessage
+        MessageContainer response = retrieveMessage
                 .checkForMessageByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
 
         data.setCompanyDetailsResponse(response);
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(response.getMessageHeader(),
+        CommonSteps.validateHeader(response,
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
@@ -309,13 +310,13 @@ public class CompanyDetailsRequestSteps {
     @Then("^the company details response will have the legal entity code ([^\"]*)$")
     public void theCompanyDetailsResponseWillHaveTheLegalEntityCode(String legalEntity)
             throws Throwable {
-        BRCompanyDetailsResponse response = data.getCompanyDetailsResponse();
+        MessageContainer response = data.getCompanyDetailsResponse();
 
         assertEquals("The Legal Entity ID is incorrect: ", legalEntity,
                 response.getCompany().getCompanyLegalForm().getValue());
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(response.getMessageHeader(),
+        CommonSteps.validateHeader(response,
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
@@ -334,14 +335,14 @@ public class CompanyDetailsRequestSteps {
      */
     @Then("^the response will contain a valid formed EUID$")
     public void theResponseWillContainAValidFormedEuid() throws Throwable {
-        BRCompanyDetailsResponse response = data.getCompanyDetailsResponse();
+        MessageContainer response = data.getCompanyDetailsResponse();
 
         assertEquals("Expected EUID is incorrect: ", String.format("UKEW.%s",
                 data.getCompanyNumber()),
                 response.getCompany().getCompanyEUID().getValue());
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(response.getMessageHeader(),
+        CommonSteps.validateHeader(response,
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
@@ -352,7 +353,7 @@ public class CompanyDetailsRequestSteps {
      */
     @Then("^the response will contain the company details for ([^\"]*)$")
     public void theResponseWillContainTheCompanyDetails(String companyNumber) throws Throwable {
-        BRCompanyDetailsResponse response = retrieveMessage
+        MessageContainer response = retrieveMessage
                 .checkForMessageByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
 
@@ -363,7 +364,7 @@ public class CompanyDetailsRequestSteps {
                 response.getCompany().getCompanyRegistrationNumber().getValue());
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(response.getMessageHeader(),
+        CommonSteps.validateHeader(response,
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
@@ -375,7 +376,7 @@ public class CompanyDetailsRequestSteps {
     @Then("^the response should have the following address details$")
     public void theResponseShouldHaveTheFollowingAddressDetails(List<String> addressDetails)
             throws Throwable {
-        BRCompanyDetailsResponse response = data.getCompanyDetailsResponse();
+        MessageContainer response = data.getCompanyDetailsResponse();
 
         assertEquals("Expected Postal code is incorrect: ", addressDetails.get(0),
                 response.getCompany().getCompanyRegisteredOffice().getPostalCode().getValue());
@@ -403,7 +404,7 @@ public class CompanyDetailsRequestSteps {
     @Then("^the response will contain the explanatory label ([^\"]*)$")
     public void theResponseWillContainTheExplanatoryLabel(String explanatoryLabel)
             throws Throwable {
-        BRCompanyDetailsResponse response = retrieveMessage
+        MessageContainer response = retrieveMessage
                 .checkForMessageByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
 
@@ -411,7 +412,7 @@ public class CompanyDetailsRequestSteps {
                 checkResponseContainsExpectedLabel(explanatoryLabel, response));
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(response.getMessageHeader(),
+        CommonSteps.validateHeader(response,
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
@@ -420,7 +421,7 @@ public class CompanyDetailsRequestSteps {
      */
     @Then("^the response will not include the details of the restricted document$")
     public void theResponseWillNotIncludeTheDetailsOfTheRestrictedDocument() throws Throwable {
-        BRCompanyDetailsResponse response = retrieveMessage
+        MessageContainer response = retrieveMessage
                 .checkForMessageByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
 
@@ -438,7 +439,7 @@ public class CompanyDetailsRequestSteps {
                         .getCompanyItemExplanatoryLabel().getValue());
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(response.getMessageHeader(),
+        CommonSteps.validateHeader(response,
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
