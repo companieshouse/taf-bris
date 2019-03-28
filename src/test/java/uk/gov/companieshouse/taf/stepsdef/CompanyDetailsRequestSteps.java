@@ -10,14 +10,22 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-
+import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import eu.europa.ec.bris.jaxb.br.company.details.request.v1_4.BRCompanyDetailsRequest;
 import eu.europa.ec.bris.jaxb.br.company.details.response.v2_0.BRCompanyDetailsResponse;
+import eu.europa.ec.bris.jaxb.br.components.aggregate.v1_4.MessageObjectType;
+import eu.europa.ec.bris.jaxb.br.document.retrieval.response.v1_4.BRRetrieveDocumentResponse;
 import eu.europa.ec.bris.jaxb.components.aggregate.v1_4.DocumentType;
+import eu.europa.ec.bris.jaxb.components.aggregate.v1_5.Documents;
+import eu.europa.ec.digit.message.container.jaxb.v1_0.ContainerBody;
 import eu.europa.ec.digit.message.container.jaxb.v1_0.MessageContainer;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.StringUtils;
 
 import org.apache.commons.text.RandomStringGenerator;
@@ -31,6 +39,10 @@ import uk.gov.companieshouse.taf.data.CompanyDetailsRequestData;
 import uk.gov.companieshouse.taf.domain.ValidationError;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 
 public class CompanyDetailsRequestSteps {
 
@@ -314,8 +326,10 @@ public class CompanyDetailsRequestSteps {
             throws Throwable {
         MessageContainer response = data.getCompanyDetailsResponse();
 
+        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response,BRCompanyDetailsResponse.class);
+
         assertEquals("The Legal Entity ID is incorrect: ", legalEntity,
-                response.getCompany().getCompanyLegalForm().getValue());
+                brCompanyDetailsResponse.getCompany().getLegalFormCode().getValue());
 
         // And assert that the header details are correct
         CommonSteps.validateHeader(response,
@@ -339,9 +353,11 @@ public class CompanyDetailsRequestSteps {
     public void theResponseWillContainAValidFormedEuid() throws Throwable {
         MessageContainer response = data.getCompanyDetailsResponse();
 
+        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response, BRCompanyDetailsResponse.class);
+
         assertEquals("Expected EUID is incorrect: ", String.format("UKEW.%s",
                 data.getCompanyNumber()),
-                response.getCompany().getCompanyEUID().getValue());
+                brCompanyDetailsResponse.getCompany().getCompanyEUID().getValue());
 
         // And assert that the header details are correct
         CommonSteps.validateHeader(response,
@@ -361,9 +377,11 @@ public class CompanyDetailsRequestSteps {
 
         data.setCompanyDetailsResponse(response);
 
-        assertNotNull(response.getCompany().getCompanyRegistrationNumber());
+        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response, BRCompanyDetailsResponse.class);
+
+        assertNotNull(brCompanyDetailsResponse.getCompany().getCompanyRegistrationNumber());
         assertEquals("Expected Company Number appears incorrect: ", companyNumber,
-                response.getCompany().getCompanyRegistrationNumber().getValue());
+                brCompanyDetailsResponse.getCompany().getCompanyRegistrationNumber().getValue());
 
         // And assert that the header details are correct
         CommonSteps.validateHeader(response,
@@ -380,20 +398,22 @@ public class CompanyDetailsRequestSteps {
             throws Throwable {
         MessageContainer response = data.getCompanyDetailsResponse();
 
+        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response, BRCompanyDetailsResponse.class);
+
         assertEquals("Expected Postal code is incorrect: ", addressDetails.get(0),
-                response.getCompany().getCompanyRegisteredOffice().getPostalCode().getValue());
+                brCompanyDetailsResponse.getCompany().getRegisteredOffice().getPostalCode().getValue());
 
         assertEquals("Expected Address Line 1 is incorrect: ", addressDetails.get(1),
-                response.getCompany().getCompanyRegisteredOffice().getAddressLine1().getValue());
+                brCompanyDetailsResponse.getCompany().getRegisteredOffice().getAddressLine1().getValue());
 
         assertEquals("Expected Address Line 2 is incorrect: ", addressDetails.get(2),
-                response.getCompany().getCompanyRegisteredOffice().getAddressLine2().getValue());
+                brCompanyDetailsResponse.getCompany().getRegisteredOffice().getAddressLine2().getValue());
 
         assertEquals("Expected Address Line 3 is incorrect: ", addressDetails.get(3),
-                response.getCompany().getCompanyRegisteredOffice().getAddressLine3().getValue());
+                brCompanyDetailsResponse.getCompany().getRegisteredOffice().getAddressLine3().getValue());
 
         assertEquals("Expected Country is incorrect: ", addressDetails.get(4),
-                response.getCompany().getCompanyRegisteredOffice().getCountry().getValue());
+                brCompanyDetailsResponse.getCompany().getRegisteredOffice().getCountry().getValue());
     }
 
     /**
@@ -410,8 +430,10 @@ public class CompanyDetailsRequestSteps {
                 .checkForMessageByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
 
+        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response, BRCompanyDetailsResponse.class);
+
         assertTrue("The label does not match.",
-                checkResponseContainsExpectedLabel(explanatoryLabel, response));
+                checkResponseContainsExpectedLabel(explanatoryLabel, brCompanyDetailsResponse));
 
         // And assert that the header details are correct
         CommonSteps.validateHeader(response,
@@ -427,17 +449,19 @@ public class CompanyDetailsRequestSteps {
                 .checkForMessageByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
 
+        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response, BRCompanyDetailsResponse.class);
+
         // Ensure the response contains documents
-        assertNotNull(response.getDocuments());
+        assertNotNull(brCompanyDetailsResponse.getDocuments());
         assertTrue("There are no documents in this response",
-                !isEmpty(response.getDocuments().getDocument()));
+                !isEmpty(brCompanyDetailsResponse.getDocuments().getDocument()));
 
         // Check the expected amount of documents
         assertEquals("Incorrect document count.", 1,
-                response.getDocuments().getDocument().size());
+                brCompanyDetailsResponse.getDocuments().getDocument().size());
         // Assert that the document is the expected document
         assertEquals("Incorrect document attached.", "EL_UK_011",
-                response.getDocuments().getDocument().get(0).getCompanyItem()
+                brCompanyDetailsResponse.getDocuments().getDocument().get(0).getCompanyItem()
                         .getCompanyItemExplanatoryLabel().getValue());
 
         // And assert that the header details are correct
@@ -464,7 +488,7 @@ public class CompanyDetailsRequestSteps {
 
     private boolean checkResponseContainsExpectedLabel(String explanatoryLabel,
                                                        BRCompanyDetailsResponse response) {
-        for (DocumentType documentType : response.getDocuments().getDocument()) {
+        for (Documents.Document documentType : response.getDocuments().getDocument()) {
             final String label = documentType.getCompanyItem()
                     .getCompanyItemExplanatoryLabel().getValue();
             LOGGER.info("Label Text: {}", label);
@@ -474,4 +498,27 @@ public class CompanyDetailsRequestSteps {
         }
         return false;
     }
+
+
+    protected <E> E getObjectFromContainer(MessageContainer messageContainer, Class<E> clazz) throws Exception {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        messageContainer.getContainerBody().getMessageContent().getValue().writeTo(output);
+        String xmlMessage = new String(output.toByteArray(), StandardCharsets.UTF_8);
+        return (E) unmarshall(xmlMessage);
+    }
+
+    protected Object unmarshall(String messageString) throws JAXBException {
+        JAXBContext jc = getJaxbContext();
+        Unmarshaller unmarshaller = jc.createUnmarshaller();
+
+        StringReader json = new StringReader(messageString);
+        return unmarshaller.unmarshal(json);
+    }
+
+    protected JAXBContext getJaxbContext() throws JAXBException {
+        JAXBContext context = JAXBContext.newInstance(BRCompanyDetailsResponse.class, MessageContainer.class);
+
+        return context;
+    }
+
 }
