@@ -1,4 +1,5 @@
 @regression @cross_border_merger_reception @xsd_validation
+
 Feature: Cross border merger schema validation
 
   In order to ensure valid messages are handled

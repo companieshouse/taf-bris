@@ -1,4 +1,5 @@
 @regression @cross_border_merger_notification
+
 Feature: Cross Border Merger Notification
 
   In order to inform the ECP of a merge between companies
