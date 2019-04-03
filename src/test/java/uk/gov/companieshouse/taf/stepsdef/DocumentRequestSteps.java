@@ -21,7 +21,7 @@ import uk.gov.companieshouse.taf.data.DocumentRequestData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
 
-public class DocumentRequestSteps {
+public class DocumentRequestSteps extends BrisSteps{
     private static final String BUSINESS_REGISTER_ID = "EW";
     private static final String BUSINESS_REGISTER_COUNTRY = "UK";
 
@@ -116,7 +116,7 @@ public class DocumentRequestSteps {
 
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(retrieveDocumentResponse.getMessageHeader(),
+        CommonSteps.validateHeader(createBrisMessageHeaderType(retrieveDocumentResponse),
                 data.getCorrelationId(),
                 data.getBusinessRegisterId(),
                 data.getCountryCode());

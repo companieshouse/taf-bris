@@ -16,7 +16,7 @@ import uk.gov.companieshouse.taf.data.BranchDisclosureNotificationData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.util.NotificationApiHelper;
 
-public class BranchDisclosureNotificationSteps {
+public class BranchDisclosureNotificationSteps extends BrisSteps{
 
     private static final String BRANCH_DISCLOSURE_CONTEXT = "branch-disclosure";
     private static final String RESPONSE_MESSAGE = "response_message";
@@ -87,7 +87,7 @@ public class BranchDisclosureNotificationSteps {
                 data.getProceedingType()));
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(request.getMessageHeader(),
+        CommonSteps.validateHeader(createBrisMessageHeaderType(request),
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 }
