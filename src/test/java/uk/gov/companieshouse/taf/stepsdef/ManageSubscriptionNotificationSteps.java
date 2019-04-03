@@ -17,7 +17,7 @@ import uk.gov.companieshouse.taf.data.ManageSubscriptionData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.util.NotificationApiHelper;
 
-public class ManageSubscriptionNotificationSteps {
+public class ManageSubscriptionNotificationSteps extends BrisSteps{
 
     private static final String MANAGE_SUBSCRIPTION_CONTEXT = "manage-subscription";
     private static final String RESPONSE_MESSAGE = "response_message";
@@ -105,7 +105,7 @@ public class ManageSubscriptionNotificationSteps {
                 2, companyEuid.indexOf(".")), data.getForeignRegisterId()));
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(request.getMessageHeader(),
+        CommonSteps.validateHeader(createBrisMessageHeaderType(request),
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
@@ -128,7 +128,7 @@ public class ManageSubscriptionNotificationSteps {
                 .getValue(), REMOVE_SUBSCRIPTION_TYPE));
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(request.getMessageHeader(),
+        CommonSteps.validateHeader(createBrisMessageHeaderType(request),
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 }

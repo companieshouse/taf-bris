@@ -28,6 +28,7 @@ import eu.europa.ec.bris.jaxb.br.led.update.request.v1_4.BRUpdateLEDRequest;
 import eu.europa.ec.bris.jaxb.br.led.update.response.v1_4.BRUpdateLEDStatus;
 import eu.europa.ec.bris.jaxb.br.subscription.request.v1_4.BRManageSubscriptionRequest;
 import eu.europa.ec.bris.jaxb.br.subscription.response.v1_4.BRManageSubscriptionStatus;
+import eu.europa.ec.digit.message.container.jaxb.v1_0.MessageContainer;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,6 +76,8 @@ public class RetrieveBrisTestMessageService {
             JAXBContext jaxbContext = getJaxbContext();
             StringReader reader = new StringReader(incomingBrisMessage.getMessage());
             Object obj = jaxbContext.createUnmarshaller().unmarshal(reader);
+
+
             return (T) obj;
         }
 
@@ -162,7 +165,8 @@ public class RetrieveBrisTestMessageService {
                 DeliveryBody.class,
                 SubmissionBody.class,
                 SubmissionHeader.class,
-                ValidationError.class);
+                ValidationError.class,
+                MessageContainer.class);
 
         return context;
     }

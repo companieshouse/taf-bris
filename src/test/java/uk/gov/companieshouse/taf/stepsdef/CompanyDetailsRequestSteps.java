@@ -44,7 +44,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-public class CompanyDetailsRequestSteps {
+public class CompanyDetailsRequestSteps extends BrisSteps{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDetailsRequestSteps.class);
 
@@ -312,7 +312,7 @@ public class CompanyDetailsRequestSteps {
         data.setCompanyDetailsResponse(response);
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(response,
+        CommonSteps.validateHeader(createBrisMessageHeaderType(response),
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
@@ -332,7 +332,7 @@ public class CompanyDetailsRequestSteps {
                 brCompanyDetailsResponse.getCompany().getLegalFormCode().getValue());
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(response,
+        CommonSteps.validateHeader(createBrisMessageHeaderType(response),
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
@@ -360,7 +360,7 @@ public class CompanyDetailsRequestSteps {
                 brCompanyDetailsResponse.getCompany().getCompanyEUID().getValue());
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(response,
+        CommonSteps.validateHeader(createBrisMessageHeaderType(response),
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
@@ -384,7 +384,7 @@ public class CompanyDetailsRequestSteps {
                 brCompanyDetailsResponse.getCompany().getCompanyRegistrationNumber().getValue());
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(response,
+        CommonSteps.validateHeader(createBrisMessageHeaderType(response),
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
@@ -436,7 +436,7 @@ public class CompanyDetailsRequestSteps {
                 checkResponseContainsExpectedLabel(explanatoryLabel, brCompanyDetailsResponse));
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(response,
+        CommonSteps.validateHeader(createBrisMessageHeaderType(response),
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
@@ -465,7 +465,7 @@ public class CompanyDetailsRequestSteps {
                         .getCompanyItemExplanatoryLabel().getValue());
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(response,
+        CommonSteps.validateHeader(createBrisMessageHeaderType(response),
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
@@ -480,7 +480,7 @@ public class CompanyDetailsRequestSteps {
         assertNotNull(validationError);
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(validationError.getMessageHeader(),
+        CommonSteps.validateHeader(validationError.getHeader(),
                 data.getCorrelationId(),
                 data.getBusinessRegisterId(),
                 data.getCountryCode());

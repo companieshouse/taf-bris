@@ -12,6 +12,7 @@ import uk.gov.companieshouse.taf.data.BranchDisclosureReceptionData;
 import uk.gov.companieshouse.taf.data.CompanyDetailsRequestData;
 import uk.gov.companieshouse.taf.data.CrossBorderMergerNotificationData;
 import uk.gov.companieshouse.taf.data.DocumentRequestData;
+import uk.gov.companieshouse.taf.domain.BrisMessageHeaderType;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 
 public class CommonSteps {
@@ -70,41 +71,21 @@ public class CommonSteps {
     /**
      Check that the message header is as expected.
      */
-    static void validateHeader(MessageHeaderType messageHeader,
-            String correlationId,
-            String businessRegisterId,
-            String countryCode) {
+    static void validateHeader(BrisMessageHeaderType messageHeader,
+                               String correlationId,
+                               String businessRegisterId,
+                               String countryCode) {
         assertEquals("Correlation ID in header is not as expected",
                 correlationId,
-                messageHeader.getCorrelationID().getValue());
+                messageHeader.getCorrelationId());
 
         assertEquals("Business Register ID in header is not as expected",
                 businessRegisterId,
-                messageHeader.getBusinessRegisterReference().getBusinessRegisterID().getValue());
+                messageHeader.getBusinessRegisterId());
 
         assertEquals("Business Register Country in header is not as expected",
                 countryCode,
-                messageHeader.getBusinessRegisterReference()
-                        .getBusinessRegisterCountry().getValue());
+                messageHeader.getBusinessRegisterCountry());
     }
-
-    /**
-     Check that the message header is as expected.
-     */
-    static void validateHeader(MessageContainer messageHeader,
-            String correlationId,
-            String businessRegisterId,
-            String countryCode) {
-        assertEquals("Correlation ID in header is not as expected",
-                correlationId,
-                messageHeader.getContainerHeader().getMessageInfo().getCorrelationID());
-
-        assertEquals("Business Register ID in header is not as expected",
-                businessRegisterId,
-                messageHeader.getContainerHeader().getAddressInfo().getReceiver().getCode());
-
-        assertEquals("Business Register Country in header is not as expected",
-                countryCode,
-                messageHeader.getContainerHeader().getAddressInfo().getReceiver().getCountryCode());
-    }
+    
 }
