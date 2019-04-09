@@ -6,13 +6,6 @@ import eu.domibus.plugin.bris.jaxb.delivery.Acknowledgement;
 import eu.domibus.plugin.bris.jaxb.delivery.DeliveryBody;
 import eu.domibus.plugin.bris.jaxb.submission.SubmissionBody;
 import eu.domibus.plugin.bris.jaxb.submission.SubmissionHeader;
-
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-
 import eu.europa.ec.bris.jaxb.br.branch.disclosure.notification.reception.request.v1_4.BRBranchDisclosureReceptionNotification;
 import eu.europa.ec.bris.jaxb.br.branch.disclosure.notification.reception.response.v1_4.BRBranchDisclosureReceptionNotificationAcknowledgement;
 import eu.europa.ec.bris.jaxb.br.branch.disclosure.notification.submission.request.v1_4.BRBranchDisclosureSubmissionNotification;
@@ -30,6 +23,7 @@ import eu.europa.ec.bris.jaxb.br.led.update.request.v1_4.BRUpdateLEDRequest;
 import eu.europa.ec.bris.jaxb.br.led.update.response.v1_4.BRUpdateLEDStatus;
 import eu.europa.ec.bris.jaxb.br.subscription.request.v1_4.BRManageSubscriptionRequest;
 import eu.europa.ec.bris.jaxb.br.subscription.response.v1_4.BRManageSubscriptionStatus;
+import eu.europa.ec.digit.message.container.jaxb.v1_0.MessageContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +32,11 @@ import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.kafka.message.Message;
 import uk.gov.companieshouse.taf.service.KafkaService;
 import uk.gov.companieshouse.taf.transformer.OutgoingMessage;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 @Component
 public class SenderImpl implements Sender {
@@ -98,7 +97,8 @@ public class SenderImpl implements Sender {
                     Acknowledgement.class,
                     DeliveryBody.class,
                     SubmissionBody.class,
-                    SubmissionHeader.class);
+                    SubmissionHeader.class,
+                    MessageContainer.class);
 
         } catch (JAXBException exception) {
             LOGGER.error(exception.getMessage());
