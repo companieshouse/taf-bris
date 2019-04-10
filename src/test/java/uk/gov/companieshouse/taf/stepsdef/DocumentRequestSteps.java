@@ -49,7 +49,7 @@ public class DocumentRequestSteps extends BrisSteps{
                 .getRetrieveDocumentRequest(data);
 
         data.setOutgoingBrisMessage((documentRequest.createOutgoingBrisMessage(
-                retrieveDocumentRequest, data.getMessageId())));
+                retrieveDocumentRequest, data.getMessageId(), data.getCorrelationId())));
     }
 
     /**
@@ -63,7 +63,7 @@ public class DocumentRequestSteps extends BrisSteps{
                 .getRetrieveDocumentRequest(data);
 
         data.setOutgoingBrisMessage((documentRequest.createOutgoingBrisMessage(
-                retrieveDocumentRequest, data.getMessageId())));
+                retrieveDocumentRequest, data.getMessageId(), data.getCorrelationId())));
     }
 
     /**
@@ -80,7 +80,7 @@ public class DocumentRequestSteps extends BrisSteps{
                 .getRetrieveDocumentRequest(data);
 
         data.setOutgoingBrisMessage((documentRequest.createOutgoingBrisMessage(
-                retrieveDocumentRequest, data.getMessageId())));
+                retrieveDocumentRequest, data.getMessageId(), data.getCorrelationId())));
     }
 
     @When("^I make a document details request$")

@@ -8,11 +8,13 @@ import eu.europa.ec.bris.jaxb.br.components.aggregate.v1_4.MessageHeaderType;
 import eu.europa.ec.bris.jaxb.br.error.v1_4.BRBusinessError;
 import eu.europa.ec.digit.message.container.jaxb.v1_0.MessageContainer;
 import org.springframework.beans.factory.annotation.Autowired;
+import uk.gov.companieshouse.taf.data.AddBusinessRegisterData;
 import uk.gov.companieshouse.taf.data.BranchDisclosureReceptionData;
 import uk.gov.companieshouse.taf.data.CompanyDetailsRequestData;
 import uk.gov.companieshouse.taf.data.CrossBorderMergerNotificationData;
 import uk.gov.companieshouse.taf.data.DocumentRequestData;
 import uk.gov.companieshouse.taf.domain.BrisMessageHeaderType;
+import uk.gov.companieshouse.taf.domain.ValidationError;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 
 public class CommonSteps {
@@ -32,17 +34,23 @@ public class CommonSteps {
     @Autowired
     private BranchDisclosureReceptionData branchDisclosureReceptionData;
 
+    @Autowired
+    private AddBusinessRegisterData addBusinessRegisterData;
+
     /**
      * Check the error message has been placed in MongoDB.
      */
     @Then("^I should get a "
-            + "(company details|document details|cross border merger|branch disclosure) "
+            + "(company details|document details|cross border merger|branch disclosure|add Br Notification) "
             + "error message with the error code ([^\"]*)$")
     public void theCorrectErrorWillBeReturnedToTheEcp(String errorType,
                                                       String errorCode) throws Throwable {
         String messageId;
 
         switch (errorType) {
+            case "add Br Notification":
+                messageId = addBusinessRegisterData.getMessageId();
+                break;
             case "company details":
                 messageId = companyDetailsRequestData.getMessageId();
                 break;
@@ -87,5 +95,5 @@ public class CommonSteps {
                 countryCode,
                 messageHeader.getBusinessRegisterCountry());
     }
-    
+
 }
