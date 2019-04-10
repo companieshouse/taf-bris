@@ -1,41 +1,36 @@
 package uk.gov.companieshouse.taf.stepsdef;
 
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertNull;
-import static junit.framework.TestCase.assertTrue;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
-import static org.springframework.util.CollectionUtils.isEmpty;
-
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
-
 import eu.europa.ec.bris.jaxb.br.company.details.request.v1_4.BRCompanyDetailsRequest;
 import eu.europa.ec.bris.jaxb.br.company.details.response.v2_0.BRCompanyDetailsResponse;
 import eu.europa.ec.bris.jaxb.components.aggregate.v1_5.Documents;
 import eu.europa.ec.digit.message.container.jaxb.v1_0.MessageContainer;
-import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.StringUtils;
-
 import org.apache.commons.text.RandomStringGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-
 import uk.gov.companieshouse.taf.builders.CompanyDetailsRequestBuilder;
 import uk.gov.companieshouse.taf.data.CompanyDetailsRequestData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
+import uk.gov.companieshouse.taf.util.MessageContainerHelper;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import java.util.List;
+import java.util.UUID;
+
+import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertNull;
+import static junit.framework.TestCase.assertTrue;
+import static org.springframework.test.util.AssertionErrors.assertEquals;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 public class CompanyDetailsRequestSteps extends BrisSteps{
 
@@ -81,7 +76,7 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
                 .getCompanyDetailsRequest(data);
 
         data.setOutgoingBrisMessage((companyDetailsRequest.createOutgoingBrisMessage(
-                request, data.getMessageId())));
+                request, data.getMessageId(), data.getCorrelationId())));
     }
 
     /**
@@ -94,7 +89,7 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
                 .getCompanyDetailsRequest(data);
 
         data.setOutgoingBrisMessage(companyDetailsRequest.createOutgoingBrisMessage(
-                request, data.getMessageId()));
+                request, data.getMessageId(), data.getCorrelationId()));
     }
 
     @Given("^a company details request exists$")
@@ -114,7 +109,7 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
                 .getCompanyDetailsRequest(data);
 
         data.setOutgoingBrisMessage(companyDetailsRequest
-                .createOutgoingBrisMessage(request, data.getMessageId()));
+                .createOutgoingBrisMessage(request, data.getMessageId(), data.getCorrelationId()));
     }
 
     /**
@@ -132,7 +127,7 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
         BRCompanyDetailsRequest request = CompanyDetailsRequestBuilder
                 .getCompanyDetailsRequest(data);
         data.setOutgoingBrisMessage(companyDetailsRequest.createOutgoingBrisMessage(
-                request, data.getMessageId()));
+                request, data.getMessageId(), data.getCorrelationId()));
     }
 
     /**
@@ -147,7 +142,7 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
         BRCompanyDetailsRequest request = CompanyDetailsRequestBuilder
                 .getCompanyDetailsRequest(data);
         data.setOutgoingBrisMessage(companyDetailsRequest.createOutgoingBrisMessage(request,
-                messageId));
+                messageId, data.getCorrelationId()));
     }
 
     /**
@@ -161,7 +156,7 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
                 .getCompanyDetailsRequest(data);
 
         data.setOutgoingBrisMessage(companyDetailsRequest.createOutgoingBrisMessage(
-                request, data.getMessageId()));
+                request, data.getMessageId(), data.getCorrelationId()));
     }
 
     /**
@@ -175,7 +170,7 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
                 .getCompanyDetailsRequest(data);
 
         data.setOutgoingBrisMessage(companyDetailsRequest.createOutgoingBrisMessage(
-                request, data.getMessageId()));
+                request, data.getMessageId(), data.getCorrelationId()));
     }
 
     /**
@@ -189,7 +184,7 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
                 .getCompanyDetailsRequest(data);
 
         data.setOutgoingBrisMessage(companyDetailsRequest.createOutgoingBrisMessage(
-                request, data.getMessageId()));
+                request, data.getMessageId(), data.getCorrelationId()));
     }
 
     /**
@@ -252,7 +247,7 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
                 .getCompanyDetailsRequest(data);
 
         data.setOutgoingBrisMessage(companyDetailsRequest.createOutgoingBrisMessage(
-                request, data.getMessageId()));
+                request, data.getMessageId(), data.getCorrelationId()));
     }
 
     /**
@@ -319,7 +314,7 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
             throws Throwable {
         MessageContainer response = data.getCompanyDetailsResponse();
 
-        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response,BRCompanyDetailsResponse.class);
+        BRCompanyDetailsResponse brCompanyDetailsResponse = MessageContainerHelper.getObjectFromContainer(response);
 
         assertEquals("The Legal Entity ID is incorrect: ", legalEntity,
                 brCompanyDetailsResponse.getCompany().getLegalFormCode().getValue());
@@ -346,7 +341,7 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
     public void theResponseWillContainAValidFormedEuid() throws Throwable {
         MessageContainer response = data.getCompanyDetailsResponse();
 
-        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response, BRCompanyDetailsResponse.class);
+        BRCompanyDetailsResponse brCompanyDetailsResponse = MessageContainerHelper.getObjectFromContainer(response);
 
         assertEquals("Expected EUID is incorrect: ", String.format("UKEW.%s",
                 data.getCompanyNumber()),
@@ -370,7 +365,7 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
 
         data.setCompanyDetailsResponse(response);
 
-        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response, BRCompanyDetailsResponse.class);
+        BRCompanyDetailsResponse brCompanyDetailsResponse = MessageContainerHelper.getObjectFromContainer(response);
 
         assertNotNull(brCompanyDetailsResponse.getCompany().getCompanyRegistrationNumber());
         assertEquals("Expected Company Number appears incorrect: ", companyNumber,
@@ -391,7 +386,7 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
             throws Throwable {
         MessageContainer response = data.getCompanyDetailsResponse();
 
-        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response, BRCompanyDetailsResponse.class);
+        BRCompanyDetailsResponse brCompanyDetailsResponse = MessageContainerHelper.getObjectFromContainer(response);
 
         assertEquals("Expected Postal code is incorrect: ", addressDetails.get(0),
                 brCompanyDetailsResponse.getCompany().getRegisteredOffice().getPostalCode().getValue());
@@ -423,7 +418,7 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
                 .checkForMessageByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
 
-        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response, BRCompanyDetailsResponse.class);
+        BRCompanyDetailsResponse brCompanyDetailsResponse = MessageContainerHelper.getObjectFromContainer(response);
 
         assertTrue("The label does not match.",
                 checkResponseContainsExpectedLabel(explanatoryLabel, brCompanyDetailsResponse));
@@ -442,7 +437,7 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
                 .checkForMessageByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
 
-        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response, BRCompanyDetailsResponse.class);
+        BRCompanyDetailsResponse brCompanyDetailsResponse = MessageContainerHelper.getObjectFromContainer(response);
 
         // Ensure the response contains documents
         assertNotNull(brCompanyDetailsResponse.getDocuments());
@@ -473,28 +468,6 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
             }
         }
         return false;
-    }
-
-
-    protected <E> E getObjectFromContainer(MessageContainer messageContainer, Class<E> clazz) throws Exception {
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        messageContainer.getContainerBody().getMessageContent().getValue().writeTo(output);
-        String xmlMessage = new String(output.toByteArray(), StandardCharsets.UTF_8);
-        return (E) unmarshall(xmlMessage);
-    }
-
-    protected Object unmarshall(String messageString) throws JAXBException {
-        JAXBContext jc = getJaxbContext();
-        Unmarshaller unmarshaller = jc.createUnmarshaller();
-
-        StringReader json = new StringReader(messageString);
-        return unmarshaller.unmarshal(json);
-    }
-
-    protected JAXBContext getJaxbContext() throws JAXBException {
-        JAXBContext context = JAXBContext.newInstance(BRCompanyDetailsResponse.class, MessageContainer.class);
-
-        return context;
     }
 
 }
