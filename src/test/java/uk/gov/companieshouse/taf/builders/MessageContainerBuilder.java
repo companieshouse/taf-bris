@@ -28,13 +28,13 @@ public class MessageContainerBuilder {
     private final static String DATA_SOURCE_TYPE = "text/plain; charset=UTF-8";
     private final static String RECEIVER_ID = "blue";
     private final static String SENDER_ID = "red";
-    public static final String UK_BUSINESS_REGISTER_ID = "EW";
-    public static final String UK_BUSINESS_REGISTER_COUNTRY = "UK";
 
-    public static MessageContainer createMessageContainer(Object response, String messageId, String correlationId, MessageInfo.TestData testData) throws JAXBException, DatatypeConfigurationException {
+    public static MessageContainer createMessageContainer(Object response, String messageId, String correlationId,
+                                                          String recieverRegisterId, String recieverCountryCode, MessageInfo.TestData testData)
+                                                                    throws JAXBException, DatatypeConfigurationException {
 
         MessageContainer messageContainer = new MessageContainer();
-        messageContainer.setContainerHeader(createContainerHeader(messageId, correlationId, testData));
+        messageContainer.setContainerHeader(createContainerHeader(messageId, correlationId, recieverRegisterId, recieverCountryCode, testData));
         messageContainer.setContainerBody(createContainerBody(response));
 
         return messageContainer;
@@ -73,20 +73,20 @@ public class MessageContainerBuilder {
         return writer.toString();
     }
 
-    private static ContainerHeader createContainerHeader(String messageId, String correlationId, MessageInfo.TestData testData) throws DatatypeConfigurationException {
+    private static ContainerHeader createContainerHeader(String messageId, String correlationId,String recieverRegisterId, String recieverCountryCode, MessageInfo.TestData testData) throws DatatypeConfigurationException {
 
         ContainerHeader containerHeader = new ContainerHeader();
         containerHeader.setMessageInfo(createMessageInfo(messageId, correlationId, testData));
-        containerHeader.setAddressInfo(createAddressInfo());
+        containerHeader.setAddressInfo(createAddressInfo(recieverRegisterId, recieverCountryCode));
 
         return containerHeader;
     }
 
-    private static ContainerHeader.AddressInfo createAddressInfo(){
+    private static ContainerHeader.AddressInfo createAddressInfo(String recieverRegisterId, String recieverCountryCode){
 
         ContainerHeader.AddressInfo addressInfo = new ContainerHeader.AddressInfo();
-        addressInfo.setSender(createPartyType(SENDER_ID,"BRIS","EU"));
-        addressInfo.setReceiver(createPartyType(RECEIVER_ID, UK_BUSINESS_REGISTER_ID, UK_BUSINESS_REGISTER_COUNTRY));
+        addressInfo.setSender(createPartyType(SENDER_ID,"BRA","AT"));
+        addressInfo.setReceiver(createPartyType(RECEIVER_ID, recieverRegisterId, recieverCountryCode));
 
         return addressInfo;
     }
