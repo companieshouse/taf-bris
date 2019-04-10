@@ -26,6 +26,3 @@ Feature: Company details request feature
     Given I am requesting details for a company that does not exist
     When I make a company details request
     Then I should get a company details error message with the error code ERR_BR_3001
-
-  Scenario: I am creating an AddBrNotification
-    Given I am creating an AddBrNotification
