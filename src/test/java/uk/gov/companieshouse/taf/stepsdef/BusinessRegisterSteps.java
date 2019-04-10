@@ -16,6 +16,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 public class BusinessRegisterSteps extends BrisSteps{
 
@@ -27,8 +28,10 @@ public class BusinessRegisterSteps extends BrisSteps{
     @Autowired
     private SendBrisTestMessageService sendBrisMessageService;
 
-    @Given("^I am creating an AddBrNotification$")
-    public void makeAnAddBrNotification() throws Exception {
+    @Given("^I am creating an AddBrNotification with details$")
+    public void makeAnAddBrNotification(List<String> brNotificationDetails) throws Exception {
+
+        setDataFromUser(brNotificationDetails);
 
         DateTimeType dateTimeType = new DateTimeType();
         dateTimeType.setValue(getXMLGregorianCalendar(null));
@@ -40,6 +43,53 @@ public class BusinessRegisterSteps extends BrisSteps{
 
         sendBrisMessageService.sendOutgoingBrisMessage(data.getOutgoingBrisMessage(),
                 data.getMessageId());
+    }
+
+    private void setDataFromUser(List<String> brNotificationDetails){
+
+        //set data from user
+        String companyNumber = brNotificationDetails.get(0);
+        String messageId = brNotificationDetails.get(1) ;
+        String correlationId = brNotificationDetails.get(2);
+        String businessRegisterId = brNotificationDetails.get(3);
+        String countryCode = brNotificationDetails.get(4);
+        String registerName = brNotificationDetails.get(5);
+
+        if(companyNumber.equals("NULL")){
+            data.setCompanyNumber(null);
+        }else if(!companyNumber.equals("")){
+            data.setCompanyNumber(companyNumber);
+        }
+
+        if(messageId.equals("NULL")){
+            data.setMessageId(null);
+        }else if(!messageId.equals("")){
+            data.setMessageId(messageId);
+        }
+
+        if(correlationId.equals("NULL")){
+            data.setCorrelationId(null);
+        }else if(!correlationId.equals("")){
+            data.setCorrelationId(correlationId);
+        }
+
+        if(businessRegisterId.equals("NULL")){
+            data.setBusinessRegisterId(null);
+        }else if(!businessRegisterId.equals("")){
+            data.setBusinessRegisterId(businessRegisterId);
+        }
+
+        if(countryCode.equals("NULL")){
+            data.setCountryCode(null);
+        }else if(!countryCode.equals("")){
+            data.setCountryCode(countryCode);
+        }
+
+        if(registerName.equals("NULL")){
+            data.setRegisterName(null);
+        }else if(!registerName.equals("")){
+            data.setRegisterName(registerName);
+        }
     }
 
     /**

@@ -10,3 +10,10 @@ Acceptance Criteria
 Given a AddBusinessRegister Notification is sent to the BR
 When the given AddBusinessRegister Notification fails validation BR-NOT-01
 Then a BR-BusinessError is sent to the ECP with error code ERR_BR_0901
+
+    #companyNumber, messageId, correlationId ,businessRegisterId ,countryCode, registerName
+    #  set to "" to keep default
+    #  set to "NULL" to set as null
+    Scenario: I am creating an AddBrNotification
+      Given I am creating an AddBrNotification with details
+        | | | | | | |
