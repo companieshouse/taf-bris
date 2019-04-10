@@ -1,7 +1,9 @@
 package uk.gov.companieshouse.taf.stepsdef;
 
 import cucumber.api.java.en.Given;
-import eu.europa.ec.bris.jaxb.br.generic.notification.v2_0.BRNotification;
+import cucumber.api.java.en.Then;
+import eu.europa.ec.bris.jaxb.br.generic.acknowledgement.template.br.addition.v2_0.AddBusinessRegisterAcknowledgementTemplateType;
+import eu.europa.ec.bris.jaxb.br.generic.acknowledgement.v2_0.BRAcknowledgement;
 import eu.europa.ec.bris.jaxb.components.basic.v1_4.DateTimeType;
 import eu.europa.ec.digit.message.container.jaxb.v1_0.MessageContainer;
 import org.slf4j.Logger;
@@ -9,7 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.companieshouse.taf.builders.AddBusinessRegisterBuilder;
 import uk.gov.companieshouse.taf.data.AddBusinessRegisterData;
+import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
+import uk.gov.companieshouse.taf.util.MessageContainerHelper;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -17,6 +21,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+
+import static junit.framework.TestCase.assertNotNull;
 
 public class BusinessRegisterSteps extends BrisSteps{
 
@@ -27,6 +33,30 @@ public class BusinessRegisterSteps extends BrisSteps{
 
     @Autowired
     private SendBrisTestMessageService sendBrisMessageService;
+
+    @Autowired
+    private RetrieveBrisTestMessageService retrieveMessage;
+
+
+    @Then("^the response will contain an AddBusinessRegisterAcknowledgementTemplateType$")
+    public void theResponseWillContainTheAddBusinessRegisterAcknowledgementTemplateType$() throws Throwable {
+        MessageContainer response = retrieveMessage
+                .checkForMessageByCorrelationId(data.getCorrelationId());
+        assertNotNull(response);
+
+        data.setBrNotificationResponse(response);
+
+        BRAcknowledgement brAcknowledgement = MessageContainerHelper.getObjectFromContainer(response);
+
+        AddBusinessRegisterAcknowledgementTemplateType template = (AddBusinessRegisterAcknowledgementTemplateType) brAcknowledgement.getAcknowledgementTemplate().getValue();
+
+        assertNotNull(template.getSendingDateTime());
+
+        // And assert that the header details are correct
+        CommonSteps.validateHeader(createBrisMessageHeaderType(response),
+                data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
+    }
+
 
     @Given("^I am creating an AddBrNotification with details$")
     public void makeAnAddBrNotification(List<String> brNotificationDetails) throws Exception {
@@ -39,7 +69,7 @@ public class BusinessRegisterSteps extends BrisSteps{
         MessageContainer addBrNotification = AddBusinessRegisterBuilder.getBrNotification(data);
 
         data.setOutgoingBrisMessage(sendBrisMessageService
-                .createOutgoingBrisMessage(addBrNotification, data.getMessageId()));
+                .createOutgoingBrisMessage(addBrNotification, data.getMessageId(), data.getCorrelationId()));
 
         sendBrisMessageService.sendOutgoingBrisMessage(data.getOutgoingBrisMessage(),
                 data.getMessageId());

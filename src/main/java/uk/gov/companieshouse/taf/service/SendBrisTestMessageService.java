@@ -52,7 +52,7 @@ public class SendBrisTestMessageService {
      */
 
     public <T> OutgoingBrisMessage createOutgoingBrisMessage(T requestMessage,
-                                                             String messageId)
+                                                             String messageId, String correlationId)
             throws Exception {
         OutgoingBrisMessage outgoingBrisMessage = new OutgoingBrisMessage();
 
@@ -70,7 +70,7 @@ public class SendBrisTestMessageService {
         //create new mongodb ObjectId for outgoing BRIS Message
         LOGGER.info("Creating outgoingBrisMessage with id {} ", messageId);
         outgoingBrisMessage.setId(messageId);
-        outgoingBrisMessage.setCorrelationId(messageId);
+        outgoingBrisMessage.setCorrelationId(correlationId);
         outgoingBrisMessage.setCreatedOn(getDateTime());
         outgoingBrisMessage.setStatus(PENDING_STATUS);
         return outgoingBrisMessage;

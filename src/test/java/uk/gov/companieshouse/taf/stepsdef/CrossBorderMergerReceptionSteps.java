@@ -45,7 +45,7 @@ public class CrossBorderMergerReceptionSteps extends BrisSteps {
                         .getCrossBorderMergerNotification(data);
 
         data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
-                notification, data.getMessageId())));
+                notification, data.getMessageId(), data.getCorrelationId())));
     }
 
     /**
@@ -59,7 +59,7 @@ public class CrossBorderMergerReceptionSteps extends BrisSteps {
                         .getCrossBorderMergerNotification(data);
 
         data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
-                notification, data.getMessageId())));
+                notification, data.getMessageId(), data.getCorrelationId())));
     }
 
     /**
@@ -74,7 +74,7 @@ public class CrossBorderMergerReceptionSteps extends BrisSteps {
                         .getCrossBorderMergerNotification(data);
 
         data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
-                notification, data.getMessageId())));
+                notification, data.getMessageId(), data.getCorrelationId())));
     }
 
     /**
@@ -88,7 +88,7 @@ public class CrossBorderMergerReceptionSteps extends BrisSteps {
                         .getCrossBorderMergerNotification(data);
 
         data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
-                notification, data.getMessageId())));
+                notification, data.getMessageId(), data.getCorrelationId())));
     }
 
     /**
@@ -105,7 +105,7 @@ public class CrossBorderMergerReceptionSteps extends BrisSteps {
                         .getCrossBorderMergerNotification(data);
 
         data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
-                notification, data.getMessageId())));
+                notification, data.getMessageId(), data.getCorrelationId())));
     }
 
     /**
@@ -132,7 +132,7 @@ public class CrossBorderMergerReceptionSteps extends BrisSteps {
         notification.getResultingCompany().setCompanyEUID(companyEuidType);
 
         data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
-                notification, data.getMessageId())));
+                notification, data.getMessageId(), data.getCorrelationId())));
     }
 
     /**
@@ -160,7 +160,7 @@ public class CrossBorderMergerReceptionSteps extends BrisSteps {
         notification.getResultingCompany().getCompanyEUID().setValue("UKAB.99990000");
 
         data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
-                notification, data.getMessageId())));
+                notification, data.getMessageId(), data.getCorrelationId())));
     }
 
     /**
@@ -176,7 +176,7 @@ public class CrossBorderMergerReceptionSteps extends BrisSteps {
         notification.getMergingCompany().get(0).getCompanyEUID().setValue("UKAA.99990000");
 
         data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
-                notification, data.getMessageId())));
+                notification, data.getMessageId(), data.getCorrelationId())));
     }
 
     /**
@@ -195,7 +195,7 @@ public class CrossBorderMergerReceptionSteps extends BrisSteps {
         notification.getMergingCompany().get(0).getCompanyEUID().setValue("UKNI.99990000");
 
         data.setOutgoingBrisMessage((sendBrisTestMessageService.createOutgoingBrisMessage(
-                notification, data.getMessageId())));
+                notification, data.getMessageId(), data.getCorrelationId())));
     }
 
     @When("^I make a cross border merger request$")

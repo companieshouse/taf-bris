@@ -33,7 +33,7 @@ public class BranchDisclosureReceptionSteps extends BrisSteps {
                 BranchDisclosureRequestBuilder.getBranchDisclosureReceptionNotification(data);
 
         data.setOutgoingBrisMessage(sendBrisTestMessageService.createOutgoingBrisMessage(
-                notification, data.getMessageId()));
+                notification, data.getMessageId(), data.getCorrelationId()));
     }
 
     /**
@@ -49,7 +49,7 @@ public class BranchDisclosureReceptionSteps extends BrisSteps {
         notification.getDisclosureCompany().getCompanyEUID().setValue("UKAA.99990000");
 
         data.setOutgoingBrisMessage(sendBrisTestMessageService.createOutgoingBrisMessage(
-                notification, data.getMessageId()));
+                notification, data.getMessageId(), data.getCorrelationId()));
     }
 
     /**
@@ -66,7 +66,7 @@ public class BranchDisclosureReceptionSteps extends BrisSteps {
         notification.getRecipientOrganisation().getBusinessRegisterID().setValue("ES");
 
         data.setOutgoingBrisMessage(sendBrisTestMessageService.createOutgoingBrisMessage(
-                notification, data.getMessageId()));
+                notification, data.getMessageId(), data.getCorrelationId()));
     }
 
     /**

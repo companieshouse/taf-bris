@@ -51,7 +51,7 @@ public class AddBusinessRegisterBuilder extends MessageContainerBuilder{
 
         brNotification.setNotificationTemplate(template);
 
-        return createMessageContainer(brNotification, data.getMessageId(), data.getCorrelationId(),null);
+        return createMessageContainer(brNotification, data.getMessageId(), data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode(), null);
     }
 
     private static LocalisedBusinessRegisterNameType createBusinessRegisterName(String languageId,
