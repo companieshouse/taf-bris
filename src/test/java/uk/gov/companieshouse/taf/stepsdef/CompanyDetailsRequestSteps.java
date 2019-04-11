@@ -10,17 +10,12 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-import java.io.StringReader;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 
 import eu.europa.ec.bris.jaxb.br.company.details.request.v1_4.BRCompanyDetailsRequest;
 import eu.europa.ec.bris.jaxb.components.aggregate.v1_4.DocumentType;
 import eu.europa.ec.bris.jaxb.br.company.details.response.v1_4.BRCompanyDetailsResponse;
-import eu.europa.ec.bris.jaxb.components.aggregate.v1_5.Documents;
-import eu.europa.ec.digit.message.container.jaxb.v1_0.MessageContainer;
-import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.StringUtils;
 
 import org.apache.commons.text.RandomStringGenerator;
