@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.UUID;
 
 import eu.europa.ec.bris.jaxb.br.company.details.request.v1_4.BRCompanyDetailsRequest;
-import eu.europa.ec.bris.jaxb.components.aggregate.v1_4.DocumentType;
 import eu.europa.ec.bris.jaxb.br.company.details.response.v1_4.BRCompanyDetailsResponse;
+import eu.europa.ec.bris.jaxb.components.aggregate.v1_4.DocumentType;
 import org.apache.commons.lang3.StringUtils;
 
 import org.apache.commons.text.RandomStringGenerator;
