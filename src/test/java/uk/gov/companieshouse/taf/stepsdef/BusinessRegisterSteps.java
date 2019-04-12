@@ -3,6 +3,7 @@ package uk.gov.companieshouse.taf.stepsdef;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import eu.europa.ec.bris.jaxb.br.generic.acknowledgement.template.br.addition.v2_0.AddBusinessRegisterAcknowledgementTemplateType;
+import eu.europa.ec.bris.jaxb.br.generic.acknowledgement.template.br.removal.v2_0.RemoveBusinessRegisterAcknowledgementTemplateType;
 import eu.europa.ec.bris.jaxb.br.generic.acknowledgement.v2_0.BRAcknowledgement;
 import eu.europa.ec.bris.jaxb.components.basic.v1_4.DateTimeType;
 import eu.europa.ec.digit.message.container.jaxb.v1_0.MessageContainer;
@@ -10,7 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.companieshouse.taf.builders.AddBusinessRegisterBuilder;
-import uk.gov.companieshouse.taf.data.AddBusinessRegisterData;
+import uk.gov.companieshouse.taf.builders.RemoveBusinessRegisterBuilder;
+import uk.gov.companieshouse.taf.data.BusinessRegisterData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
 import uk.gov.companieshouse.taf.util.MessageContainerHelper;
@@ -29,7 +31,7 @@ public class BusinessRegisterSteps extends BrisSteps{
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDetailsRequestSteps.class);
 
     @Autowired
-    AddBusinessRegisterData data;
+    BusinessRegisterData data;
 
     @Autowired
     private SendBrisTestMessageService sendBrisMessageService;
@@ -57,6 +59,25 @@ public class BusinessRegisterSteps extends BrisSteps{
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
+    @Then("^the response will contain a RemoveBusinessRegisterAcknowledgementTemplateType$")
+    public void theResponseWillContainTheRemoveBusinessRegisterAcknowledgementTemplateType$() throws Throwable {
+        MessageContainer response = retrieveMessage
+                .checkForMessageByCorrelationId(data.getCorrelationId());
+        assertNotNull(response);
+
+        data.setBrNotificationResponse(response);
+
+        BRAcknowledgement brAcknowledgement = MessageContainerHelper.getObjectFromContainer(response);
+
+        RemoveBusinessRegisterAcknowledgementTemplateType template = (RemoveBusinessRegisterAcknowledgementTemplateType) brAcknowledgement.getAcknowledgementTemplate().getValue();
+
+        assertNotNull(template.getSendingDateTime());
+
+        // And assert that the header details are correct
+        CommonSteps.validateHeader(createBrisMessageHeaderType(response),
+                data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
+    }
+
 
     @Given("^I am creating an AddBrNotification with details$")
     public void makeAnAddBrNotification(List<String> brNotificationDetails) throws Exception {
@@ -66,10 +87,27 @@ public class BusinessRegisterSteps extends BrisSteps{
         DateTimeType dateTimeType = new DateTimeType();
         dateTimeType.setValue(getXMLGregorianCalendar(null));
         data.setNotificationDateTime(dateTimeType);
-        MessageContainer addBrNotification = AddBusinessRegisterBuilder.getBrNotification(data);
+        MessageContainer addBrNotification = AddBusinessRegisterBuilder.getAddBrNotification(data);
 
         data.setOutgoingBrisMessage(sendBrisMessageService
                 .createOutgoingBrisMessage(addBrNotification, data.getMessageId(), data.getCorrelationId()));
+
+        sendBrisMessageService.sendOutgoingBrisMessage(data.getOutgoingBrisMessage(),
+                data.getMessageId());
+    }
+
+    @Given("^I am creating a RemoveBrNotification with details$")
+    public void makeARemoveBrNotification(List<String> brNotificationDetails) throws Exception {
+
+        setDataFromUser(brNotificationDetails);
+
+        DateTimeType dateTimeType = new DateTimeType();
+        dateTimeType.setValue(getXMLGregorianCalendar(null));
+        data.setNotificationDateTime(dateTimeType);
+        MessageContainer removeBrNotification = RemoveBusinessRegisterBuilder.getRemoveBrNotification(data);
+
+        data.setOutgoingBrisMessage(sendBrisMessageService
+                .createOutgoingBrisMessage(removeBrNotification, data.getMessageId(), data.getCorrelationId()));
 
         sendBrisMessageService.sendOutgoingBrisMessage(data.getOutgoingBrisMessage(),
                 data.getMessageId());
