@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.companieshouse.taf.builders.CompanyDetailsRequestBuilder;
 import uk.gov.companieshouse.taf.data.CompanyDetailsRequestData;
-import uk.gov.companieshouse.taf.domain.ValidationError;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
 import uk.gov.companieshouse.taf.util.MessageContainerHelper;
@@ -452,23 +451,6 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
         // And assert that the header details are correct
         CommonSteps.validateHeader(createBrisMessageHeaderType(response),
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
-    }
-
-    /**
-     * Checks for a validation error. Validation errors are created upon schema validation.
-     */
-    @Then("^I should receive a validation error$")
-    public void shouldReceiveAValidationError() throws Throwable {
-        ValidationError validationError = retrieveMessage
-                .checkForMessageByCorrelationId(data.getCorrelationId());
-
-        assertNotNull(validationError);
-
-        // And assert that the header details are correct
-        CommonSteps.validateHeader(validationError.getHeader(),
-                data.getCorrelationId(),
-                data.getBusinessRegisterId(),
-                data.getCountryCode());
     }
 
     private boolean checkResponseContainsExpectedLabel(String explanatoryLabel,
