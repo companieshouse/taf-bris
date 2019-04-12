@@ -19,4 +19,4 @@ Feature: Schema validation of BRIS Company Details request messages
   Scenario: Business register country does not exist
     Given the request contains a business country GBP that does not exist
     When I make a company details request
-    Then I should receive a validation error
+    Then I should get a company details error message with the error code ERR_BR_5102

@@ -42,7 +42,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import uk.gov.companieshouse.taf.domain.IncomingBrisMessage;
-import uk.gov.companieshouse.taf.domain.ValidationError;
 
 @Component
 public class RetrieveBrisTestMessageService {
@@ -161,8 +160,7 @@ public class RetrieveBrisTestMessageService {
                 Acknowledgement.class,
                 DeliveryBody.class,
                 SubmissionBody.class,
-                SubmissionHeader.class,
-                ValidationError.class);
+                SubmissionHeader.class);
 
         return context;
     }

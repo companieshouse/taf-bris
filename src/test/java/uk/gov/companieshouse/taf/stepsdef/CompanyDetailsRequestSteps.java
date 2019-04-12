@@ -10,7 +10,6 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-
 import java.util.List;
 import java.util.UUID;
 
@@ -27,7 +26,6 @@ import org.springframework.beans.factory.annotation.Value;
 
 import uk.gov.companieshouse.taf.builders.CompanyDetailsRequestBuilder;
 import uk.gov.companieshouse.taf.data.CompanyDetailsRequestData;
-import uk.gov.companieshouse.taf.domain.ValidationError;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
 
@@ -442,23 +440,6 @@ public class CompanyDetailsRequestSteps {
         // And assert that the header details are correct
         CommonSteps.validateHeader(response.getMessageHeader(),
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
-    }
-
-    /**
-     * Checks for a validation error. Validation errors are created upon schema validation.
-     */
-    @Then("^I should receive a validation error$")
-    public void shouldReceiveAValidationError() throws Throwable {
-        ValidationError validationError = retrieveMessage
-                .checkForMessageByCorrelationId(data.getCorrelationId());
-
-        assertNotNull(validationError);
-
-        // And assert that the header details are correct
-        CommonSteps.validateHeader(validationError.getMessageHeader(),
-                data.getCorrelationId(),
-                data.getBusinessRegisterId(),
-                data.getCountryCode());
     }
 
     private boolean checkResponseContainsExpectedLabel(String explanatoryLabel,
