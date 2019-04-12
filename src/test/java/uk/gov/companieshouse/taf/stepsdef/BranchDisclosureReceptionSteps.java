@@ -13,7 +13,7 @@ import uk.gov.companieshouse.taf.data.BranchDisclosureReceptionData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
 
-public class BranchDisclosureReceptionSteps {
+public class BranchDisclosureReceptionSteps extends BrisSteps {
 
     @Autowired
     private BranchDisclosureReceptionData data;
@@ -89,7 +89,7 @@ public class BranchDisclosureReceptionSteps {
         assertNotNull(ack);
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(ack.getMessageHeader(), data.getCorrelationId(),
+        CommonSteps.validateHeader(createBrisMessageHeaderType(ack), data.getCorrelationId(),
                 data.getBusinessRegisterId(), data.getCountryCode());
     }
 }

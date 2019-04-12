@@ -1,35 +1,40 @@
 package uk.gov.companieshouse.taf.stepsdef;
 
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertNull;
-import static junit.framework.TestCase.assertTrue;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
-import static org.springframework.util.CollectionUtils.isEmpty;
-
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-
-import java.util.List;
-import java.util.UUID;
-
 import eu.europa.ec.bris.jaxb.br.company.details.request.v1_4.BRCompanyDetailsRequest;
-import eu.europa.ec.bris.jaxb.br.company.details.response.v1_4.BRCompanyDetailsResponse;
-import eu.europa.ec.bris.jaxb.components.aggregate.v1_4.DocumentType;
+import eu.europa.ec.bris.jaxb.br.company.details.response.v2_0.BRCompanyDetailsResponse;
+import eu.europa.ec.bris.jaxb.components.aggregate.v1_5.Documents;
+import eu.europa.ec.digit.message.container.jaxb.v1_0.MessageContainer;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.StringUtils;
-
 import org.apache.commons.text.RandomStringGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-
 import uk.gov.companieshouse.taf.builders.CompanyDetailsRequestBuilder;
 import uk.gov.companieshouse.taf.data.CompanyDetailsRequestData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
 
-public class CompanyDetailsRequestSteps {
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.UUID;
+
+import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertNull;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.springframework.test.util.AssertionErrors.assertEquals;
+import static org.springframework.util.CollectionUtils.isEmpty;
+
+public class CompanyDetailsRequestSteps extends BrisSteps {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDetailsRequestSteps.class);
 
@@ -290,14 +295,14 @@ public class CompanyDetailsRequestSteps {
      */
     @Then("^the correct company details will be returned to the ECP$")
     public void theCorrectCompanyDetailsWillBeReturnedToTheEcp() throws Throwable {
-        BRCompanyDetailsResponse response = retrieveMessage
+        MessageContainer response = retrieveMessage
                 .checkForMessageByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
 
         data.setCompanyDetailsResponse(response);
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(response.getMessageHeader(),
+        CommonSteps.validateHeader(createBrisMessageHeaderType(response),
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
@@ -309,13 +314,15 @@ public class CompanyDetailsRequestSteps {
     @Then("^the company details response will have the legal entity code ([^\"]*)$")
     public void theCompanyDetailsResponseWillHaveTheLegalEntityCode(String legalEntity)
             throws Throwable {
-        BRCompanyDetailsResponse response = data.getCompanyDetailsResponse();
+        MessageContainer response = data.getCompanyDetailsResponse();
+
+        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response);
 
         assertEquals("The Legal Entity ID is incorrect: ", legalEntity,
-                response.getCompany().getCompanyLegalForm().getValue());
+                brCompanyDetailsResponse.getCompany().getLegalFormCode().getValue());
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(response.getMessageHeader(),
+        CommonSteps.validateHeader(createBrisMessageHeaderType(response),
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
@@ -334,14 +341,16 @@ public class CompanyDetailsRequestSteps {
      */
     @Then("^the response will contain a valid formed EUID$")
     public void theResponseWillContainAValidFormedEuid() throws Throwable {
-        BRCompanyDetailsResponse response = data.getCompanyDetailsResponse();
+        MessageContainer response = data.getCompanyDetailsResponse();
+
+        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response);
 
         assertEquals("Expected EUID is incorrect: ", String.format("UKEW.%s",
                 data.getCompanyNumber()),
-                response.getCompany().getCompanyEUID().getValue());
+                brCompanyDetailsResponse.getCompany().getCompanyEUID().getValue());
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(response.getMessageHeader(),
+        CommonSteps.validateHeader(createBrisMessageHeaderType(response),
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
@@ -352,18 +361,20 @@ public class CompanyDetailsRequestSteps {
      */
     @Then("^the response will contain the company details for ([^\"]*)$")
     public void theResponseWillContainTheCompanyDetails(String companyNumber) throws Throwable {
-        BRCompanyDetailsResponse response = retrieveMessage
+        MessageContainer response = retrieveMessage
                 .checkForMessageByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
 
         data.setCompanyDetailsResponse(response);
 
-        assertNotNull(response.getCompany().getCompanyRegistrationNumber());
+        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response);
+
+        assertNotNull(brCompanyDetailsResponse.getCompany().getCompanyRegistrationNumber());
         assertEquals("Expected Company Number appears incorrect: ", companyNumber,
-                response.getCompany().getCompanyRegistrationNumber().getValue());
+                brCompanyDetailsResponse.getCompany().getCompanyRegistrationNumber().getValue());
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(response.getMessageHeader(),
+        CommonSteps.validateHeader(createBrisMessageHeaderType(response),
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
@@ -375,22 +386,24 @@ public class CompanyDetailsRequestSteps {
     @Then("^the response should have the following address details$")
     public void theResponseShouldHaveTheFollowingAddressDetails(List<String> addressDetails)
             throws Throwable {
-        BRCompanyDetailsResponse response = data.getCompanyDetailsResponse();
+        MessageContainer response = data.getCompanyDetailsResponse();
+
+        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response);
 
         assertEquals("Expected Postal code is incorrect: ", addressDetails.get(0),
-                response.getCompany().getCompanyRegisteredOffice().getPostalCode().getValue());
+                brCompanyDetailsResponse.getCompany().getRegisteredOffice().getPostalCode().getValue());
 
         assertEquals("Expected Address Line 1 is incorrect: ", addressDetails.get(1),
-                response.getCompany().getCompanyRegisteredOffice().getAddressLine1().getValue());
+                brCompanyDetailsResponse.getCompany().getRegisteredOffice().getAddressLine1().getValue());
 
         assertEquals("Expected Address Line 2 is incorrect: ", addressDetails.get(2),
-                response.getCompany().getCompanyRegisteredOffice().getAddressLine2().getValue());
+                brCompanyDetailsResponse.getCompany().getRegisteredOffice().getAddressLine2().getValue());
 
         assertEquals("Expected Address Line 3 is incorrect: ", addressDetails.get(3),
-                response.getCompany().getCompanyRegisteredOffice().getAddressLine3().getValue());
+                brCompanyDetailsResponse.getCompany().getRegisteredOffice().getAddressLine3().getValue());
 
         assertEquals("Expected Country is incorrect: ", addressDetails.get(4),
-                response.getCompany().getCompanyRegisteredOffice().getCountry().getValue());
+                brCompanyDetailsResponse.getCompany().getRegisteredOffice().getCountry().getValue());
     }
 
     /**
@@ -403,15 +416,17 @@ public class CompanyDetailsRequestSteps {
     @Then("^the response will contain the explanatory label ([^\"]*)$")
     public void theResponseWillContainTheExplanatoryLabel(String explanatoryLabel)
             throws Throwable {
-        BRCompanyDetailsResponse response = retrieveMessage
+        MessageContainer response = retrieveMessage
                 .checkForMessageByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
 
+        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response);
+
         assertTrue("The label does not match.",
-                checkResponseContainsExpectedLabel(explanatoryLabel, response));
+                checkResponseContainsExpectedLabel(explanatoryLabel, brCompanyDetailsResponse));
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(response.getMessageHeader(),
+        CommonSteps.validateHeader(createBrisMessageHeaderType(response),
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
@@ -420,31 +435,33 @@ public class CompanyDetailsRequestSteps {
      */
     @Then("^the response will not include the details of the restricted document$")
     public void theResponseWillNotIncludeTheDetailsOfTheRestrictedDocument() throws Throwable {
-        BRCompanyDetailsResponse response = retrieveMessage
+        MessageContainer response = retrieveMessage
                 .checkForMessageByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
 
+        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response);
+
         // Ensure the response contains documents
-        assertNotNull(response.getDocuments());
-        assertTrue("There are no documents in this response",
-                !isEmpty(response.getDocuments().getDocument()));
+        assertNotNull(brCompanyDetailsResponse.getDocuments());
+        assertFalse("There are no documents in this response",
+                isEmpty(brCompanyDetailsResponse.getDocuments().getDocument()));
 
         // Check the expected amount of documents
         assertEquals("Incorrect document count.", 1,
-                response.getDocuments().getDocument().size());
+                brCompanyDetailsResponse.getDocuments().getDocument().size());
         // Assert that the document is the expected document
         assertEquals("Incorrect document attached.", "EL_UK_011",
-                response.getDocuments().getDocument().get(0).getCompanyItem()
+                brCompanyDetailsResponse.getDocuments().getDocument().get(0).getCompanyItem()
                         .getCompanyItemExplanatoryLabel().getValue());
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(response.getMessageHeader(),
+        CommonSteps.validateHeader(createBrisMessageHeaderType(response),
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
     private boolean checkResponseContainsExpectedLabel(String explanatoryLabel,
                                                        BRCompanyDetailsResponse response) {
-        for (DocumentType documentType : response.getDocuments().getDocument()) {
+        for (Documents.Document documentType : response.getDocuments().getDocument()) {
             final String label = documentType.getCompanyItem()
                     .getCompanyItemExplanatoryLabel().getValue();
             LOGGER.info("Label Text: {}", label);
@@ -454,4 +471,25 @@ public class CompanyDetailsRequestSteps {
         }
         return false;
     }
+
+    @SuppressWarnings("unchecked")
+    protected <E> E getObjectFromContainer(MessageContainer messageContainer) throws Exception {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        messageContainer.getContainerBody().getMessageContent().getValue().writeTo(output);
+        String xmlMessage = new String(output.toByteArray(), StandardCharsets.UTF_8);
+        return (E) unmarshall(xmlMessage);
+    }
+
+    protected Object unmarshall(String messageString) throws JAXBException {
+        JAXBContext jc = getJaxbContext();
+        Unmarshaller unmarshaller = jc.createUnmarshaller();
+
+        StringReader json = new StringReader(messageString);
+        return unmarshaller.unmarshal(json);
+    }
+
+    protected JAXBContext getJaxbContext() throws JAXBException {
+        return JAXBContext.newInstance(BRCompanyDetailsResponse.class, MessageContainer.class);
+    }
+
 }

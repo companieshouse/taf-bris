@@ -21,7 +21,7 @@ import uk.gov.companieshouse.taf.util.NotificationApiHelper;
 /**
  * Implementation of Update LED steps.
  */
-public class UpdateLedSteps {
+public class UpdateLedSteps extends BrisSteps {
 
     private static final String RESPONSE_MESSAGE = "response_message";
     private static final String MESSAGE_ID = "message_id";
@@ -90,7 +90,7 @@ public class UpdateLedSteps {
                 UPDATE_TYPE));
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(request.getMessageHeader(),
+        CommonSteps.validateHeader(createBrisMessageHeaderType(request),
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 }

@@ -18,7 +18,7 @@ import uk.gov.companieshouse.taf.data.CrossBorderMergerNotificationData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
 
-public class CrossBorderMergerReceptionSteps {
+public class CrossBorderMergerReceptionSteps extends BrisSteps {
 
     @Autowired
     @Qualifier("CrossBorderMergerNotification")
@@ -215,7 +215,7 @@ public class CrossBorderMergerReceptionSteps {
         assertNotNull(ack);
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(ack.getMessageHeader(), data.getCorrelationId(),
+        CommonSteps.validateHeader(createBrisMessageHeaderType(ack), data.getCorrelationId(),
                 data.getBusinessRegisterId(), data.getCountryCode());
 
     }

@@ -28,6 +28,7 @@ import eu.europa.ec.bris.jaxb.br.led.update.request.v1_4.BRUpdateLEDRequest;
 import eu.europa.ec.bris.jaxb.br.led.update.response.v1_4.BRUpdateLEDStatus;
 import eu.europa.ec.bris.jaxb.br.subscription.request.v1_4.BRManageSubscriptionRequest;
 import eu.europa.ec.bris.jaxb.br.subscription.response.v1_4.BRManageSubscriptionStatus;
+import eu.europa.ec.digit.message.container.jaxb.v1_0.MessageContainer;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,6 +66,7 @@ public class RetrieveBrisTestMessageService {
      * @param correlationId the message id to be retrieved
      * @return T the object retrieved from MongoDB
      */
+    @SuppressWarnings("unchecked")
     public <T> T checkForMessageByCorrelationId(String correlationId) throws Exception {
         IncomingBrisMessage incomingBrisMessage = getIncomingBrisMessageFromMongo(correlationId);
 
@@ -74,6 +76,7 @@ public class RetrieveBrisTestMessageService {
             JAXBContext jaxbContext = getJaxbContext();
             StringReader reader = new StringReader(incomingBrisMessage.getMessage());
             Object obj = jaxbContext.createUnmarshaller().unmarshal(reader);
+
             return (T) obj;
         }
 
@@ -160,7 +163,8 @@ public class RetrieveBrisTestMessageService {
                 Acknowledgement.class,
                 DeliveryBody.class,
                 SubmissionBody.class,
-                SubmissionHeader.class);
+                SubmissionHeader.class,
+                MessageContainer.class);
 
         return context;
     }

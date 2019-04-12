@@ -19,7 +19,7 @@ import uk.gov.companieshouse.taf.data.MergingCompanyData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.util.NotificationApiHelper;
 
-public class CrossBorderMergerNotificationSteps {
+public class CrossBorderMergerNotificationSteps extends BrisSteps{
 
     private static final String CROSS_BORDER_MERGER_CONTEXT = "cross-border-merger";
     private static final String RESPONSE_MESSAGE = "response_message";
@@ -144,7 +144,8 @@ public class CrossBorderMergerNotificationSteps {
 
 
         // And assert that the header details are correct
-        CommonSteps.validateHeader(request.getMessageHeader(),
+        CommonSteps.validateHeader(createBrisMessageHeaderType(request),
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
+
 }

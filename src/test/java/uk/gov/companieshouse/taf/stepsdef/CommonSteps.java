@@ -6,11 +6,13 @@ import static org.springframework.test.util.AssertionErrors.assertEquals;
 import cucumber.api.java.en.Then;
 import eu.europa.ec.bris.jaxb.br.components.aggregate.v1_4.MessageHeaderType;
 import eu.europa.ec.bris.jaxb.br.error.v1_4.BRBusinessError;
+import eu.europa.ec.digit.message.container.jaxb.v1_0.MessageContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.companieshouse.taf.data.BranchDisclosureReceptionData;
 import uk.gov.companieshouse.taf.data.CompanyDetailsRequestData;
 import uk.gov.companieshouse.taf.data.CrossBorderMergerNotificationData;
 import uk.gov.companieshouse.taf.data.DocumentRequestData;
+import uk.gov.companieshouse.taf.domain.BrisMessageHeaderType;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 
 public class CommonSteps {
@@ -69,21 +71,21 @@ public class CommonSteps {
     /**
      Check that the message header is as expected.
      */
-    static void validateHeader(MessageHeaderType messageHeader,
-            String correlationId,
-            String businessRegisterId,
-            String countryCode) {
+    static void validateHeader(BrisMessageHeaderType messageHeader,
+                               String correlationId,
+                               String businessRegisterId,
+                               String countryCode) {
         assertEquals("Correlation ID in header is not as expected",
                 correlationId,
-                messageHeader.getCorrelationID().getValue());
+                messageHeader.getCorrelationId());
 
         assertEquals("Business Register ID in header is not as expected",
                 businessRegisterId,
-                messageHeader.getBusinessRegisterReference().getBusinessRegisterID().getValue());
+                messageHeader.getBusinessRegisterId());
 
         assertEquals("Business Register Country in header is not as expected",
                 countryCode,
-                messageHeader.getBusinessRegisterReference()
-                        .getBusinessRegisterCountry().getValue());
+                messageHeader.getBusinessRegisterCountry());
     }
+    
 }
