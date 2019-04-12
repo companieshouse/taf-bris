@@ -84,9 +84,7 @@ public class BusinessRegisterSteps extends BrisSteps{
 
         setDataFromUser(brNotificationDetails);
 
-        DateTimeType dateTimeType = new DateTimeType();
-        dateTimeType.setValue(getXMLGregorianCalendar(null));
-        data.setNotificationDateTime(dateTimeType);
+
         MessageContainer addBrNotification = AddBusinessRegisterBuilder.getAddBrNotification(data);
 
         data.setOutgoingBrisMessage(sendBrisMessageService
@@ -101,9 +99,6 @@ public class BusinessRegisterSteps extends BrisSteps{
 
         setDataFromUser(brNotificationDetails);
 
-        DateTimeType dateTimeType = new DateTimeType();
-        dateTimeType.setValue(getXMLGregorianCalendar(null));
-        data.setNotificationDateTime(dateTimeType);
         MessageContainer removeBrNotification = RemoveBusinessRegisterBuilder.getRemoveBrNotification(data);
 
         data.setOutgoingBrisMessage(sendBrisMessageService
@@ -113,7 +108,7 @@ public class BusinessRegisterSteps extends BrisSteps{
                 data.getMessageId());
     }
 
-    private void setDataFromUser(List<String> brNotificationDetails){
+    private void setDataFromUser(List<String> brNotificationDetails) throws Exception {
 
         //set data from user
         String companyNumber = brNotificationDetails.get(0);
@@ -122,6 +117,7 @@ public class BusinessRegisterSteps extends BrisSteps{
         String businessRegisterId = brNotificationDetails.get(3);
         String countryCode = brNotificationDetails.get(4);
         String registerName = brNotificationDetails.get(5);
+        String notificatioDateTime = brNotificationDetails.get(6);
 
         if(companyNumber.equals("NULL")){
             data.setCompanyNumber(null);
@@ -157,6 +153,14 @@ public class BusinessRegisterSteps extends BrisSteps{
             data.setRegisterName(null);
         }else if(!registerName.equals("")){
             data.setRegisterName(registerName);
+        }
+
+        if(notificatioDateTime.equals("NULL")){
+            data.setNotificationDateTime(null);
+        }else {
+            DateTimeType dateTimeType = new DateTimeType();
+            dateTimeType.setValue(getXMLGregorianCalendar(null));
+            data.setNotificationDateTime(dateTimeType);
         }
     }
 
