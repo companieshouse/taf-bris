@@ -21,7 +21,7 @@ import uk.gov.companieshouse.taf.util.NotificationApiHelper;
 /**
  * Implementation of Update LED steps.
  */
-public class UpdateLedSteps extends BrisSteps{
+public class UpdateLedSteps extends BrisSteps {
 
     private static final String RESPONSE_MESSAGE = "response_message";
     private static final String MESSAGE_ID = "message_id";

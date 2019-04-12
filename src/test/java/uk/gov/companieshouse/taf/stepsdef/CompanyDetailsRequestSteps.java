@@ -30,10 +30,11 @@ import java.util.UUID;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertNull;
 import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
-public class CompanyDetailsRequestSteps extends BrisSteps{
+public class CompanyDetailsRequestSteps extends BrisSteps {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDetailsRequestSteps.class);
 
@@ -315,7 +316,7 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
             throws Throwable {
         MessageContainer response = data.getCompanyDetailsResponse();
 
-        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response,BRCompanyDetailsResponse.class);
+        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response);
 
         assertEquals("The Legal Entity ID is incorrect: ", legalEntity,
                 brCompanyDetailsResponse.getCompany().getLegalFormCode().getValue());
@@ -342,7 +343,7 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
     public void theResponseWillContainAValidFormedEuid() throws Throwable {
         MessageContainer response = data.getCompanyDetailsResponse();
 
-        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response, BRCompanyDetailsResponse.class);
+        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response);
 
         assertEquals("Expected EUID is incorrect: ", String.format("UKEW.%s",
                 data.getCompanyNumber()),
@@ -366,7 +367,7 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
 
         data.setCompanyDetailsResponse(response);
 
-        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response, BRCompanyDetailsResponse.class);
+        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response);
 
         assertNotNull(brCompanyDetailsResponse.getCompany().getCompanyRegistrationNumber());
         assertEquals("Expected Company Number appears incorrect: ", companyNumber,
@@ -387,7 +388,7 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
             throws Throwable {
         MessageContainer response = data.getCompanyDetailsResponse();
 
-        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response, BRCompanyDetailsResponse.class);
+        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response);
 
         assertEquals("Expected Postal code is incorrect: ", addressDetails.get(0),
                 brCompanyDetailsResponse.getCompany().getRegisteredOffice().getPostalCode().getValue());
@@ -419,7 +420,7 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
                 .checkForMessageByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
 
-        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response, BRCompanyDetailsResponse.class);
+        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response);
 
         assertTrue("The label does not match.",
                 checkResponseContainsExpectedLabel(explanatoryLabel, brCompanyDetailsResponse));
@@ -438,12 +439,12 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
                 .checkForMessageByCorrelationId(data.getCorrelationId());
         assertNotNull(response);
 
-        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response, BRCompanyDetailsResponse.class);
+        BRCompanyDetailsResponse brCompanyDetailsResponse = getObjectFromContainer(response);
 
         // Ensure the response contains documents
         assertNotNull(brCompanyDetailsResponse.getDocuments());
-        assertTrue("There are no documents in this response",
-                !isEmpty(brCompanyDetailsResponse.getDocuments().getDocument()));
+        assertFalse("There are no documents in this response",
+                isEmpty(brCompanyDetailsResponse.getDocuments().getDocument()));
 
         // Check the expected amount of documents
         assertEquals("Incorrect document count.", 1,
@@ -471,8 +472,8 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
         return false;
     }
 
-
-    protected <E> E getObjectFromContainer(MessageContainer messageContainer, Class<E> clazz) throws Exception {
+    @SuppressWarnings("unchecked")
+    protected <E> E getObjectFromContainer(MessageContainer messageContainer) throws Exception {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         messageContainer.getContainerBody().getMessageContent().getValue().writeTo(output);
         String xmlMessage = new String(output.toByteArray(), StandardCharsets.UTF_8);
@@ -488,9 +489,7 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
     }
 
     protected JAXBContext getJaxbContext() throws JAXBException {
-        JAXBContext context = JAXBContext.newInstance(BRCompanyDetailsResponse.class, MessageContainer.class);
-
-        return context;
+        return JAXBContext.newInstance(BRCompanyDetailsResponse.class, MessageContainer.class);
     }
 
 }

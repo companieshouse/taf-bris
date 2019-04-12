@@ -17,7 +17,7 @@ import uk.gov.companieshouse.taf.data.ManageSubscriptionData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.util.NotificationApiHelper;
 
-public class ManageSubscriptionNotificationSteps extends BrisSteps{
+public class ManageSubscriptionNotificationSteps extends BrisSteps {
 
     private static final String MANAGE_SUBSCRIPTION_CONTEXT = "manage-subscription";
     private static final String RESPONSE_MESSAGE = "response_message";

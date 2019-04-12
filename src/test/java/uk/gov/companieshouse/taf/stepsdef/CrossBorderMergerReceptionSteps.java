@@ -18,7 +18,7 @@ import uk.gov.companieshouse.taf.data.CrossBorderMergerNotificationData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
 
-public class CrossBorderMergerReceptionSteps extends BrisSteps{
+public class CrossBorderMergerReceptionSteps extends BrisSteps {
 
     @Autowired
     @Qualifier("CrossBorderMergerNotification")

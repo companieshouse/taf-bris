@@ -21,7 +21,7 @@ import uk.gov.companieshouse.taf.data.DocumentRequestData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
 
-public class DocumentRequestSteps extends BrisSteps{
+public class DocumentRequestSteps extends BrisSteps {
     private static final String BUSINESS_REGISTER_ID = "EW";
     private static final String BUSINESS_REGISTER_COUNTRY = "UK";
 

@@ -66,6 +66,7 @@ public class RetrieveBrisTestMessageService {
      * @param correlationId the message id to be retrieved
      * @return T the object retrieved from MongoDB
      */
+    @SuppressWarnings("unchecked")
     public <T> T checkForMessageByCorrelationId(String correlationId) throws Exception {
         IncomingBrisMessage incomingBrisMessage = getIncomingBrisMessageFromMongo(correlationId);
 
@@ -75,7 +76,6 @@ public class RetrieveBrisTestMessageService {
             JAXBContext jaxbContext = getJaxbContext();
             StringReader reader = new StringReader(incomingBrisMessage.getMessage());
             Object obj = jaxbContext.createUnmarshaller().unmarshal(reader);
-
 
             return (T) obj;
         }

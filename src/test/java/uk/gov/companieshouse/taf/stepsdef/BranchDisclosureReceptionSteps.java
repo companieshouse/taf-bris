@@ -13,7 +13,7 @@ import uk.gov.companieshouse.taf.data.BranchDisclosureReceptionData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.service.SendBrisTestMessageService;
 
-public class BranchDisclosureReceptionSteps extends BrisSteps{
+public class BranchDisclosureReceptionSteps extends BrisSteps {
 
     @Autowired
     private BranchDisclosureReceptionData data;
