@@ -16,7 +16,7 @@ import uk.gov.companieshouse.taf.data.BranchDisclosureNotificationData;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
 import uk.gov.companieshouse.taf.util.NotificationApiHelper;
 
-public class BranchDisclosureNotificationSteps extends BrisSteps{
+public class BranchDisclosureNotificationSteps extends BrisSteps {
 
     private static final String BRANCH_DISCLOSURE_CONTEXT = "branch-disclosure";
     private static final String RESPONSE_MESSAGE = "response_message";
