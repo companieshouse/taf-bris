@@ -483,5 +483,4 @@ public class CompanyDetailsRequestSteps extends BrisSteps{
         }
         return false;
     }
-
 }
