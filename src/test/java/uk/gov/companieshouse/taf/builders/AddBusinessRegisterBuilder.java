@@ -8,13 +8,13 @@ import eu.europa.ec.bris.jaxb.components.basic.v1_4.CountryType;
 import eu.europa.ec.bris.jaxb.components.basic.v1_4.LanguageCodeType;
 import eu.europa.ec.bris.jaxb.components.basic.v1_4.LocalisedBusinessRegisterNameType;
 import eu.europa.ec.digit.message.container.jaxb.v1_0.MessageContainer;
-import uk.gov.companieshouse.taf.data.AddBusinessRegisterData;
+import uk.gov.companieshouse.taf.data.BusinessRegisterData;
 
 import javax.xml.bind.JAXBElement;
 
-public class AddBusinessRegisterBuilder extends MessageContainerBuilder{
+public class AddBusinessRegisterBuilder{
 
-    public static MessageContainer getBrNotification(AddBusinessRegisterData data) throws Exception {
+    public static MessageContainer getAddBrNotification(BusinessRegisterData data) throws Exception {
 
         BRNotification brNotification = new BRNotification();
 
@@ -28,30 +28,25 @@ public class AddBusinessRegisterBuilder extends MessageContainerBuilder{
         CountryType countryType = new CountryType();
         countryType.setValue(data.getCountryCode());
         BusinessRegisterCodeType businessRegisterCodeType = new BusinessRegisterCodeType();
-        businessRegisterCodeType.setValue(data.getRegisterName());
+        businessRegisterCodeType.setValue(data.getBusinessRegisterId());
 
         BusinessRegisterType businessRegisterType = new BusinessRegisterType();
         businessRegisterType.setBusinessRegisterCountry(countryType);
         businessRegisterType.setBusinessRegisterCode(businessRegisterCodeType);
 
-
         LocalisedBusinessRegisterNameType englishName = createBusinessRegisterName(LanguageCodeType.EN.value(),
-                "The new register");
+                data.getRegisterName());
         businessRegisterType.getLocalisedBusinessRegisterName().add(englishName);
-
         LocalisedBusinessRegisterNameType otherName = createBusinessRegisterName(LanguageCodeType.ES.value(),
                 "El nuevo registro");
         businessRegisterType.getLocalisedBusinessRegisterName().add(otherName);
-
-
         template.getValue().setBusinessRegister(businessRegisterType);
-
         //set notification date
         template.getValue().setNotificationDateTime(data.getNotificationDateTime());
 
         brNotification.setNotificationTemplate(template);
 
-        return createMessageContainer(brNotification, data.getMessageId(), data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode(), null);
+        return MessageContainerBuilder.createMessageContainer(brNotification, data, null);
     }
 
     private static LocalisedBusinessRegisterNameType createBusinessRegisterName(String languageId,
