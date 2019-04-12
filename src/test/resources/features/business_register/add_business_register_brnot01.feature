@@ -11,37 +11,37 @@ Given a AddBusinessRegister Notification is sent to the BR
 When the given AddBusinessRegister Notification fails validation BR-NOT-01
 Then a BR-BusinessError is sent to the ECP with error code ERR_BR_0901
 
-    #  companyNumber, messageId, correlationId ,businessRegisterId ,countryCode, registerName
+    #  companyNumber, messageId, correlationId ,businessRegisterId ,countryCode, registerName, notificationDateTime
     #  leave blank to keep default
     #  set to "NULL" to set as null
     Scenario: I am creating an AddBrNotification
       Given I am creating an AddBrNotification with details
-        | | | | | | |
+        | | | | | | | |
       Then the response will contain an AddBusinessRegisterAcknowledgementTemplateType
 
 
-    #  companyNumber, messageId, correlationId ,ReceiverBusinessRegisterId , ReceiverCountryCode, registerName
+    #  companyNumber, messageId, correlationId ,ReceiverBusinessRegisterId , ReceiverCountryCode, registerName, notificationDateTime
     #  leave blank to keep default
     #  set to "NULL" to set as null
     Scenario: I am creating an AddBrNotification with different correlationID to message ID
       Given I am creating an AddBrNotification with details
-        | | | 123432432 | | | |
+        | | | 123432432 | | | | |
       Then I should get a add Br Notification error message with the error code ERR_BR_5103
 
 
-             #  companyNumber, messageId, correlationId ,ReceiverBusinessRegisterId , ReceiverCountryCode, registerName
+             #  companyNumber, messageId, correlationId ,ReceiverBusinessRegisterId , ReceiverCountryCode, registerName, notificationDateTime
     #  leave blank to keep default
     #  set to "NULL" to set as null
     Scenario: I am creating an AddBrNotification with NULL messageId
       Given I am creating an AddBrNotification with details
-        | |NULL |  | | | |
+        | |NULL |  | | | | |
       Then I should get a add Br Notification error message with the error code ERR_BR_5103
 
 
-      #  companyNumber, messageId, correlationId ,businessRegisterId ,countryCode, registerName
+      #  companyNumber, messageId, correlationId ,businessRegisterId ,countryCode, registerName, notificationDateTime
     #  leave blank to keep default
     #  set to "NULL" to set as null
     Scenario: I am creating a RemoveBrNotification
       Given I am creating a RemoveBrNotification with details
-        | | | | | | |
+        | | | | | | | |
       Then the response will contain a RemoveBusinessRegisterAcknowledgementTemplateType
