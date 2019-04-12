@@ -1,7 +1,6 @@
 package uk.gov.companieshouse.taf.util;
 
 import eu.europa.ec.bris.jaxb.br.company.details.response.v2_0.BRCompanyDetailsResponse;
-import eu.europa.ec.bris.jaxb.br.generic.acknowledgement.template.br.addition.v2_0.ObjectFactory;
 import eu.europa.ec.bris.jaxb.br.generic.acknowledgement.v2_0.BRAcknowledgement;
 import eu.europa.ec.digit.message.container.jaxb.v1_0.MessageContainer;
 import org.apache.commons.io.output.ByteArrayOutputStream;
@@ -30,7 +29,9 @@ public class MessageContainerHelper {
     }
 
     protected static JAXBContext getJaxbContext() throws JAXBException {
-        JAXBContext context = JAXBContext.newInstance(ObjectFactory.class, BRAcknowledgement.class, BRCompanyDetailsResponse.class, MessageContainer.class);
+        JAXBContext context = JAXBContext.newInstance(eu.europa.ec.bris.jaxb.br.generic.acknowledgement.template.br.addition.v2_0.ObjectFactory.class,
+                eu.europa.ec.bris.jaxb.br.generic.acknowledgement.template.br.removal.v2_0.ObjectFactory.class,
+                BRAcknowledgement.class, BRCompanyDetailsResponse.class, MessageContainer.class);
 
         return context;
     }

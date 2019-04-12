@@ -9,6 +9,7 @@ import eu.europa.ec.digit.message.container.jaxb.v1_0.MessageContainer;
 import eu.europa.ec.digit.message.container.jaxb.v1_0.MessageInfo;
 import eu.europa.ec.digit.message.container.jaxb.v1_0.PartyType;
 import org.springframework.stereotype.Component;
+import uk.gov.companieshouse.taf.data.BusinessRegisterData;
 
 import javax.activation.DataHandler;
 import javax.xml.bind.JAXBContext;
@@ -29,12 +30,11 @@ public class MessageContainerBuilder {
     private final static String RECEIVER_ID = "blue";
     private final static String SENDER_ID = "red";
 
-    public static MessageContainer createMessageContainer(Object response, String messageId, String correlationId,
-                                                          String recieverRegisterId, String recieverCountryCode, MessageInfo.TestData testData)
+    public static MessageContainer createMessageContainer(Object response, BusinessRegisterData data, MessageInfo.TestData testData)
                                                                     throws JAXBException, DatatypeConfigurationException {
 
         MessageContainer messageContainer = new MessageContainer();
-        messageContainer.setContainerHeader(createContainerHeader(messageId, correlationId, recieverRegisterId, recieverCountryCode, testData));
+        messageContainer.setContainerHeader(createContainerHeader(data, testData));
         messageContainer.setContainerBody(createContainerBody(response));
 
         return messageContainer;
@@ -73,20 +73,20 @@ public class MessageContainerBuilder {
         return writer.toString();
     }
 
-    private static ContainerHeader createContainerHeader(String messageId, String correlationId,String recieverRegisterId, String recieverCountryCode, MessageInfo.TestData testData) throws DatatypeConfigurationException {
+    private static ContainerHeader createContainerHeader(BusinessRegisterData data, MessageInfo.TestData testData) throws DatatypeConfigurationException {
 
         ContainerHeader containerHeader = new ContainerHeader();
-        containerHeader.setMessageInfo(createMessageInfo(messageId, correlationId, testData));
-        containerHeader.setAddressInfo(createAddressInfo(recieverRegisterId, recieverCountryCode));
+        containerHeader.setMessageInfo(createMessageInfo(data, testData));
+        containerHeader.setAddressInfo(createAddressInfo(data));
 
         return containerHeader;
     }
 
-    private static ContainerHeader.AddressInfo createAddressInfo(String recieverRegisterId, String recieverCountryCode){
+    private static ContainerHeader.AddressInfo createAddressInfo(BusinessRegisterData data){
 
         ContainerHeader.AddressInfo addressInfo = new ContainerHeader.AddressInfo();
         addressInfo.setSender(createPartyType(SENDER_ID,"BRA","AT"));
-        addressInfo.setReceiver(createPartyType(RECEIVER_ID, recieverRegisterId, recieverCountryCode));
+        addressInfo.setReceiver(createPartyType(RECEIVER_ID, data.getBusinessRegisterId(), data.getCountryCode()));
 
         return addressInfo;
     }
@@ -101,11 +101,11 @@ public class MessageContainerBuilder {
         return partyType;
     }
 
-    private static MessageInfo createMessageInfo(String messageId, String correlationId, MessageInfo.TestData testData) throws DatatypeConfigurationException {
+    private static MessageInfo createMessageInfo(BusinessRegisterData data, MessageInfo.TestData testData) throws DatatypeConfigurationException {
         MessageInfo messageInfo = new MessageInfo();
         messageInfo.setTestData(testData);
-        messageInfo.setMessageID(messageId);
-        messageInfo.setCorrelationID(correlationId);
+        messageInfo.setMessageID(data.getMessageId());
+        messageInfo.setCorrelationID(data.getCorrelationId());
 
         XMLGregorianCalendar xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar());;
         messageInfo.setTimestamp(xmlGregorianCalendar);

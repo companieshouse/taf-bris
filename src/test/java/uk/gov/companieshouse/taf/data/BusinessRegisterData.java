@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-@Qualifier("AddBusinessRegisterData")
-public class AddBusinessRegisterData extends RequestData {
+@Qualifier("BusinessRegisterData")
+public class BusinessRegisterData extends RequestData {
 
     private BRNotification brNotification;
 
