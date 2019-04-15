@@ -1,21 +1,18 @@
 package uk.gov.companieshouse.taf.stepsdef;
 
-import static junit.framework.TestCase.assertNotNull;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
-
 import cucumber.api.java.en.Then;
-import eu.europa.ec.bris.jaxb.br.components.aggregate.v1_4.MessageHeaderType;
 import eu.europa.ec.bris.jaxb.br.error.v1_4.BRBusinessError;
-import eu.europa.ec.digit.message.container.jaxb.v1_0.MessageContainer;
 import org.springframework.beans.factory.annotation.Autowired;
-import uk.gov.companieshouse.taf.data.BusinessRegisterData;
 import uk.gov.companieshouse.taf.data.BranchDisclosureReceptionData;
+import uk.gov.companieshouse.taf.data.BusinessRegisterData;
 import uk.gov.companieshouse.taf.data.CompanyDetailsRequestData;
 import uk.gov.companieshouse.taf.data.CrossBorderMergerNotificationData;
 import uk.gov.companieshouse.taf.data.DocumentRequestData;
 import uk.gov.companieshouse.taf.domain.BrisMessageHeaderType;
-import uk.gov.companieshouse.taf.domain.ValidationError;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
+
+import static junit.framework.TestCase.assertNotNull;
+import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 public class CommonSteps {
 
