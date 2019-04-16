@@ -23,6 +23,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static junit.framework.TestCase.assertNotNull;
 
@@ -119,48 +120,30 @@ public class BusinessRegisterSteps extends BrisSteps{
         String registerName = brNotificationDetails.get(5);
         String notificatioDateTime = brNotificationDetails.get(6);
 
-        if(companyNumber.equals("NULL")){
-            data.setCompanyNumber(null);
-        }else if(!companyNumber.equals("")){
-            data.setCompanyNumber(companyNumber);
-        }
+        setValue(companyNumber, data::setCompanyNumber);
+        setValue(messageId, data::setMessageId);
+        setValue(correlationId, data::setCorrelationId);
+        setValue(businessRegisterId, data::setBusinessRegisterId);
+        setValue(countryCode, data::setCountryCode);
+        setValue(registerName, data::setRegisterName);
 
-        if(messageId.equals("NULL")){
-            data.setMessageId(null);
-        }else if(!messageId.equals("")){
-            data.setMessageId(messageId);
-        }
-
-        if(correlationId.equals("NULL")){
-            data.setCorrelationId(null);
-        }else if(!correlationId.equals("")){
-            data.setCorrelationId(correlationId);
-        }
-
-        if(businessRegisterId.equals("NULL")){
-            data.setBusinessRegisterId(null);
-        }else if(!businessRegisterId.equals("")){
-            data.setBusinessRegisterId(businessRegisterId);
-        }
-
-        if(countryCode.equals("NULL")){
-            data.setCountryCode(null);
-        }else if(!countryCode.equals("")){
-            data.setCountryCode(countryCode);
-        }
-
-        if(registerName.equals("NULL")){
-            data.setRegisterName(null);
-        }else if(!registerName.equals("")){
-            data.setRegisterName(registerName);
-        }
-
+        //only allow user to set to null or current time
         if(notificatioDateTime.equals("NULL")){
             data.setNotificationDateTime(null);
         }else {
             DateTimeType dateTimeType = new DateTimeType();
             dateTimeType.setValue(getXMLGregorianCalendar(null));
             data.setNotificationDateTime(dateTimeType);
+        }
+    }
+
+    private void setValue(String value, Consumer<String> c) {
+        if(value.equals("NULL")){
+            c.accept(null);
+        }else if(value.equals("EMPTY")){
+            c.accept("");
+        }else if(!value.equals("")){
+            c.accept(value);
         }
     }
 
