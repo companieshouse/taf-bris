@@ -119,6 +119,8 @@ public class BusinessRegisterSteps extends BrisSteps{
         String countryCode = brNotificationDetails.get(4);
         String registerName = brNotificationDetails.get(5);
         String notificatioDateTime = brNotificationDetails.get(6);
+        String senderBusinessRegisterId = brNotificationDetails.get(7);
+        String senderCountryCode = brNotificationDetails.get(8);
 
         setValue(companyNumber, data::setCompanyNumber);
         setValue(messageId, data::setMessageId);
@@ -126,6 +128,8 @@ public class BusinessRegisterSteps extends BrisSteps{
         setValue(businessRegisterId, data::setBusinessRegisterId);
         setValue(countryCode, data::setCountryCode);
         setValue(registerName, data::setRegisterName);
+        setValue(senderBusinessRegisterId, data::setSenderBusinessRegisterId);
+        setValue(senderCountryCode, data::setSenderCountryCode);
 
         //only allow user to set to null or current time
         if(notificatioDateTime.equals("NULL")){

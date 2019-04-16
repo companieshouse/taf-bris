@@ -85,7 +85,7 @@ public class MessageContainerBuilder {
     private static ContainerHeader.AddressInfo createAddressInfo(BusinessRegisterData data){
 
         ContainerHeader.AddressInfo addressInfo = new ContainerHeader.AddressInfo();
-        addressInfo.setSender(createPartyType(SENDER_ID,"BRA","AT"));
+        addressInfo.setSender(createPartyType(SENDER_ID, data.getSenderBusinessRegisterId(), data.getSenderCountryCode()));
         addressInfo.setReceiver(createPartyType(RECEIVER_ID, data.getBusinessRegisterId(), data.getCountryCode()));
 
         return addressInfo;
