@@ -41,7 +41,7 @@ public class BusinessRegisterSteps extends BrisSteps{
     private RetrieveBrisTestMessageService retrieveMessage;
 
 
-    @Then("^the response will contain an AddBusinessRegisterAcknowledgementTemplateType$")
+    @Then("^the response will contain an Add Business Register Acknowledgement Template Type$")
     public void theResponseWillContainTheAddBusinessRegisterAcknowledgementTemplateType$() throws Throwable {
         MessageContainer response = retrieveMessage
                 .checkForMessageByCorrelationId(data.getCorrelationId());
@@ -60,7 +60,7 @@ public class BusinessRegisterSteps extends BrisSteps{
                 data.getCorrelationId(), data.getBusinessRegisterId(), data.getCountryCode());
     }
 
-    @Then("^the response will contain a RemoveBusinessRegisterAcknowledgementTemplateType$")
+    @Then("^the response will contain a Remove Business Register Acknowledgement Template Type$")
     public void theResponseWillContainTheRemoveBusinessRegisterAcknowledgementTemplateType$() throws Throwable {
         MessageContainer response = retrieveMessage
                 .checkForMessageByCorrelationId(data.getCorrelationId());
