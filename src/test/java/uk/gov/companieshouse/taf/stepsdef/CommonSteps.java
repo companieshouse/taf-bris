@@ -34,34 +34,40 @@ public class CommonSteps {
     @Autowired
     private BusinessRegisterData addBusinessRegisterData;
 
+    @Autowired
+    private BusinessRegisterData removeBusinessRegisterData;
+
     /**
      * Check the error message has been placed in MongoDB.
      */
     @Then("^I should get a "
-            + "(company details|document details|cross border merger|branch disclosure|add Br Notification) "
+            + "(company details|document details|cross border merger|branch disclosure|add Br Notification|remove Br Notification|) "
             + "error message with the error code ([^\"]*)$")
     public void theCorrectErrorWillBeReturnedToTheEcp(String errorType,
-                                                      String errorCode) throws Throwable {
+            String errorCode) throws Throwable {
         String messageId;
 
         switch (errorType) {
-            case "add Br Notification":
-                messageId = addBusinessRegisterData.getMessageId();
-                break;
-            case "company details":
-                messageId = companyDetailsRequestData.getMessageId();
-                break;
-            case "document details":
-                messageId = documentDetailsRequestData.getMessageId();
-                break;
-            case "cross border merger":
-                messageId = crossBorderMergerNotificationData.getMessageId();
-                break;
-            case "branch disclosure":
-                messageId = branchDisclosureReceptionData.getMessageId();
-                break;
-            default:
-                throw new RuntimeException(errorType + " is not a known error type");
+        case "add Br Notification":
+            messageId = addBusinessRegisterData.getMessageId();
+            break;
+        case "remove Br Notification":
+            messageId = removeBusinessRegisterData.getMessageId();
+            break;
+        case "company details":
+            messageId = companyDetailsRequestData.getMessageId();
+            break;
+        case "document details":
+            messageId = documentDetailsRequestData.getMessageId();
+            break;
+        case "cross border merger":
+            messageId = crossBorderMergerNotificationData.getMessageId();
+            break;
+        case "branch disclosure":
+            messageId = branchDisclosureReceptionData.getMessageId();
+            break;
+        default:
+            throw new RuntimeException(errorType + " is not a known error type");
         }
 
         // and now locate the message in MongoDB and validate it
@@ -74,12 +80,12 @@ public class CommonSteps {
     }
 
     /**
-     Check that the message header is as expected.
+     * Check that the message header is as expected.
      */
     static void validateHeader(BrisMessageHeaderType messageHeader,
-                               String correlationId,
-                               String businessRegisterId,
-                               String countryCode) {
+            String correlationId,
+            String businessRegisterId,
+            String countryCode) {
         assertEquals("Correlation ID in header is not as expected",
                 correlationId,
                 messageHeader.getCorrelationId());
