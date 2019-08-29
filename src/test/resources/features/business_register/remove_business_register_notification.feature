@@ -6,12 +6,13 @@ Feature: This story is to verify the ability of the BR to receive the AddBusines
   I would like an acknowledgement from the BR when I send an Remove Business Register Notification
   So that the BR's system complies with BRIS 2.0
 
-  #  companyNumber, messageId, correlationId ,ReceiverBusinessRegisterId , ReceiverCountryCode, registerName, NotificationDateTime, SenderBusinessRegisterId, SenderCountryCode
-  #  leave blank to keep default
-  #  set to "NULL" to set as null
-  #  set EMPTY for empty string
+  Information:
+  * Leave blank to keep default
+  * Set to "NULL" to set as null
+  * Set EMPTY for empty string
 
   Scenario: I am creating a RemoveBrNotification
     Given I am creating a RemoveBrNotification with details
-      |  |  |  |  |  |  |  |  |  |
+      | companyNumber | messageId | correlationId | receiverBusinessRegisterId | receiverCountryCode | registerName | notificationDateTime | senderBusinessRegisterId | senderCountryCode |
+      |               |           |               |                            |                     |              |                      |                          |                   |
     Then the response will contain a Remove Business Register Acknowledgement Template Type

@@ -1,6 +1,7 @@
 package uk.gov.companieshouse.taf.builders;
 
 import eu.europa.ec.bris.jaxb.br.generic.notification.template.br.addition.v2_0.AddBusinessRegisterNotificationTemplateType;
+import eu.europa.ec.bris.jaxb.br.generic.notification.template.br.addition.v2_0.ObjectFactory;
 import eu.europa.ec.bris.jaxb.br.generic.notification.v2_0.BRNotification;
 import eu.europa.ec.bris.jaxb.components.aggregate.v1_5.BusinessRegisterType;
 import eu.europa.ec.bris.jaxb.components.basic.v1_4.BusinessRegisterCodeType;
@@ -18,8 +19,7 @@ public class AddBusinessRegisterBuilder{
 
         BRNotification brNotification = new BRNotification();
 
-        eu.europa.ec.bris.jaxb.br.generic.notification.template.br.addition.v2_0.ObjectFactory objectFactory
-                = new eu.europa.ec.bris.jaxb.br.generic.notification.template.br.addition.v2_0.ObjectFactory();
+        ObjectFactory objectFactory = new ObjectFactory();
 
         AddBusinessRegisterNotificationTemplateType ackTemplate = objectFactory.createAddBusinessRegisterNotificationTemplateType();
         JAXBElement<? extends AddBusinessRegisterNotificationTemplateType> template = objectFactory.createAddBusinessRegisterNotificationTemplate(ackTemplate);

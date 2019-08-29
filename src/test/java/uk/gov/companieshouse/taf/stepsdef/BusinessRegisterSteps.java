@@ -1,5 +1,6 @@
 package uk.gov.companieshouse.taf.stepsdef;
 
+import cucumber.api.DataTable;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import eu.europa.ec.bris.jaxb.br.generic.acknowledgement.template.br.addition.v2_0.AddBusinessRegisterAcknowledgementTemplateType;
@@ -22,12 +23,12 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import static junit.framework.TestCase.assertNotNull;
 
-public class BusinessRegisterSteps extends BrisSteps{
+public class BusinessRegisterSteps extends BrisSteps {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDetailsRequestSteps.class);
 
@@ -81,7 +82,7 @@ public class BusinessRegisterSteps extends BrisSteps{
 
 
     @Given("^I am creating an AddBrNotification with details$")
-    public void makeAnAddBrNotification(List<String> brNotificationDetails) throws Exception {
+    public void makeAnAddBrNotification(DataTable brNotificationDetails) throws Exception {
 
         setDataFromUser(brNotificationDetails);
 
@@ -96,7 +97,7 @@ public class BusinessRegisterSteps extends BrisSteps{
     }
 
     @Given("^I am creating a RemoveBrNotification with details$")
-    public void makeARemoveBrNotification(List<String> brNotificationDetails) throws Exception {
+    public void makeARemoveBrNotification(DataTable brNotificationDetails) throws Exception {
 
         setDataFromUser(brNotificationDetails);
 
@@ -109,44 +110,47 @@ public class BusinessRegisterSteps extends BrisSteps{
                 data.getMessageId());
     }
 
-    private void setDataFromUser(List<String> brNotificationDetails) throws Exception {
+    private void setDataFromUser(DataTable brNotificationDetails) throws Exception {
 
-        //set data from user
-        String companyNumber = brNotificationDetails.get(0);
-        String messageId = brNotificationDetails.get(1) ;
-        String correlationId = brNotificationDetails.get(2);
-        String businessRegisterId = brNotificationDetails.get(3);
-        String countryCode = brNotificationDetails.get(4);
-        String registerName = brNotificationDetails.get(5);
-        String notificationDateTime = brNotificationDetails.get(6);
-        String senderBusinessRegisterId = brNotificationDetails.get(7);
-        String senderCountryCode = brNotificationDetails.get(8);
+        for (Map<String, String> testData : brNotificationDetails.asMaps(String.class, String.class)) {
 
-        setValue(companyNumber, data::setCompanyNumber);
-        setValue(messageId, data::setMessageId);
-        setValue(correlationId, data::setCorrelationId);
-        setValue(businessRegisterId, data::setBusinessRegisterId);
-        setValue(countryCode, data::setCountryCode);
-        setValue(registerName, data::setRegisterName);
-        setValue(senderBusinessRegisterId, data::setSenderBusinessRegisterId);
-        setValue(senderCountryCode, data::setSenderCountryCode);
+            //set data from user
+            String companyNumber = testData.get("companyNumber");
+            String messageId = testData.get("messageId");
+            String correlationId = testData.get("correlationId");
+            String businessRegisterId = testData.get("receiverBusinessRegisterId");
+            String countryCode = testData.get("receiverCountryCode");
+            String registerName = testData.get("registerName");
+            String notificationDateTime = testData.get("notificationDateTime");
+            String senderBusinessRegisterId = testData.get("senderBusinessRegisterId");
+            String senderCountryCode = testData.get("senderCountryCode");
 
-        //only allow user to set to null or current time
-        if(notificationDateTime.equals("NULL")){
-            data.setNotificationDateTime(null);
-        }else {
-            DateTimeType dateTimeType = new DateTimeType();
-            dateTimeType.setValue(getXMLGregorianCalendar(null));
-            data.setNotificationDateTime(dateTimeType);
+            setValue(companyNumber, data::setCompanyNumber);
+            setValue(messageId, data::setMessageId);
+            setValue(correlationId, data::setCorrelationId);
+            setValue(businessRegisterId, data::setBusinessRegisterId);
+            setValue(countryCode, data::setCountryCode);
+            setValue(registerName, data::setRegisterName);
+            setValue(senderBusinessRegisterId, data::setSenderBusinessRegisterId);
+            setValue(senderCountryCode, data::setSenderCountryCode);
+
+            //only allow user to set to null or current time
+            if (notificationDateTime.equals("NULL")) {
+                data.setNotificationDateTime(null);
+            } else {
+                DateTimeType dateTimeType = new DateTimeType();
+                dateTimeType.setValue(getXMLGregorianCalendar(null));
+                data.setNotificationDateTime(dateTimeType);
+            }
         }
     }
 
     private void setValue(String value, Consumer<String> c) {
-        if(value.equals("NULL")){
+        if (value.equals("NULL")) {
             c.accept(null);
-        }else if(value.equals("EMPTY")){
+        } else if (value.equals("EMPTY")) {
             c.accept("");
-        }else if(!value.equals("")){
+        } else if (!value.equals("")) {
             c.accept(value);
         }
     }
@@ -154,6 +158,7 @@ public class BusinessRegisterSteps extends BrisSteps{
     /**
      * Return date passed in as XMLGregorianCalendar
      * If date is null, return current date/time
+     *
      * @param date
      * @return XMLGregorianCalendar
      */
@@ -172,7 +177,5 @@ public class BusinessRegisterSteps extends BrisSteps{
         }
         return now;
     }
-
-
 
 }
