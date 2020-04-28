@@ -1,19 +1,18 @@
 package uk.gov.companieshouse.taf.stepsdef;
 
-import static junit.framework.TestCase.assertNotNull;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
-
 import cucumber.api.java.en.Then;
-import eu.europa.ec.bris.jaxb.br.components.aggregate.v1_4.MessageHeaderType;
 import eu.europa.ec.bris.jaxb.br.error.v1_4.BRBusinessError;
-import eu.europa.ec.digit.message.container.jaxb.v1_0.MessageContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.companieshouse.taf.data.BranchDisclosureReceptionData;
+import uk.gov.companieshouse.taf.data.BusinessRegisterData;
 import uk.gov.companieshouse.taf.data.CompanyDetailsRequestData;
 import uk.gov.companieshouse.taf.data.CrossBorderMergerNotificationData;
 import uk.gov.companieshouse.taf.data.DocumentRequestData;
 import uk.gov.companieshouse.taf.domain.BrisMessageHeaderType;
 import uk.gov.companieshouse.taf.service.RetrieveBrisTestMessageService;
+
+import static junit.framework.TestCase.assertNotNull;
+import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 public class CommonSteps {
 
@@ -32,31 +31,43 @@ public class CommonSteps {
     @Autowired
     private BranchDisclosureReceptionData branchDisclosureReceptionData;
 
+    @Autowired
+    private BusinessRegisterData addBusinessRegisterData;
+
+    @Autowired
+    private BusinessRegisterData removeBusinessRegisterData;
+
     /**
      * Check the error message has been placed in MongoDB.
      */
     @Then("^I should get a "
-            + "(company details|document details|cross border merger|branch disclosure) "
+            + "(company details|document details|cross border merger|branch disclosure|add Br Notification|remove Br Notification|) "
             + "error message with the error code ([^\"]*)$")
     public void theCorrectErrorWillBeReturnedToTheEcp(String errorType,
-                                                      String errorCode) throws Throwable {
+            String errorCode) throws Throwable {
         String messageId;
 
         switch (errorType) {
-            case "company details":
-                messageId = companyDetailsRequestData.getMessageId();
-                break;
-            case "document details":
-                messageId = documentDetailsRequestData.getMessageId();
-                break;
-            case "cross border merger":
-                messageId = crossBorderMergerNotificationData.getMessageId();
-                break;
-            case "branch disclosure":
-                messageId = branchDisclosureReceptionData.getMessageId();
-                break;
-            default:
-                throw new RuntimeException(errorType + " is not a known error type");
+        case "add Br Notification":
+            messageId = addBusinessRegisterData.getMessageId();
+            break;
+        case "remove Br Notification":
+            messageId = removeBusinessRegisterData.getMessageId();
+            break;
+        case "company details":
+            messageId = companyDetailsRequestData.getMessageId();
+            break;
+        case "document details":
+            messageId = documentDetailsRequestData.getMessageId();
+            break;
+        case "cross border merger":
+            messageId = crossBorderMergerNotificationData.getMessageId();
+            break;
+        case "branch disclosure":
+            messageId = branchDisclosureReceptionData.getMessageId();
+            break;
+        default:
+            throw new RuntimeException(errorType + " is not a known error type");
         }
 
         // and now locate the message in MongoDB and validate it
@@ -69,12 +80,12 @@ public class CommonSteps {
     }
 
     /**
-     Check that the message header is as expected.
+     * Check that the message header is as expected.
      */
     static void validateHeader(BrisMessageHeaderType messageHeader,
-                               String correlationId,
-                               String businessRegisterId,
-                               String countryCode) {
+            String correlationId,
+            String businessRegisterId,
+            String countryCode) {
         assertEquals("Correlation ID in header is not as expected",
                 correlationId,
                 messageHeader.getCorrelationId());
@@ -87,5 +98,5 @@ public class CommonSteps {
                 countryCode,
                 messageHeader.getBusinessRegisterCountry());
     }
-    
+
 }

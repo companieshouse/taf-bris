@@ -263,6 +263,11 @@
             <artifactId>ch-kafka</artifactId>
             <version>${ch.kafka.version}</version>
         </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4</version>
+        </dependency>
 
         <!-- test dependencies -->
         <dependency>
